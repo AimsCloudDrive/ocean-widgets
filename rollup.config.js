@@ -19,6 +19,6 @@ export default {
     commonjs(),
     resolve(),
     terser(),
-    babel({ babelHelpers: "external" }),
+    babel({ babelHelpers: "bundled" }),
   ],
 };
