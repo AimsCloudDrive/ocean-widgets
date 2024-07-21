@@ -1,0 +1,35 @@
+{
+  "name": "@ocean/common",
+  "version": "0.0.1",
+  "description": "@ocean/common",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "tsc": "tsup --config=tsup.config.miniprogram.ts",
+    "build": "tsc && rollup -c rollup.config.js",
+    "start": "rollup -c rollup.config.js -w",
+    "prebuild": "rimraf dist"
+  },
+  "keywords": [
+    "ocean",
+    "common"
+  ],
+  "author": "aims",
+  "license": "MIT",
+  "devDependencies": {
+    "@rollup/plugin-babel": "^6.0.4",
+    "@rollup/plugin-commonjs": "^26.0.1",
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^11.1.6",
+    "@types/rollup-plugin-json": "^3.0.7",
+    "rimraf": "^6.0.1",
+    "tslib": "^2.6.3",
+    "tsup": "^8.2.1"
+  }
+}
