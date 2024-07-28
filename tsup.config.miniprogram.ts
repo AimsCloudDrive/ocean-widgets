@@ -5,7 +5,7 @@ export default defineConfig({
   clean: true,
   dts: true,
   minify: false, // 压缩选项
-  format: ["iife"],
+  format: ["esm", "cjs", "iife"],
   target: "esnext",
   noExternal: ["@noble/curves"],
   tsconfig: "tsconfig.json",

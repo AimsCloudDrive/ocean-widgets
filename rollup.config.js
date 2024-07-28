@@ -1,7 +1,6 @@
 import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import typescript from "@rollup/plugin-typescript";
-import json from "@rollup/plugin-json";
 import terser from "@rollup/plugin-terser";
 import babel from "@rollup/plugin-babel";
 
@@ -13,7 +12,6 @@ export default {
     format: "umd",
     sourcemap: true,
   },
-  cache: false,
   plugins: [
     typescript({ outputToFilesystem: true }),
     commonjs(),

@@ -3,17 +3,19 @@
   "version": "0.0.1",
   "description": "@ocean/common",
   "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "types": "dist/types/index.d.ts",
   "type": "module",
   "files": [
     "dist"
   ],
   "scripts": {
-    "tsc": "tsup --config=tsup.config.miniprogram.ts",
+    "clean": "rimraf dist",
     "check": "tsc --noEmit",
-    "build": "npm run clean && npm run check && rollup -c rollup.config.js",
+    "compile": "rollup -c rollup.config.js",
+    "tsc": "tsup --config=tsup.config.miniprogram.ts",
     "start": "rollup -c rollup.config.js -w",
-    "clean": "rimraf dist"
+    "build": "npm run clean && npm run check && rollup -c rollup.config.js",
+    "release": "npm run clean & npm run check & npm run compile & npm publish --registry http://any.aims.nevermonarch.cn:64873"
   },
   "keywords": [
     "ocean",
