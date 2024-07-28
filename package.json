@@ -10,7 +10,8 @@
   ],
   "scripts": {
     "tsc": "tsup --config=tsup.config.miniprogram.ts",
-    "build": "npm run clean && tsc --noEmit && rollup -c rollup.config.js",
+    "check": "tsc --noEmit",
+    "build": "npm run clean && npm run check && rollup -c rollup.config.js",
     "start": "rollup -c rollup.config.js -w",
     "clean": "rimraf dist"
   },

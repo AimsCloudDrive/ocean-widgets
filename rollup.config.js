@@ -13,8 +13,9 @@ export default {
     format: "umd",
     sourcemap: true,
   },
+  cache: false,
   plugins: [
-    typescript(),
+    typescript({ outputToFilesystem: true }),
     commonjs(),
     resolve(),
     terser(),

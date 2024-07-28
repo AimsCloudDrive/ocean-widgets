@@ -17,7 +17,6 @@ export interface OcThenable<
     onrejected: (reason: E) => void,
     oncanceled: (reason: C) => void
   ): OcThenable<FR, FE, FC>;
-  isOcThenable(data: any): data is OcThenable;
   cancel(reason: C): void;
 }
 

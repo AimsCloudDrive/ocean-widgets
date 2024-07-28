@@ -15,6 +15,7 @@ import {
   PENDDING,
   thenable,
 } from "./types";
+import { isOcThenable, isPromiseLike } from "./utils";
 
 export class OcPromise<
   R extends any = any,
@@ -103,13 +104,13 @@ export class OcPromise<
           const data = exe();
           if (!data) {
             resolve(data);
-          } else if (this.isOcThenable(data)) {
+          } else if (isOcThenable(data)) {
             data.then(
               resolve,
               reject,
               (reason) => (this.cancel(reason), cancel(reason))
             );
-          } else if (OcPromise.isPromiseLike(data)) {
+          } else if (isPromiseLike(data)) {
             data.then(resolve, reject);
           } else resolve(data);
         } catch (e) {
@@ -142,13 +143,6 @@ export class OcPromise<
     res.parrent = this;
     return res;
   }
-  static isPromiseLike(data: any): data is thenable<any, any> {
-    return (
-      data &&
-      (typeof data === "function" || typeof data === "object") &&
-      typeof data.then === "function"
-    );
-  }
   cancel(reason: C) {
     if (this.parrent) {
       this.parrent.cancel(reason);
@@ -161,8 +155,38 @@ export class OcPromise<
     RE extends Error = OcPromiseRejectError,
     RC extends any = any
   >(data: any): data is OcThenable<RR, RE, RC> {
-    return (
-      data && typeof data.cancel === "function" && OcPromise.isPromiseLike(data)
-    );
+    return data && typeof data.cancel === "function" && isPromiseLike(data);
+  }
+
+  static all<T>(
+    proms: Iterable<T | thenable<Awaited<T>, any>>
+  ): OcPromise<Awaited<T>[]> {
+    const result: Awaited<T>[] = [];
+    return new OcPromise<Awaited<T>[]>((resolve, reject, cancel) => {
+      const _resolve = (data: Awaited<T>, index: number) => {
+        result[index] = data;
+        finished++;
+        if (finished === i) resolve(result);
+      };
+      let i: number = 0,
+        finished: number = 0;
+      const iterator = proms[Symbol.iterator]();
+      let next: ReturnType<typeof iterator.next> = iterator.next();
+      while (!next.done) {
+        const j = i;
+        i++;
+        const { value } = next;
+        if (isOcThenable<Awaited<T>, any, any>(value)) {
+          value.then((data) => _resolve(data, j), reject, cancel);
+        } else if (isPromiseLike<Awaited<T>, any>(value)) {
+          value.then((data) => _resolve(data, j), reject);
+        } else {
+          result[j] = value as Awaited<T>;
+          finished++;
+        }
+        next = iterator.next();
+      }
+      if (finished === i) resolve(result);
+    });
   }
 }
