@@ -1,1 +1,1 @@
-export * from "./e";
+export * from "./textuality";

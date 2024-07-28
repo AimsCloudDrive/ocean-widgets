@@ -1,13 +1,12 @@
 import { defineConfig } from "tsup";
 
-export default {
+export default defineConfig({
   entry: ["src/index.ts"],
   clean: true,
-  output: "miniprogram_dist",
   dts: true,
   minify: false, // 压缩选项
   format: ["iife"],
-  target: "es5",
+  target: "esnext",
   noExternal: ["@noble/curves"],
   tsconfig: "tsconfig.json",
   esbuildOptions(options) {
@@ -17,7 +16,7 @@ export default {
     }
     options.globalName = "ocean-common";
     options.supported = {
-      "dynamic-import": false,
+      "dynamic-import": true,
     };
   },
-};
+});
