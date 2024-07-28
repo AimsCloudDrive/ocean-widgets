@@ -67,11 +67,12 @@ export class OcPromise<
 
   private _runMicroTask(task: () => void) {
     if (MutationObserver) {
-      const ob = new MutationObserver(() => task());
-      const text = document.createTextNode("1");
+      const ob = new MutationObserver(() => {
+        task();
+      });
+      const text = document.createTextNode("div");
       ob.observe(text, { characterData: true });
-      text.data = "2";
-      ob.disconnect();
+      text.textContent = "span";
     } else {
       setTimeout(() => task(), 0);
     }
@@ -98,7 +99,7 @@ export class OcPromise<
           : oncanceled
           ? () => oncanceled(this.data as C)
           : undefined;
-      if (!exe) return;
+      if (!exe) break;
       const task = () => {
         try {
           const data = exe();
@@ -149,13 +150,6 @@ export class OcPromise<
     } else {
       this.changeStatus(CANCELED, reason);
     }
-  }
-  isOcThenable<
-    RR extends any = any,
-    RE extends Error = OcPromiseRejectError,
-    RC extends any = any
-  >(data: any): data is OcThenable<RR, RE, RC> {
-    return data && typeof data.cancel === "function" && isPromiseLike(data);
   }
 
   static all<T>(
