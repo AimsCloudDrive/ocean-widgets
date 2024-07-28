@@ -37,9 +37,9 @@ export class OcPromise<
   constructor(executor: OcPromiseExecutor<R, E, C>) {
     this.status = PENDDING;
     this.handlers = [];
-    const resolve: Resolve<R> = this.changeStatus.bind(this, FULFILLED);
-    const reject: Reject<E> = this.changeStatus.bind(this, REJECTED);
-    const cancel: Cancel<C> = this.changeStatus.bind(this, CANCELED);
+    const resolve: Resolve<R> = (data: R) => this.changeStatus(FULFILLED, data);
+    const reject: Reject<E> = (data: E) => this.changeStatus(REJECTED, data);
+    const cancel: Cancel<C> = (data: C) => this.changeStatus(CANCELED, data);
     try {
       executor(resolve, reject, cancel);
     } catch (e: any) {
@@ -65,7 +65,7 @@ export class OcPromise<
     this._runThens();
   }
 
-  private _runMicreTask(task: () => void) {
+  private _runMicroTask(task: () => void) {
     if (MutationObserver) {
       const ob = new MutationObserver(() => task());
       const text = document.createTextNode("1");
@@ -117,7 +117,7 @@ export class OcPromise<
           reject(e);
         }
       };
-      this._runMicreTask(task);
+      this._runMicroTask(task);
     }
   }
   then<
@@ -188,5 +188,11 @@ export class OcPromise<
       }
       if (finished === i) resolve(result);
     });
+  }
+  getData() {
+    return this.data;
+  }
+  getStatus() {
+    return this.status;
   }
 }
