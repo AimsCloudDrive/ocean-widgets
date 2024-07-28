@@ -10,9 +10,9 @@
   ],
   "scripts": {
     "tsc": "tsup --config=tsup.config.miniprogram.ts",
-    "build": "tsc && rollup -c rollup.config.js",
+    "build": "npm run clean && tsc --noEmit && rollup -c rollup.config.js",
     "start": "rollup -c rollup.config.js -w",
-    "prebuild": "rimraf dist"
+    "clean": "rimraf dist"
   },
   "keywords": [
     "ocean",

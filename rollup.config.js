@@ -14,7 +14,6 @@ export default {
     sourcemap: true,
   },
   plugins: [
-    json(),
     typescript(),
     commonjs(),
     resolve(),

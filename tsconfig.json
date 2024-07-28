@@ -1,9 +1,8 @@
 {
-  "references": [{ "path": "./tsconfig.node.json" }],
+  // "references": [{ "path": "tsconfig.node.json" }],
   "compilerOptions": {
     "target": "ES2020",
     "useDefineForClassFields": true,
-    "lib": ["ESNext", "ES2015"],
     "module": "ESNext",
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -33,5 +32,6 @@
     //   "@/*": ["src/*"],
     // },
     "noImplicitAny": false
-  }
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx"]
 }
