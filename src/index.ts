@@ -1,2 +1,2 @@
-export * from "./textuality";
 export * from "./OcPromise";
+export * from "./textuality";

@@ -12,14 +12,11 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react",
-    "jsxFactory": "React.createElement",
-    "declaration": true,
-    "declarationMap": true,
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "declarationDir": "dist/types",
+    "declaration": true,
+    "declarationDir": "dist",
     "outDir": "lib",
     "typeRoots": ["node_modules/@types"],
 
@@ -28,11 +25,11 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
-    // "baseUrl": "/src",
+    "baseUrl": "./src",
     // "paths": {
-    //   "@/*": ["src/*"],
+    //   "@/*": ["src/*"]
     // },
     "noImplicitAny": false
   },
-  "include": ["src"]
+  "include": ["src/**/*.ts"]
 }
