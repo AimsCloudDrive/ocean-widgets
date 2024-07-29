@@ -18,7 +18,7 @@ export default defineConfig({
       input: "src/index.ts",
       output: {
         name: "ocean-common",
-        dir: "dist",
+        dir: "./dist",
         entryFileNames: "index.js",
         format: "umd",
       },
@@ -27,8 +27,8 @@ export default defineConfig({
     minify: false,
     lib: {
       entry: "src/index.ts",
-      name: "ocean-common",
-      formats: ["es"],
+      name: "OcPromise",
+      formats: ["umd"],
     },
   },
 });
