@@ -1,7 +1,7 @@
 {
-  "name": "@ocean/promise",
+  "name": "@ocean/test",
   "version": "0.0.1",
-  "description": "@ocean/promise",
+  "description": "@ocean/test",
   "main": "dist/index.js",
   "typings": "dist/types/index.d.ts",
   "type": "module",
