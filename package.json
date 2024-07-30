@@ -1,0 +1,16 @@
+{
+  "name": "@ocean/widgets",
+  "version": "0.0.0",
+  "description": "@ocean/widgets",
+  "devDependencies": {
+    "tsup": "^8.2.3",
+    "typescript": "^5.0.2",
+    "vite": "^5.3.5",
+    "@rollup/plugin-commonjs": "^26.0.1",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^11.1.6",
+    "tslib": "^2.6.3",
+    "rimraf": "^6.0.1"
+  }
+}
