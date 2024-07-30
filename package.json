@@ -11,6 +11,10 @@
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^11.1.6",
     "tslib": "^2.6.3",
-    "rimraf": "^6.0.1"
+    "rimraf": "^6.0.1",
+    "@ocean/common": "latest",
+    "@ocean/promise": "latest",
+    "@ocean/reaction": "latest",
+    "@ocean/component": "latest"
   }
 }
