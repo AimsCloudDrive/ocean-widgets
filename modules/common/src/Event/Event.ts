@@ -24,10 +24,10 @@ export class Event<E extends {} = {}> {
   ) {
     let handlers = this.events[type];
     if (!handlers) {
-      return;
+      return this;
     }
     const index = handlers.findIndex((_handler) => handler === _handler);
-    if (index === -1) return;
+    if (index === -1) return this;
     handlers.splice(index, 1);
     return this;
   }
