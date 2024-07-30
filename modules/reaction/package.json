@@ -1,7 +1,7 @@
 {
-  "name": "@ocean/common",
+  "name": "@ocean/reaction",
   "version": "0.0.1",
-  "description": "@ocean/common",
+  "description": "@ocean/reaction",
   "main": "dist/index.js",
   "typings": "dist/types/index.d.ts",
   "type": "module",
@@ -11,7 +11,7 @@
   ],
   "keywords": [
     "ocean",
-    "common"
+    "reaction"
   ],
   "author": "OceanCommon",
   "license": "MIT",
@@ -19,7 +19,9 @@
     "clean": "rimraf dist",
     "check": "tsc --noEmit",
     "build": "npm run clean & npm run check && vite build",
-    "release": "npm unpublish @ocean/common --force &npm run build & npm publish --registry http://never.aims.nevermonarch.cn:64873"
+    "release": "npm run unpublish @ocean/reaction --force & npm run build & npm publish --registry http://never.aims.nevermonarch.cn:64873"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@ocean/common": "latest"
+  }
 }

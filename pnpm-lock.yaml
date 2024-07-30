@@ -36,13 +36,19 @@ importers:
         specifier: ^5.3.5
         version: 5.3.5(terser@5.31.3)
 
-  modules/common:
-    devDependencies:
-      '@ocean/promise':
-        specifier: workspace:*
-        version: link:../promise
+  modules/common: {}
 
-  modules/promise: {}
+  modules/component:
+    devDependencies:
+      '@ocean/common':
+        specifier: latest
+        version: 0.0.1
+
+  modules/reaction:
+    devDependencies:
+      '@ocean/common':
+        specifier: latest
+        version: 0.0.1
 
 packages:
 
@@ -364,6 +370,9 @@ packages:
   '@nodelib/fs.walk@1.2.8':
     resolution: {integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==}
     engines: {node: '>= 8'}
+
+  '@ocean/common@0.0.1':
+    resolution: {integrity: sha512-K5efNQnU6sdIjsjBHPQBMr9nhINMXtUccqABSapDrXT2TzkRhtXyEFSCauItqgNyCyHw2iTYkaTrjSMgKr9xcA==}
 
   '@pkgjs/parseargs@0.11.0':
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
@@ -1276,6 +1285,8 @@ snapshots:
     dependencies:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.17.1
+
+  '@ocean/common@0.0.1': {}
 
   '@pkgjs/parseargs@0.11.0':
     optional: true
