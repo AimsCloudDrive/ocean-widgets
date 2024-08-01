@@ -23,5 +23,8 @@
   },
   "devDependencies": {
     "@ocean/common": "latest"
+  },
+  "dependencies": {
+    "@ocean/promise": "file:"
   }
 }

@@ -21,5 +21,7 @@
     "build": "npm run clean & npm run check && vite build",
     "release": "npm unpublish @ocean/common --force &npm run build & npm publish --registry http://never.aims.nevermonarch.cn:64873"
   },
-  "devDependencies": {}
+  "dependencies": {
+    "@ocean/common": "file:"
+  }
 }
