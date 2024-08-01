@@ -1,5 +1,3 @@
-import { assert } from "../assert";
-
 export class Event<E extends {} = {}> {
   declare events: {
     [K in keyof E]: ((event: E[K], type: K, self: Event<E>) => void)[];
