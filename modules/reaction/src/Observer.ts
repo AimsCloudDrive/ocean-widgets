@@ -1,30 +1,34 @@
-import { OBSERVERMATHOD } from "./const";
+import { Reaction, IObserver } from "./Reaction";
+import { getGlobalData } from "@ocean/common";
 
-export class Observer {
-  private declare handles: Map<() => void, () => void>;
+export class Observer implements IObserver {
+  private declare handles: Map<Reaction, Reaction>;
   private declare value: any;
-  private declare cancel: (handle: () => void) => boolean;
   constructor() {
     this.handles = new Map();
     this.get = this.get.bind(this);
     this.set = this.set.bind(this);
-    this.cancel = this.handles.delete.bind(this.handles);
   }
   get() {
-    if (OBSERVERMATHOD.getRunningFunction) {
-      const handle = OBSERVERMATHOD.getRunningFunction(this.cancel);
-      this.handles.set(handle, handle);
+    const running = getGlobalData("@ocean/reaction");
+    if (running?.tracking) {
+      running.tracking(this);
     }
     return this.value;
   }
   set(v: any) {
     this.value = v;
-    const it = this.handles.values();
-    let next = it.next();
-    while (next.done) {
-      const { value } = next;
-      value();
-      next = it.next();
+    const it: Iterator<Reaction, Reaction> = this.handles.values();
+    let { done, value } = it.next();
+    while (done) {
+      value.exec();
+      ({ done, value } = it.next());
     }
+  }
+  addReaction(reaction: Reaction): void {
+    this.handles.set(reaction, reaction);
+  }
+  removeReaction(reaction: Reaction): void {
+    this.handles.delete(reaction);
   }
 }

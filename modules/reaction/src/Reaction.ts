@@ -1,9 +1,14 @@
-import { OBSERVERMATHOD } from "./const";
+import { getGlobalData, setGlobalData } from "@ocean/common";
+
+export interface IObserver {
+  addReaction(reaction: Reaction): void;
+  removeReaction(reaction: Reaction): void;
+}
 
 export class Reaction {
   private declare tracker: () => void;
   private declare callback: () => void;
-  private declare users: ((handle: () => void) => void)[];
+  private declare users: IObserver[];
   constructor(props: {
     tracker: () => void;
     callback: () => void;
@@ -15,12 +20,30 @@ export class Reaction {
     this.callback = delay
       ? () => requestAnimationFrame(() => props.callback())
       : props.callback;
-    OBSERVERMATHOD.getRunningFunction = (cancel) => {
-      this.users.push(cancel);
-      return this.callback;
-    };
-    this.tracker();
-    OBSERVERMATHOD.getRunningFunction = undefined;
+  }
+  track() {
+    const { tracker, callback } = this;
+    const r = getGlobalData("@ocean/reaction");
+    let o;
+    setGlobalData(
+      "@ocean/reaction",
+      (o = {
+        ...r,
+        tracking: (ob: IObserver) => {
+          this.users.push(ob);
+          ob.addReaction(this);
+          return this;
+        },
+      })
+    );
+    try {
+      tracker();
+    } finally {
+      setGlobalData("@ocean/reaction", {
+        ...o,
+        tracking: r.tracking,
+      });
+    }
   }
   exec() {
     this.callback();
@@ -28,8 +51,12 @@ export class Reaction {
   }
 
   disposer() {
+    return this.destroy.bind(this);
+  }
+
+  destroy() {
     return () => {
-      this.users.forEach((cancel) => cancel(this.callback));
+      this.users.forEach((ob) => ob.removeReaction(this));
     };
   }
 }

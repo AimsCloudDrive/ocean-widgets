@@ -36,19 +36,41 @@ importers:
         specifier: ^5.3.5
         version: 5.3.5(terser@5.31.3)
 
-  modules/common: {}
+  modules/common:
+    dependencies:
+      '@ocean/common':
+        specifier: 'file:'
+        version: 'link:'
 
   modules/component:
+    dependencies:
+      '@ocean/component':
+        specifier: 'file:'
+        version: 'link:'
+    devDependencies:
+      '@ocean/common':
+        specifier: latest
+        version: 0.0.1
+
+  modules/promise:
+    dependencies:
+      '@ocean/promise':
+        specifier: 'file:'
+        version: 'link:'
     devDependencies:
       '@ocean/common':
         specifier: latest
         version: 0.0.1
 
   modules/reaction:
+    dependencies:
+      '@ocean/reaction':
+        specifier: 'file:'
+        version: 'link:'
     devDependencies:
       '@ocean/common':
-        specifier: latest
-        version: 0.0.1
+        specifier: workspace:*
+        version: link:../common
 
 packages:
 
