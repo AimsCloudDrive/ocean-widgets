@@ -1,7 +1,11 @@
 {
-  "name": "@ocean/widgets",
+  "name": "@ocean/js",
   "version": "0.0.0",
-  "description": "@ocean/widgets",
+  "description": "@ocean/js",
+  "scripts": {
+    "build": "npm run build --workspaces",
+    "release": "npm run release --workspaces"
+  },
   "devDependencies": {
     "tsup": "^8.2.3",
     "typescript": "^5.0.2",
@@ -14,5 +18,8 @@
     "rimraf": "^6.0.1",
     "react": "latest",
     "@types/react": "latest"
-  }
+  },
+  "workspaces": [
+    "modules/common"
+  ]
 }
