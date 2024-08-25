@@ -1,9 +1,54 @@
-import { COMPONENT_OPTION_KEY, Event } from "@ocean/common";
+import { COMPONENT_OPTION_KEY, Event, IEvent } from "@ocean/common";
 import { CONTEXT } from "./context";
+import { Component as RCompnent } from "react";
 
 declare global {
   export namespace Component {
     export interface Context {}
+  }
+}
+
+export abstract class IComponent<P = any, E extends {} = any>
+  extends RCompnent<P>
+  implements Event<E>
+{
+  declare events: {
+    [K in keyof E]: ((event: E[K], type: K, self: Event<E>) => void)[];
+  };
+  constructor(props: P) {
+    super(props);
+    this.events = Object.create(null);
+  }
+  on<T extends keyof E>(
+    type: T,
+    handler: (event: E[T], type: T, self: Event<E>) => void
+  ) {
+    let handlers = this.events[type];
+    if (!handlers) {
+      handlers = this.events[type] = [];
+    }
+    handlers.push(handler);
+    return this;
+  }
+  un<T extends keyof E>(
+    type: T,
+    handler: (event: E[T], type: T, self: Event<E>) => void
+  ) {
+    let handlers = this.events[type];
+    if (!handlers) {
+      return this;
+    }
+    const index = handlers.findIndex((_handler) => handler === _handler);
+    if (index === -1) return this;
+    handlers.splice(index, 1);
+    return this;
+  }
+  emit<T extends keyof E>(type: T, event: E[T]) {
+    let handlers = this.events[type];
+    if (!handlers) {
+      return;
+    }
+    handlers.forEach((handler) => handler(event, type, this));
   }
 }
 
@@ -18,9 +63,9 @@ export type ComponentEvents = {};
 export abstract class Component<
   P extends ComponentProps = ComponentProps,
   E extends ComponentEvents = ComponentEvents
-> extends Event<E> {
+> extends IComponent<P, E> {
   constructor(props: P) {
-    super();
+    super(props);
     this.$owner = CONTEXT.creating;
     this.init();
     this.set(props);

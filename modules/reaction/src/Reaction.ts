@@ -8,7 +8,7 @@ export interface IObserver {
 export class Reaction {
   private declare tracker: () => void;
   private declare callback: () => void;
-  private declare users: IObserver[];
+  private declare tracked: IObserver[];
   constructor(props: {
     tracker: () => void;
     callback: () => void;
@@ -30,7 +30,7 @@ export class Reaction {
       (o = {
         ...r,
         tracking: (ob: IObserver) => {
-          this.users.push(ob);
+          this.tracked.push(ob);
           ob.addReaction(this);
           return this;
         },
@@ -56,7 +56,7 @@ export class Reaction {
 
   destroy() {
     return () => {
-      this.users.forEach((ob) => ob.removeReaction(this));
+      this.tracked.forEach((ob) => ob.removeReaction(this));
     };
   }
 }
