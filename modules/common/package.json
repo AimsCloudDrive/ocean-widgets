@@ -1,6 +1,6 @@
 {
   "name": "@ocean/common",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "@ocean/common",
   "main": "dist/index.js",
   "typings": "dist/types/index.d.ts",
@@ -19,9 +19,12 @@
     "clean": "rimraf dist",
     "check": "tsc --noEmit",
     "build": "npm run clean & npm run check && vite build",
-    "release": "npm unpublish @ocean/common --force &npm run build & npm publish --registry http://never.aims.nevermonarch.cn:64873"
+    "release": "pnpm run build && pnpm version patch && pnpm publish --no-git-checks"
   },
   "dependencies": {
     "@ocean/common": "file:"
+  },
+  "publishConfig": {
+    "registry": "http://never.aims.nevermonarch.cn:64873"
   }
 }

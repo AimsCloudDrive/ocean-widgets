@@ -1,17 +1,36 @@
-export class Event<E extends {} = {}> {
-  declare events: {
-    [K in keyof E]: ((event: E[K], type: K, self: Event<E>) => void)[];
-  };
+import { defineProperty } from "../global";
+import { EVENTS } from "./context";
+
+const EK = EVENTS;
+
+export interface IEvent<E extends {} = {}> {
+  on<T extends keyof E>(
+    type: T,
+    handler: (event: E[T], type: T, self: Event<E>) => void
+  ): this;
+  un<T extends keyof E>(
+    type: T,
+    handler: (event: E[T], type: T, self: Event<E>) => void
+  ): this;
+  emit<T extends keyof E>(type: T, event: E[T]): void;
+}
+
+type EVS<E extends {} = {}> = {
+  [K in keyof E]: ((event: E[K], type: K, self: Event<E>) => void)[];
+};
+
+export class Event<E extends {} = {}> implements IEvent<E> {
   constructor() {
-    this.events = Object.create(this.events || {});
+    defineProperty(this, EK, 0, Object.create(null));
   }
   on<T extends keyof E>(
     type: T,
     handler: (event: E[T], type: T, self: Event<E>) => void
   ) {
-    let handlers = this.events[type];
+    const _events = this[EK as keyof this] as EVS<E>;
+    let handlers = _events[type];
     if (!handlers) {
-      handlers = this.events[type] = [];
+      handlers = _events[type] = [];
     }
     handlers.push(handler);
     return this;
@@ -20,7 +39,8 @@ export class Event<E extends {} = {}> {
     type: T,
     handler: (event: E[T], type: T, self: Event<E>) => void
   ) {
-    let handlers = this.events[type];
+    const _events = this[EK as keyof this] as EVS<E>;
+    let handlers = _events[type];
     if (!handlers) {
       return this;
     }
@@ -30,7 +50,8 @@ export class Event<E extends {} = {}> {
     return this;
   }
   emit<T extends keyof E>(type: T, event: E[T]) {
-    let handlers = this.events[type];
+    const _events = this[EK as keyof this] as EVS<E>;
+    let handlers = _events[type];
     if (!handlers) {
       return;
     }
