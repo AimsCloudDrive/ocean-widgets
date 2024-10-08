@@ -22,7 +22,7 @@
     "release": "npm unpublish @ocean/component --force & npm run build & npm publish --registry http://never.aims.nevermonarch.cn:64873"
   },
   "devDependencies": {
-    "@ocean/common": "^0.0.2"
+    "@ocean/common": "^0.0.3"
   },
   "dependencies": {
     "@ocean/component": "file:"

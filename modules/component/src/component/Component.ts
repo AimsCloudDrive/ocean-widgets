@@ -64,6 +64,7 @@ export abstract class Component<
   P extends ComponentProps = ComponentProps,
   E extends ComponentEvents = ComponentEvents
 > extends IComponent<P, E> {
+  declare el: HTMLElement;
   constructor(props: P) {
     super(props);
     this.$owner = CONTEXT.creating;
@@ -106,5 +107,12 @@ export abstract class Component<
     const OPTIONS = Reflect.get(this, COMPONENT_OPTION_KEY) || {};
     return OPTIONS as { [K in keyof P]: any };
   }
-  render(): any {}
+  render(): any {
+    try {
+      CONTEXT.creating = this;
+      // render
+    } finally {
+      CONTEXT.creating = this.$owner;
+    }
+  }
 }
