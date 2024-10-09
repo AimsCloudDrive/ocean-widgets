@@ -36,7 +36,9 @@ export function performChunk(
     _chunkSplitor((isContinue) => {
       const now = Date.now();
       while (isContinue(Date.now() - now) && i < tasks.length) {
+        console.info(i, tasks.length);
         tasks[i](i);
+        debugger;
         i++;
       }
     });

@@ -22,7 +22,7 @@
     "release": "pnpm unpublish @ocean/dom --force & pnpm run build & pnpm publish --registry http://never.aims.nevermonarch.cn:64873"
   },
   "devDependencies": {
-    "@ocean/common": "^0.0.3"
+    "@ocean/common": "^0.0.5"
   },
   "dependencies": {
     "@ocean/dom": "file:",

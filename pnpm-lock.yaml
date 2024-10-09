@@ -48,40 +48,8 @@ importers:
         specifier: 'file:'
         version: 'link:'
 
-  modules/component:
+  modules/common/example:
     dependencies:
-      '@ocean/component':
-        specifier: 'file:'
-        version: 'link:'
-    devDependencies:
-      '@ocean/common':
-        specifier: ^0.0.3
-        version: 0.0.3
-
-  modules/dom:
-    dependencies:
-      '@ocean/dom':
-        specifier: 'file:'
-        version: 'link:'
-      '@ocean/promise':
-        specifier: 'file:'
-        version: 'link:'
-      mobx:
-        specifier: ^6.13.3
-        version: 6.13.3
-      react:
-        specifier: latest
-        version: 18.3.1
-    devDependencies:
-      '@ocean/common':
-        specifier: ^0.0.3
-        version: 0.0.3
-
-  modules/dom/example:
-    dependencies:
-      '@ocean/dom':
-        specifier: ^0.0.1
-        version: 0.0.1(typescript@5.6.2)
       '@remix-run/node':
         specifier: ^2.12.1
         version: 2.12.1(typescript@5.6.2)
@@ -104,6 +72,9 @@ importers:
         specifier: ^18.2.0
         version: 18.3.1(react@18.3.1)
     devDependencies:
+      '@ocean/common':
+        specifier: ^0.0.5
+        version: 0.0.5(typescript@5.6.2)
       '@remix-run/dev':
         specifier: ^2.12.1
         version: 2.12.1(@remix-run/react@2.12.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.6.2))(@remix-run/serve@2.12.1(typescript@5.6.2))(@types/node@22.7.5)(terser@5.34.1)(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.5)(terser@5.34.1))
@@ -156,6 +127,35 @@ importers:
         specifier: ^4.2.1
         version: 4.3.2(typescript@5.6.2)(vite@5.4.8(@types/node@22.7.5)(terser@5.34.1))
 
+  modules/component:
+    dependencies:
+      '@ocean/component':
+        specifier: 'file:'
+        version: 'link:'
+    devDependencies:
+      '@ocean/common':
+        specifier: ^0.0.5
+        version: 0.0.5(typescript@5.6.2)
+
+  modules/dom:
+    dependencies:
+      '@ocean/dom':
+        specifier: 'file:'
+        version: 'link:'
+      '@ocean/promise':
+        specifier: 'file:'
+        version: 'link:'
+      mobx:
+        specifier: ^6.13.3
+        version: 6.13.3
+      react:
+        specifier: latest
+        version: 18.3.1
+    devDependencies:
+      '@ocean/common':
+        specifier: ^0.0.5
+        version: 0.0.5(typescript@5.6.2)
+
   modules/promise:
     dependencies:
       '@ocean/promise':
@@ -163,8 +163,8 @@ importers:
         version: 'link:'
     devDependencies:
       '@ocean/common':
-        specifier: ^0.0.3
-        version: 0.0.3
+        specifier: ^0.0.5
+        version: 0.0.5(typescript@5.6.2)
 
   modules/reaction:
     dependencies:
@@ -838,14 +838,8 @@ packages:
     resolution: {integrity: sha512-gGq0NJkIGSwdbUt4yhdF8ZrmkGKVz9vAdVzpOfnom+V8PLSmSOVhZwbNvZZS1EYcJN5hzzKBxmmVVAInM6HQLg==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
 
-  '@ocean/common@0.0.3':
-    resolution: {integrity: sha512-jd1uXKOLf76pkN1dUU6fvi7j4MdzJhqR0ohW2fJFYf85qtAhVrfvuAqXf/lm2xPS7HqEgJ7FW2gqVTWmfU0aOg==}
-
-  '@ocean/component@file:modules/component':
-    resolution: {directory: modules/component, type: directory}
-
-  '@ocean/dom@0.0.1':
-    resolution: {integrity: sha512-VE7QlW0TS8jC7fDy8tKuGoBTSL7J7360IaCpQOg588CFQkmTZQ5PtH/qCHEB8lZU4TpIX8SDLL2mAuMDZGg3VQ==}
+  '@ocean/common@0.0.5':
+    resolution: {integrity: sha512-BdKKraUfHAjXVoqjLWK+12iJP1YhSJOdV6IBKYzBLegdpqfU5UbK6ukTvhe0i5xM9wOd3ll00kH9E13Qd/gLVg==}
 
   '@pkgjs/parseargs@0.11.0':
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
@@ -1915,8 +1909,8 @@ packages:
     resolution: {integrity: sha512-i/2XbnSz/uxRCU6+NdVJgKWDTM427+MqYbkQzD321DuCQJUqOuJKIA0IM2+W2xtYHdKOmZ4dR6fExsd4SXL+WQ==}
     engines: {node: '>=6'}
 
-  example@file:modules/dom/example:
-    resolution: {directory: modules/dom/example, type: directory}
+  example@file:modules/common/example:
+    resolution: {directory: modules/common/example, type: directory}
     engines: {node: '>=20.0.0'}
 
   execa@5.1.1:
@@ -4490,18 +4484,9 @@ snapshots:
     dependencies:
       which: 3.0.1
 
-  '@ocean/common@0.0.3':
+  '@ocean/common@0.0.5(typescript@5.6.2)':
     dependencies:
-      '@ocean/common': '@ocean/component@file:modules/component'
-
-  '@ocean/component@file:modules/component': {}
-
-  '@ocean/dom@0.0.1(typescript@5.6.2)':
-    dependencies:
-      '@ocean/dom': example@file:modules/dom/example(typescript@5.6.2)
-      '@ocean/promise': example@file:modules/dom/example(typescript@5.6.2)
-      mobx: 6.13.3
-      react: 18.3.1
+      '@ocean/common': example@file:modules/common/example(typescript@5.6.2)
     transitivePeerDependencies:
       - supports-color
       - typescript
@@ -5904,9 +5889,8 @@ snapshots:
 
   event-target-shim@5.0.1: {}
 
-  example@file:modules/dom/example(typescript@5.6.2):
+  example@file:modules/common/example(typescript@5.6.2):
     dependencies:
-      '@ocean/dom': 0.0.1(typescript@5.6.2)
       '@remix-run/node': 2.12.1(typescript@5.6.2)
       '@remix-run/react': 2.12.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.6.2)
       '@remix-run/serve': 2.12.1(typescript@5.6.2)
