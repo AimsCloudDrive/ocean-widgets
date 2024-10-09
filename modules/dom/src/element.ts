@@ -1,4 +1,3 @@
-import React from "react";
 import { performChunk } from "@ocean/common";
 
 type DOMElement<T> = Omit<React.ReactElement, "props"> & {
@@ -12,7 +11,7 @@ export function createElement<T = any>(
 ) {
   console.info(type, config, children);
 
-  console.info({
+  return {
     type,
     props: {
       ...(config || {}),
@@ -22,8 +21,7 @@ export function createElement<T = any>(
           )
         : children,
     },
-  });
-  return React.createElement(type, config, ...children);
+  };
 }
 
 export function createTextElement(text: string) {
