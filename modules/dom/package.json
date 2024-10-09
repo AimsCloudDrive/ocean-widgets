@@ -19,7 +19,7 @@
     "clean": "rimraf dist",
     "check": "tsc --noEmit",
     "build": "npm run clean & npm run check && vite build",
-    "release": "npm unpublish @ocean/dom --force & npm run build & npm publish --registry http://never.aims.nevermonarch.cn:64873"
+    "release": "pnpm unpublish @ocean/dom --force & pnpm run build & pnpm publish --registry http://never.aims.nevermonarch.cn:64873"
   },
   "devDependencies": {
     "@ocean/common": "^0.0.3"

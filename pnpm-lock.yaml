@@ -80,8 +80,8 @@ importers:
   modules/dom/example:
     dependencies:
       '@ocean/dom':
-        specifier: workspace:^
-        version: link:..
+        specifier: ^0.0.1
+        version: 0.0.1(typescript@5.6.2)
       '@remix-run/node':
         specifier: ^2.12.1
         version: 2.12.1(typescript@5.6.2)
@@ -93,7 +93,7 @@ importers:
         version: 2.12.1(typescript@5.6.2)
       example:
         specifier: 'file:'
-        version: file:modules/dom/example(typescript@5.6.2)
+        version: 'link:'
       isbot:
         specifier: ^4.1.0
         version: 4.4.0
@@ -843,6 +843,9 @@ packages:
 
   '@ocean/component@file:modules/component':
     resolution: {directory: modules/component, type: directory}
+
+  '@ocean/dom@0.0.1':
+    resolution: {integrity: sha512-VE7QlW0TS8jC7fDy8tKuGoBTSL7J7360IaCpQOg588CFQkmTZQ5PtH/qCHEB8lZU4TpIX8SDLL2mAuMDZGg3VQ==}
 
   '@pkgjs/parseargs@0.11.0':
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
@@ -4493,6 +4496,16 @@ snapshots:
 
   '@ocean/component@file:modules/component': {}
 
+  '@ocean/dom@0.0.1(typescript@5.6.2)':
+    dependencies:
+      '@ocean/dom': example@file:modules/dom/example(typescript@5.6.2)
+      '@ocean/promise': example@file:modules/dom/example(typescript@5.6.2)
+      mobx: 6.13.3
+      react: 18.3.1
+    transitivePeerDependencies:
+      - supports-color
+      - typescript
+
   '@pkgjs/parseargs@0.11.0':
     optional: true
 
@@ -5893,7 +5906,7 @@ snapshots:
 
   example@file:modules/dom/example(typescript@5.6.2):
     dependencies:
-      '@ocean/dom': link:modules/dom
+      '@ocean/dom': 0.0.1(typescript@5.6.2)
       '@remix-run/node': 2.12.1(typescript@5.6.2)
       '@remix-run/react': 2.12.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.6.2)
       '@remix-run/serve': 2.12.1(typescript@5.6.2)
