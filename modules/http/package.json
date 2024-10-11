@@ -1,7 +1,7 @@
 {
-  "name": "@ocean/dom",
-  "version": "0.0.1",
-  "description": "@ocean/dom",
+  "name": "@ocean/http",
+  "version": "0.0.8",
+  "description": "@ocean/http",
   "main": "dist/index.js",
   "typings": "dist/types/index.d.ts",
   "type": "module",
@@ -11,7 +11,7 @@
   ],
   "keywords": [
     "ocean",
-    "dom"
+    "http"
   ],
   "author": "OceanCommon",
   "license": "MIT",
@@ -19,15 +19,17 @@
     "clean": "rimraf dist",
     "check": "tsc --noEmit",
     "build": "npm run clean & npm run check && vite build",
+    "test": "pnpm run build && node ./dist/index.js",
     "release": "pnpm run build && pnpm version patch && pnpm publish --no-git-checks"
   },
   "devDependencies": {
     "@ocean/common": "^0.0.5"
   },
   "dependencies": {
-    "@ocean/dom": "file:",
-    "@ocean/promise": "file:",
-    "mobx": "^6.13.3",
-    "react": "latest"
+    "@ocean/http": "file:",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.1"
   }
 }
