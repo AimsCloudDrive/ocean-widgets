@@ -15,8 +15,6 @@ export type JSType = JSTypeMap[JSTypeString];
 
 export type GetJSTypeString<T extends JSType> = T extends number
   ? "number"
-  : T extends string
-  ? "string"
   : T extends boolean
   ? "boolean"
   : T extends bigint
@@ -29,4 +27,6 @@ export type GetJSTypeString<T extends JSType> = T extends number
   ? "object"
   : T extends undefined
   ? "undefined"
+  : T extends string
+  ? "string"
   : T;
