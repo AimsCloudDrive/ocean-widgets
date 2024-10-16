@@ -5,6 +5,12 @@ export function getGlobalData(key: string) {
   return Reflect.get(globalThis, key);
 }
 
+export type Nullable = null | undefined;
+
+export type createFunction<T extends any[]> = T extends [...infer P, infer R]
+  ? (...args: P) => R
+  : never;
+
 const writable = 0x01;
 const enumerable = 0x02;
 const configurable = 0x04;

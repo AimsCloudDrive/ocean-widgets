@@ -1,3 +1,4 @@
+import { Nullable, createFunction } from "..";
 import { Event } from "../Event";
 import { assert } from "../assert";
 
@@ -7,7 +8,10 @@ export type CollectionKey = string | number;
 
 export type CollectionGetKey<T = any> = (data: T) => CollectionKey;
 
-export class Collection<T = any> extends Event<CollectionEvent<T>> {
+export class Collection<T = any>
+  extends Event<CollectionEvent<T>>
+  implements Iterable<T>
+{
   private declare getKey: CollectionGetKey<T>;
 
   private declare elements: Array<T>;
@@ -22,8 +26,15 @@ export class Collection<T = any> extends Event<CollectionEvent<T>> {
     this.elMap = new Map<CollectionKey, T>();
     this.indexMap = new Map<CollectionKey, number>();
   }
+
   get(key: CollectionKey) {
     return this.elMap.get(key);
+  }
+  hasKey(key: CollectionKey) {
+    return this.elMap.has(key);
+  }
+  hasElement(element: T) {
+    return this.hasKey(this.getKey(element));
   }
   /**
    *
@@ -141,5 +152,41 @@ export class Collection<T = any> extends Event<CollectionEvent<T>> {
       const key = this.getKey(element);
       indexMap.set(key, i);
     }
+  }
+  [Symbol.iterator](): Iterator<T, T, undefined> {
+    const elements = [...this.elements];
+    return {
+      next: () => {
+        const p = elements.shift();
+        if (p) {
+          return {
+            done: false,
+            value: p,
+          } as IteratorYieldResult<T>;
+        } else {
+          return {
+            done: true,
+            value: p,
+          } as IteratorReturnResult<T>;
+        }
+      },
+    };
+  }
+  each(handler: createFunction<[T, CollectionKey, this, void]>) {
+    this.elMap.forEach((el, k) => handler(el, k, this));
+  }
+  toArray<M extends Nullable | createFunction<[T, CollectionKey, this, any]>>(
+    filter: Nullable | createFunction<[T, CollectionKey, this, boolean]>,
+    map: M
+  ) {
+    const _filter = filter || (() => true);
+    const _map = map || ((el) => el);
+    let key: CollectionKey;
+    return this.elements.reduce((_rr, el) => {
+      key = this.getKey(el);
+      return _filter(el, key, this)
+        ? (_rr.push(_map(el, key, this)), _rr)
+        : _rr;
+    }, [] as (M extends (...args: any[]) => infer TR ? TR : T)[]);
   }
 }
