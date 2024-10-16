@@ -36,7 +36,7 @@ export function createOverload<
     },
     add<T extends Load[number]>(
       ...args: [...T, (...args: ArgsType<T>) => TReturn]
-    ) {
+    ): void {
       const overload = args.pop();
       if (typeof overload !== "function") {
         throw Error("the last parameter must be function");
@@ -53,13 +53,16 @@ export function createOverload<
         Overload.overload as (...args: ArgsType<Load[number]>) => TReturn,
         true
       );
-      return _m;
     },
   };
-  const _m = Method.method;
-  defineProperty<any, typeof ADD_IMPLEMENT>(_m, ADD_IMPLEMENT, 0, Method.add);
+  defineProperty<any, typeof ADD_IMPLEMENT>(
+    Method.method,
+    ADD_IMPLEMENT,
+    0,
+    Method.add
+  );
   for (const v of _implements || []) {
     v && Method.add(...v);
   }
-  return _m as OverLoadableFunction<Load, TReturn>;
+  return Method.method as OverLoadableFunction<Load, TReturn>;
 }
