@@ -6,3 +6,4 @@ export * from "./assert";
 export * from "./collection";
 export * from "./number";
 export * from "./overload";
+export * from "./types";
