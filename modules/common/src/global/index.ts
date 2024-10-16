@@ -9,9 +9,9 @@ const writable = 0x01;
 const enumerable = 0x02;
 const configurable = 0x04;
 
-export function defineProperty<T extends any = any>(
+export function defineProperty<T extends any, K extends symbol | keyof T>(
   ctor: T,
-  propKey: symbol | keyof T,
+  propKey: K,
   flag: number = 7,
   value?: any
 ) {

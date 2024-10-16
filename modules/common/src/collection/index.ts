@@ -46,6 +46,25 @@ export class Collection<T = any> extends Event<CollectionEvent<T>> {
   }
   /**
    *
+   * @param key 指定元素key
+   * @param element 添加元素
+   * @param force 当元素存在时是否替换，默认false
+   */
+  addKey(key: CollectionKey, element: T, force?: boolean) {
+    const has = this.elMap.has(key);
+    if (!has) {
+      const index = this.elements.push(element) - 1;
+      this.indexMap.set(key, index);
+      this.elMap.set(key, element);
+    } else if (force) {
+      const index = this.indexMap.get(key);
+      assert(index);
+      this.elMap.set(key, element);
+      this.elements.splice(index, 1, element);
+    }
+  }
+  /**
+   *
    * @param iterator 待添加的元素序列
    * @param force 当元素存在时是否替换 默认false
    */
