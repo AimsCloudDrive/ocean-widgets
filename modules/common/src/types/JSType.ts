@@ -3,30 +3,16 @@ export type JSTypeMap = {
   string: string;
   boolean: boolean;
   bigint: bigint;
-  null: null;
+  function: Function;
   undefined: undefined;
   symbol: symbol;
   object: object;
 };
 
-export type JSTypeString = keyof JSTypeMap;
+export type JSTypes = keyof JSTypeMap;
 
-export type JSType = JSTypeMap[JSTypeString];
-
-export type GetJSTypeString<T extends JSType> = T extends number
-  ? "number"
-  : T extends boolean
-  ? "boolean"
-  : T extends bigint
-  ? "bigint"
-  : T extends null
-  ? "null"
-  : T extends symbol
-  ? "symbol"
-  : T extends object
-  ? "object"
-  : T extends undefined
-  ? "undefined"
-  : T extends string
-  ? "string"
-  : T;
+export type ArgsType<T extends JSTypes[]> = [
+  ...{
+    [I in keyof T]: JSTypeMap[T[I]];
+  }
+];

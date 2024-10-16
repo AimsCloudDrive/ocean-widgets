@@ -1,38 +1,41 @@
-import { JSTypeString, JSTypeMap, GetJSTypeString } from "../types";
+import { assert } from "../assert";
 import { Collection } from "../collection";
 import { defineProperty } from "../global";
-import { assert } from "../assert";
+import { ArgsType, JSTypes } from "../types";
 
 const TYPE_SPLITOR = ",";
 const OVERlOAD_KEY = Symbol("overload");
 const ADD_IMPLEMENT = "addImplement" as const;
 
 type OverLoadableFunction<
-  Load extends JSTypeMap[JSTypeString][][],
+  Load extends JSTypes[][],
   TReturn extends any = void
-> = ((...args: Load[number]) => TReturn) & {
+> = ((...args: ArgsType<Load[number]>) => TReturn) & {
   [K in typeof ADD_IMPLEMENT]: <T extends Load[number]>(
-    ...args: [...[GetJSTypeString<T[number]>], (...args: T) => TReturn]
-  ) => void;
+    ...args: [...T, (...args: ArgsType<T>) => TReturn]
+  ) => OverLoadableFunction<Load, TReturn>;
 };
 export function createOverload<
-  Load extends JSTypeMap[JSTypeString][][],
+  Load extends JSTypes[][],
   TReturn extends any = void
->(): OverLoadableFunction<Load, TReturn> {
-  const overloadCollection: Collection<(...args: Load[number]) => TReturn> =
-    new Collection((m) => {
-      // 从方法上取参数列表key
-      return Reflect.get(m, OVERlOAD_KEY);
-    });
+>(_implements?: {
+  [I in keyof Load]?: [...Load[I], (...args: ArgsType<Load[I]>) => TReturn];
+}): OverLoadableFunction<Load, TReturn> {
+  const overloadCollection: Collection<
+    (...args: ArgsType<Load[number]>) => TReturn
+  > = new Collection((m) => {
+    // 从方法上取参数列表key
+    return Reflect.get(m, OVERlOAD_KEY);
+  });
   const Method = {
-    method(...args: Load[number]): TReturn {
+    method(...args: ArgsType<Load[number]>): TReturn {
       const overloadKey = args.map((v) => typeof v).join(TYPE_SPLITOR);
       const overload = overloadCollection.get(overloadKey);
       assert(overload, "No implementation found");
       return overload.apply(this, args);
     },
     add<T extends Load[number]>(
-      ...args: [...[GetJSTypeString<T[number]>], (...args: T) => TReturn]
+      ...args: [...T, (...args: ArgsType<T>) => TReturn]
     ) {
       const overload = args.pop();
       if (typeof overload !== "function") {
@@ -40,23 +43,23 @@ export function createOverload<
       }
       const overloadKey = args.join(TYPE_SPLITOR);
       const Overload = {
-        overload(...args: T) {
+        overload(...args: ArgsType<T>) {
           return overload.apply(this, args);
         },
       };
       // 将参数列表key存在方法上
       defineProperty(Overload.overload, OVERlOAD_KEY, 0, overloadKey);
       overloadCollection.add(
-        Overload.overload as (...args: Load[number]) => TReturn,
+        Overload.overload as (...args: ArgsType<Load[number]>) => TReturn,
         true
       );
+      return _m;
     },
   };
-  defineProperty<any, typeof ADD_IMPLEMENT>(
-    Method.method,
-    ADD_IMPLEMENT,
-    0,
-    Method.add
-  );
-  return Method.method as OverLoadableFunction<Load, TReturn>;
+  const _m = Method.method;
+  defineProperty<any, typeof ADD_IMPLEMENT>(_m, ADD_IMPLEMENT, 0, Method.add);
+  for (const v of _implements || []) {
+    v && Method.add(...v);
+  }
+  return _m as OverLoadableFunction<Load, TReturn>;
 }
