@@ -31,7 +31,7 @@ export function createOverload<
     method(...args: ArgsType<Load[number]>): TReturn {
       const overloadKey = args.map((v) => typeof v).join(TYPE_SPLITOR);
       const overload = overloadCollection.get(overloadKey);
-      assert(overload, "No implementation found");
+      assert(overload, "Not implementation found");
       return overload.apply(this, args);
     },
     add<T extends Load[number]>(
