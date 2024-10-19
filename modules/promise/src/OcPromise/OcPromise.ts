@@ -1,4 +1,5 @@
 import { OcPromiseRejectError } from "./OcPromiseError";
+import { Nullable, createFunction } from "@ocean/common";
 import {
   OcThenable,
   OcPromiseStatus,
@@ -27,12 +28,12 @@ export class OcPromise<
   private declare data: R | E | C;
   private declare parrent: OcPromise<any, any, any> | undefined;
   private declare handlers: {
-    resolve: (data: any) => void;
+    resolve: createFunction<[any, void]>;
     reject: (reason: any) => void;
     cancel: (reason: any) => void;
-    onfulfilled?: (data: R) => any | OcThenable<any, E, C>;
-    onrejected?: (reason: E) => void;
-    oncanceled?: (reason: C) => void;
+    onfulfilled?: Nullable | createFunction<[R, any | OcThenable<any, E, C>]>;
+    onrejected?: Nullable | createFunction<[E, void]>;
+    oncanceled?: Nullable | createFunction<[C, void]>;
   }[];
   constructor(executor: OcPromiseExecutor<R, E, C>) {
     this.status = PENDDING;
@@ -126,9 +127,9 @@ export class OcPromise<
     FE extends Error = OcPromiseRejectError,
     FC extends any = any
   >(
-    onfulfilled?: (data: R) => FR | OcThenable<FR, FE, FC>,
-    onrejected?: (reason: E) => void,
-    oncanceled?: (reason: C) => void
+    onfulfilled?: Nullable | createFunction<[R, FR | OcThenable<FR, FE, FC>]>,
+    onrejected?: Nullable | Reject<E>,
+    oncanceled?: Nullable | Cancel<C>
   ): OcPromise<FR, FE, FC> {
     const res = new OcPromise<FR, FE, FC>((resolve, reject, cancel) => {
       this.handlers.push({
@@ -182,6 +183,9 @@ export class OcPromise<
       }
       if (finished === i) resolve(result);
     });
+  }
+  canceled(oncanceled: Cancel<C>) {
+    return this.then(null, null, oncanceled);
   }
   getData() {
     return this.data;

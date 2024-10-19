@@ -1,3 +1,4 @@
+import { Nullable, createFunction } from "@ocean/common";
 import { OcPromiseRejectError } from "./OcPromiseError";
 
 export interface thenable<R extends any, E extends Error> {
@@ -13,11 +14,12 @@ export interface OcThenable<
   C extends any = any
 > {
   then<FR extends any, FE extends Error, FC extends any>(
-    onfulfilled: (data: R) => FR | OcThenable<FR, FE, FC>,
-    onrejected: (reason: E) => void,
-    oncanceled: (reason: C) => void
+    onfulfilled: Nullable | createFunction<[R, FR | OcThenable<FR, FE, FC>]>,
+    onrejected: Nullable | Reject<E>,
+    oncanceled: Nullable | Cancel<C>
   ): OcThenable<FR, FE, FC>;
   cancel(reason: C): void;
+  canceled(oncanceled: Cancel<C>): void;
 }
 
 export type Pendding = "pendding";
@@ -42,4 +44,4 @@ export type OcPromiseExecutor<
   R extends any = any,
   E extends Error = OcPromiseRejectError,
   C extends any = any
-> = (resolve: Resolve<R>, reject: Reject<E>, cancel: Cancel<C>) => void;
+> = createFunction<[Resolve<R>, Reject<E>, Cancel<C>, void]>;

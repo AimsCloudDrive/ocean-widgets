@@ -11,8 +11,8 @@
     "@rollup/plugin-node-resolve": "^15.3.0",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^12.1.0",
-    "@types/react": "^18.3.11",
     "@types/node": "latest",
+    "@types/react": "^18.3.11",
     "react": "latest",
     "rimraf": "^6.0.1",
     "tslib": "^2.7.0",
@@ -22,5 +22,9 @@
   },
   "workspaces": [
     "modules/common"
-  ]
+  ],
+  "dependencies": {
+    "@ocean/common": "^0.0.31",
+    "@ocean/promise": "^0.0.1"
+  }
 }
