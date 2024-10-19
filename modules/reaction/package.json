@@ -18,8 +18,8 @@
   "scripts": {
     "clean": "rimraf dist",
     "check": "tsc --noEmit",
-    "build": "npm run clean & npm run check && vite build",
-    "release": "pnpm run build && pnpm version patch && pnpm publish --no-git-checks"
+    "build": "npm run clean && npm run check && vite build -c ../../vite.config.ts",
+    "release": "pnpm run build& pnpm version patch & pnpm publish --no-git-checks"
   },
   "devDependencies": {
     "@ocean/common": "workspace:*"

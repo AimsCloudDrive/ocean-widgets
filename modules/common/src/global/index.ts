@@ -11,9 +11,9 @@ export type createFunction<T extends any[]> = T extends [...infer P, infer R]
   ? (...args: P) => R
   : never;
 
-const writable = 0x01;
-const enumerable = 0x02;
-const configurable = 0x04;
+export const WRITABLE = 0x01;
+export const ENUMERABLE = 0x02;
+export const CONFIGURABLE = 0x04;
 
 export function defineProperty<T extends any>(
   ctor: T,
@@ -23,9 +23,9 @@ export function defineProperty<T extends any>(
 ) {
   Object.defineProperty(ctor, propKey, {
     value,
-    writable: !!(writable & flag),
-    enumerable: !!(enumerable & flag),
-    configurable: !!(configurable & flag),
+    writable: !!(WRITABLE & flag),
+    enumerable: !!(ENUMERABLE & flag),
+    configurable: !!(CONFIGURABLE & flag),
   });
 }
 
@@ -37,9 +37,9 @@ export function defineAccesser<T extends any = any, R = any>(
   setter?: (value: any) => void
 ) {
   Object.defineProperty<T>(ctor, propKey, {
-    writable: !!(writable & flag),
-    enumerable: !!(enumerable & flag),
-    configurable: !!(configurable & flag),
+    writable: !!(WRITABLE & flag),
+    enumerable: !!(ENUMERABLE & flag),
+    configurable: !!(CONFIGURABLE & flag),
     get: getter,
     set: setter,
   });

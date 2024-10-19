@@ -1,6 +1,6 @@
 {
   "name": "@ocean/mock-server",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "@ocean/mock-server",
   "main": "dist/index.cjs",
   "typings": "dist/types/index.d.ts",
@@ -18,17 +18,17 @@
   "scripts": {
     "clean": "rimraf dist",
     "check": "tsc --noEmit",
-    "build": "npm run clean & npm run check && vite build",
-    "test": "pnpm run build && node ./dist/index.js",
-    "release": "pnpm run build && pnpm version patch && pnpm publish --no-git-checks"
+    "build": "npm run clean && npm run check && vite build -c ../../vite.config.ts",
+    "test": "pnpm run build& node ./dist/index.js",
+    "release": "pnpm run build& pnpm version patch & pnpm publish --no-git-checks"
   },
   "devDependencies": {
-    "@ocean/common": "^0.0.5",
+    "@ocean/common": "^0.0.52",
     "cors": "^2.8.5",
     "express": "^4.21.1"
   },
   "dependencies": {
-    "@ocean/http": "^0.0.8",
+    "@ocean/http": "^0.0.12",
     "@ocean/mock-server": "file:",
     "mongodb": "^6.9.0"
   }

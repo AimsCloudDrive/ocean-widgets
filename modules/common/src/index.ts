@@ -7,3 +7,4 @@ export * from "./collection";
 export * from "./number";
 export * from "./overload";
 export * from "./types";
+export * from "./decorator";

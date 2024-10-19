@@ -19,7 +19,6 @@
     "typeRoots": ["node_modules/@types"],
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
     "moduleDetection": "force",
 
     /* Linting */

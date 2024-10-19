@@ -14,21 +14,19 @@ export default defineConfig({
   ],
   build: {
     emptyOutDir: true,
-    rollupOptions: {
-      input: "src/index.ts",
-      output: {
-        name: "ocean-common",
-        dir: "dist",
-        entryFileNames: "index.js",
-        format: "umd",
-      },
-    },
     sourcemap: true,
     minify: false,
+    outDir: "dist",
     lib: {
       entry: "src/index.ts",
-      name: "ocean-common",
-      formats: ["es"],
+      name: "index.js",
+      fileName: (format, entry) => {
+        console.log("fileName: ", format, entry);
+        if (/^esm?$/.test(format)) {
+          return `index.js`;
+        }
+        return `index.${format}.js`;
+      },
     },
   },
 });

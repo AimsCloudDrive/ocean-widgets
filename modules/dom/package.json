@@ -1,6 +1,6 @@
 {
   "name": "@ocean/dom",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "@ocean/dom",
   "main": "dist/index.js",
   "typings": "dist/types/index.d.ts",
@@ -18,11 +18,11 @@
   "scripts": {
     "clean": "rimraf dist",
     "check": "tsc --noEmit",
-    "build": "npm run clean & npm run check && vite build",
-    "release": "pnpm run build && pnpm version patch && pnpm publish --no-git-checks"
+    "build": "npm run clean && npm run check && vite build -c ../../vite.config.ts",
+    "release": "pnpm run build& pnpm version patch & pnpm publish --no-git-checks"
   },
   "devDependencies": {
-    "@ocean/common": "^0.0.5"
+    "@ocean/common": "^0.0.52"
   },
   "dependencies": {
     "@ocean/dom": "file:",

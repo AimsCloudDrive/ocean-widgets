@@ -1,6 +1,6 @@
 {
   "name": "@ocean/common",
-  "version": "0.0.32",
+  "version": "0.0.52",
   "description": "@ocean/common",
   "main": "dist/index.js",
   "typings": "dist/types/index.d.ts",
@@ -18,13 +18,13 @@
   "scripts": {
     "clean": "rimraf dist",
     "check": "tsc --noEmit",
-    "build": "npm run clean & npm run check && vite build",
-    "release": "pnpm run build && pnpm version patch & pnpm publish --no-git-checks"
-  },
-  "dependencies": {
-    "@ocean/common": "file:"
+    "build": "npm run clean && npm run check && vite build -c ../../vite.config.ts",
+    "release": "pnpm run build & pnpm version patch & pnpm publish --no-git-checks"
   },
   "publishConfig": {
     "registry": "http://never.aims.nevermonarch.cn:64873"
+  },
+  "dependencies": {
+    "@ocean/common": "file:"
   }
 }

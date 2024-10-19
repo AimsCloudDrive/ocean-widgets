@@ -1,8 +1,7 @@
 import { OcPromiseRejectError } from "./OcPromiseError";
-import { Nullable, createFunction } from "@ocean/common";
+import { Nullable, createFunction, init } from "@ocean/common";
 import {
   OcThenable,
-  OcPromiseStatus,
   OcPromiseExecutor,
   Resolve,
   FULFILLED,
@@ -15,6 +14,8 @@ import {
   Canceled,
   PENDDING,
   thenable,
+  ReturnTypeNotUndeF,
+  OcPromiseStatus,
 } from "./types";
 import { isOcThenable, isPromiseLike } from "./utils";
 
@@ -24,23 +25,31 @@ export class OcPromise<
   C extends any = any
 > implements OcThenable<R, E, C>
 {
+  @init(PENDDING)
   private declare status: OcPromiseStatus;
+  @init([])
+  private declare handlers: {
+    resolve: Resolve<any>;
+    reject: Reject<any>;
+    cancel: Cancel<any>;
+    onfulfilled: Nullable | createFunction<[R, any]>;
+    onrejected: Nullable | createFunction<[E, any]>;
+    oncanceled: Nullable | createFunction<[C, any]>;
+  }[];
   private declare data: R | E | C;
   private declare parrent: OcPromise<any, any, any> | undefined;
-  private declare handlers: {
-    resolve: createFunction<[any, void]>;
-    reject: (reason: any) => void;
-    cancel: (reason: any) => void;
-    onfulfilled?: Nullable | createFunction<[R, any | OcThenable<any, E, C>]>;
-    onrejected?: Nullable | createFunction<[E, void]>;
-    oncanceled?: Nullable | createFunction<[C, void]>;
-  }[];
   constructor(executor: OcPromiseExecutor<R, E, C>) {
     this.status = PENDDING;
     this.handlers = [];
-    const resolve: Resolve<R> = (data: R) => this.changeStatus(FULFILLED, data);
-    const reject: Reject<E> = (data: E) => this.changeStatus(REJECTED, data);
-    const cancel: Cancel<C> = (data: C) => this.changeStatus(CANCELED, data);
+    const resolve: Resolve<R> = (data: R) => {
+      this.changeStatus(FULFILLED, data);
+    };
+    const reject: Reject<E> = (reason: E) => {
+      this.changeStatus(REJECTED, reason);
+    };
+    const cancel: Cancel<C> = (reason: C) => {
+      this.changeStatus(CANCELED, reason);
+    };
     try {
       executor(resolve, reject, cancel);
     } catch (e: any) {
@@ -100,7 +109,7 @@ export class OcPromise<
           : oncanceled
           ? () => oncanceled(this.data as C)
           : undefined;
-      if (!exe) break;
+      if (!exe) continue;
       const task = () => {
         try {
           const data = exe();
@@ -123,15 +132,16 @@ export class OcPromise<
     }
   }
   then<
-    FR extends any = any,
-    FE extends Error = OcPromiseRejectError,
-    FC extends any = any
+    TR extends Nullable | createFunction<[R, any]>,
+    TE extends Nullable | createFunction<[E, any]>,
+    TC extends Nullable | createFunction<[C, any]>,
+    FR = ReturnTypeNotUndeF<TR | TE | TC>
   >(
-    onfulfilled?: Nullable | createFunction<[R, FR | OcThenable<FR, FE, FC>]>,
-    onrejected?: Nullable | Reject<E>,
-    oncanceled?: Nullable | Cancel<C>
-  ): OcPromise<FR, FE, FC> {
-    const res = new OcPromise<FR, FE, FC>((resolve, reject, cancel) => {
+    onfulfilled?: TR,
+    onrejected?: TE,
+    oncanceled?: TC
+  ): OcPromise<FR, Error, any> {
+    const res = new OcPromise<FR, Error, any>((resolve, reject, cancel) => {
       this.handlers.push({
         resolve,
         reject,
