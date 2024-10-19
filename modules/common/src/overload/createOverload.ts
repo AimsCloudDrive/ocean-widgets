@@ -55,12 +55,7 @@ export function createOverload<
       );
     },
   };
-  defineProperty<any, typeof ADD_IMPLEMENT>(
-    Method.method,
-    ADD_IMPLEMENT,
-    0,
-    Method.add
-  );
+  defineProperty(Method.method, ADD_IMPLEMENT, 0, Method.add);
   for (const v of _implements || []) {
     v && Method.add(...v);
   }

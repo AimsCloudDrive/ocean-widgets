@@ -15,9 +15,9 @@ const writable = 0x01;
 const enumerable = 0x02;
 const configurable = 0x04;
 
-export function defineProperty<T extends any, K extends symbol | keyof T>(
+export function defineProperty<T extends any>(
   ctor: T,
-  propKey: K,
+  propKey: string | symbol,
   flag: number = 7,
   value?: any
 ) {
@@ -31,7 +31,7 @@ export function defineProperty<T extends any, K extends symbol | keyof T>(
 
 export function defineAccesser<T extends any = any, R = any>(
   ctor: T,
-  propKey: symbol | keyof T,
+  propKey: symbol | string,
   flag: number = 7,
   getter?: () => R,
   setter?: (value: any) => void
