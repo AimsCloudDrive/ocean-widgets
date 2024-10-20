@@ -1,6 +1,6 @@
 {
   "name": "@ocean/dom",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "@ocean/dom",
   "main": "dist/index.js",
   "typings": "dist/types/index.d.ts",
@@ -21,10 +21,9 @@
     "build": "npm run clean && npm run check && vite build -c ../../vite.config.ts",
     "release": "pnpm run build& pnpm version patch & pnpm publish --no-git-checks"
   },
-  "devDependencies": {
-    "@ocean/common": "^0.0.52"
-  },
   "dependencies": {
+    "@ocean/common": "^0.0.52",
+    "@ocean/component": "file:",
     "@ocean/dom": "file:",
     "@ocean/promise": "file:",
     "mobx": "^6.13.3",

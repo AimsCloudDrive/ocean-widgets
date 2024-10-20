@@ -3,11 +3,10 @@
   "version": "0.0.0",
   "description": "@ocean/js",
   "workspaces": [
-    "./modules/**"
+    "./modules/*"
   ],
   "scripts": {
-    "build": "npm run build --workspaces",
-    "release": "npm run release --workspaces"
+    "build": "npm run check -w ./module/"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^28.0.0",
@@ -24,6 +23,6 @@
     "vite": "^5.4.8"
   },
   "dependencies": {
-    "@ocean/promise": "^0.0.6"
+    "@ocean/js": "file:"
   }
 }

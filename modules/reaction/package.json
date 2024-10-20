@@ -21,10 +21,8 @@
     "build": "npm run clean && npm run check && vite build -c ../../vite.config.ts",
     "release": "pnpm run build& pnpm version patch & pnpm publish --no-git-checks"
   },
-  "devDependencies": {
-    "@ocean/common": "workspace:*"
-  },
   "dependencies": {
+    "@ocean/common": "latest",
     "@ocean/reaction": "file:"
   }
 }

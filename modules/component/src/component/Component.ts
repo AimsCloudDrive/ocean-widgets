@@ -1,6 +1,6 @@
 import { COMPONENT_OPTION_KEY, Event, IEvent } from "@ocean/common";
-import { CONTEXT } from "./context";
-import { Component as RCompnent } from "react";
+import { CONTEXT } from "../context";
+import { component } from "../decorator";
 
 declare global {
   export namespace Component {
@@ -9,14 +9,12 @@ declare global {
 }
 
 export abstract class IComponent<P = any, E extends {} = any>
-  extends RCompnent<P>
   implements Event<E>
 {
   declare events: {
     [K in keyof E]: ((event: E[K], type: K, self: Event<E>) => void)[];
   };
   constructor(props: P) {
-    super(props);
     this.events = Object.create(null);
   }
   on<T extends keyof E>(
@@ -60,6 +58,7 @@ function premount() {}
 
 export type ComponentEvents = {};
 
+@component("component")
 export abstract class Component<
   P extends ComponentProps = ComponentProps,
   E extends ComponentEvents = ComponentEvents

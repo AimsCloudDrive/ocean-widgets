@@ -1,32 +1,36 @@
 import { performChunk } from "@ocean/common";
 
-type DOMElement<T> = Omit<React.ReactElement, "props"> & {
-  props: React.ClassAttributes<T> & { children: DOMElement<any>[] };
+const TEXT_NODE = "TEXT_NODE";
+
+type DOMElement<T> = {
+  type: T;
+  $context: {};
+  $owner?: any;
+  $parrent?: any;
+  props: React.ClassAttributes<T> & {
+    children: DOMElement<any>[];
+  };
 };
 
-export function createElement<T = any>(
+export function createElement(
   type: keyof HTMLElementTagNameMap | string,
   config: {} | null,
   ...children: DOMElement<any>[]
 ) {
-  console.info(type, config, children);
-
   return {
     type,
     props: {
       ...(config || {}),
-      children: Array.isArray(children)
-        ? children.map((v) =>
-            v && typeof v === "object" ? v : createTextElement(v)
-          )
-        : children,
+      children: children.map((v) =>
+        v && typeof v === "object" ? v : createTextElement(v)
+      ),
     },
   };
 }
 
 export function createTextElement(text: string) {
   return {
-    type: "TEXT_ELEMENT",
+    type: TEXT_NODE,
     props: {
       nodeValue: text,
       children: [],
@@ -34,31 +38,26 @@ export function createTextElement(text: string) {
   };
 }
 
-export function render(
-  element: DOMElement<any>,
-  container: { appendChild: (...args: any[]) => any }
-) {
-  function _render(
-    element: DOMElement<any>,
-    container: { appendChild: (...args: any[]) => any },
-    tasks: (() => void)[] = []
-  ) {
-    const dom =
-      element.type === "TEXT_ELEMENT"
-        ? document.createTextNode("")
-        : document.createElement(element.type as string);
-    const isProperty = (p: string) => p !== "children";
-    Object.keys(element.props)
-      .filter(isProperty)
-      .forEach((k) => {
-        const d = dom as any;
-        d[k] = element.props[k as keyof DOMElement<any>["props"]];
-      });
-    element.props.children?.forEach((v) => _render(v, dom, tasks));
-    tasks.push(() => {
-      container.appendChild(dom);
+export function createDom(element: DOMElement<any>) {
+  const dom =
+    element.type === TEXT_NODE
+      ? document.createTextNode("")
+      : document.createElement(element.type as string);
+  const isProperty = (p: string) => p !== "children";
+  Object.keys(element.props)
+    .filter(isProperty)
+    .forEach((k) => {
+      const d = dom as any;
+      d[k] = element.props[k as keyof DOMElement<any>["props"]];
     });
-    return tasks;
+  if (element.props.children && element.props.children.length > 0) {
+    for (const c of element.props.children) {
+      dom.appendChild(createDom(c));
+    }
   }
-  performChunk(_render(element, container));
+  return dom;
+}
+
+export function render(element: DOMElement<any>, container: HTMLElement) {
+  container.appendChild(createDom(element));
 }
