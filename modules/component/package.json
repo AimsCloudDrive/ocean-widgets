@@ -1,0 +1,28 @@
+{
+  "name": "@ocean/component",
+  "version": "0.0.4",
+  "description": "@ocean/component",
+  "main": "dist/index.js",
+  "typings": "dist/types/index.d.ts",
+  "type": "module",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "keywords": [
+    "ocean",
+    "component"
+  ],
+  "author": "OceanCommon",
+  "license": "MIT",
+  "scripts": {
+    "clean": "rimraf dist",
+    "check": "tsc --noEmit",
+    "build": "npm run clean && npm run check && vite build -c ../../vite.config.ts",
+    "release": "pnpm run build& pnpm version patch & pnpm publish --no-git-checks"
+  },
+  "dependencies": {
+    "@ocean/common": "^0.0.52",
+    "@ocean/component": "file:"
+  }
+}
