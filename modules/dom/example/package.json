@@ -65,6 +65,7 @@
     "@ocean/dom": "workspace:^",
     "@ocean/common": "workspace:^",
     "@ocean/component": "workspace:^",
+    "@babel/plugin-proposal-decorators": "latest",
     "@eslint/js": "^9.13.0",
     "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.1",
@@ -128,7 +129,7 @@
   },
   "babel": {
     "presets": [
-      "@babel/preset-env"
+      "react-app"
     ],
     "plugins": [
       [

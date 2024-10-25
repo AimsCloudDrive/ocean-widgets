@@ -25,12 +25,13 @@
     "vite": "^5.4.10",
     "rimraf": "latest",
     "@babel/plugin-proposal-decorators": "latest",
+    "@babel/plugin-proposal-class-properties": "latest",
+    "@babel/plugin-transform-typescript": "latest",
     "@babel/preset-env": "latest"
   },
   "babel": {
     "presets": [
-      "react-app",
-      "@babel/preset-env"
+      "react-app"
     ],
     "plugins": [
       [

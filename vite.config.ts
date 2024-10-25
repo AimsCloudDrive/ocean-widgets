@@ -4,7 +4,18 @@ import terser from "@rollup/plugin-terser";
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), terser({ sourceMap: true, module: true })],
+  plugins: [
+    react({
+      jsxRuntime: "classic",
+      babel: {
+        plugins: [
+          ["@babel/plugin-proposal-decorators", { legacy: true }],
+          ["@babel/plugin-proposal-class-properties", { loose: true }],
+        ],
+      },
+    }),
+    terser({ sourceMap: true, module: true }),
+  ],
   build: {
     emptyOutDir: true,
     sourcemap: true,

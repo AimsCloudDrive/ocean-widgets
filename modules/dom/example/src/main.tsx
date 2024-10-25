@@ -7,7 +7,7 @@ import { component } from "@ocean/component";
 class OBH {
   constructor(props: any) {}
   render() {
-    return <div className={"OBH"}>OBH</div>;
+    return <div>OBH</div>;
   }
 }
 
@@ -15,7 +15,7 @@ class OBH {
 class A {
   constructor(props: any) {}
   render() {
-    return <div className={"A"}>A</div>;
+    return <div>A</div>;
   }
 }
 
