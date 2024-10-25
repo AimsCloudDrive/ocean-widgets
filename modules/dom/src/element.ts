@@ -1,4 +1,5 @@
-import { performChunk } from "@ocean/common";
+import { defineProperty, performChunk } from "@ocean/common";
+import { isComponent } from "@ocean/component";
 
 const TEXT_NODE = "TEXT_NODE";
 
@@ -38,12 +39,16 @@ export function createTextElement(text: string) {
 // declare function isComponent(ctor: any): true;
 
 export function createDom(element: DOMElement<any>) {
+  let classInst: any = void 0;
   if (typeof element.type === "function") {
     // 如果是构造函数
-    // if (isComponent(element.type)) {
-    const inst = new element.type();
-    element = inst.render();
-    // }
+    if (isComponent(element.type)) {
+      const inst = (classInst = new element.type());
+      element = inst.render();
+      inst.rendered();
+    } else {
+      element = element.type();
+    }
   }
   const dom =
     element.type === TEXT_NODE
@@ -60,6 +65,10 @@ export function createDom(element: DOMElement<any>) {
     for (const c of element.props.children) {
       dom.appendChild(createDom(c));
     }
+  }
+  if (classInst) {
+    defineProperty(dom, "$owner", 7, classInst);
+    defineProperty(dom, "$parent", 7, ((classInst || {}) as any)["$parent"]);
   }
   return dom;
 }

@@ -1,5 +1,5 @@
 import { COMPONENT_OPTION_KEY, Event, IEvent } from "@ocean/common";
-import { CONTEXT } from "../context";
+import { COMPONENTNAME_KEY, COMPONENT_Map, CONTEXT } from "../context";
 import { component } from "../decorator";
 
 declare global {
@@ -114,4 +114,15 @@ export abstract class Component<
       CONTEXT.creating = this.$owner;
     }
   }
+}
+
+export function isComponent(ctor: any) {
+  const name = ctor[COMPONENTNAME_KEY];
+  if (name == undefined) {
+    return false;
+  }
+  if (!!COMPONENT_Map.get(name)) {
+    return true;
+  }
+  return false;
 }
