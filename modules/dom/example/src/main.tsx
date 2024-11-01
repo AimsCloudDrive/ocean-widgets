@@ -2,6 +2,7 @@
 
 import { createElement, render } from "@ocean/dom";
 import { component } from "@ocean/component";
+import React from "react";
 
 @component("OBH")
 class OBH {
@@ -12,13 +13,15 @@ class OBH {
 }
 
 @component("A")
-class A {
-  constructor(props: any) {}
+class A extends React.Component<{ AAA: number }, {}, { BBB: {} }> {
+  constructor(props: any) {
+    super(props);
+  }
   render() {
     return <div>A</div>;
   }
 }
 
-const a = <A></A>;
+const a = <A AAA={1}></A>;
 
 render(a, document.getElementById("root")!);

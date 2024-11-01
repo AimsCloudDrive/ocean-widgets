@@ -1,6 +1,5 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import terser from "@rollup/plugin-terser";
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -16,6 +15,9 @@ export default defineConfig({
         presets: ["react-app"],
       },
     }),
-    terser({ sourceMap: true, module: true }),
   ],
+  build: {
+    sourcemap: true,
+    minify: false,
+  },
 });

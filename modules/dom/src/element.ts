@@ -36,8 +36,6 @@ export function createTextElement(text: string) {
   };
 }
 
-// declare function isComponent(ctor: any): true;
-
 export function createDom(element: DOMElement<any>) {
   let classInst: any = void 0;
   if (typeof element.type === "function") {
@@ -73,6 +71,6 @@ export function createDom(element: DOMElement<any>) {
   return dom;
 }
 
-export function render(element: DOMElement<any>, container: HTMLElement) {
+export function render(element: any, container: HTMLElement) {
   container.appendChild(createDom(element));
 }
