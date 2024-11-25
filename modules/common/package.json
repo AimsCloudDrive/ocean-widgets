@@ -2,8 +2,8 @@
   "name": "@ocean/common",
   "version": "0.0.52",
   "description": "@ocean/common",
-  "main": "src/index.ts",
-  "typings": "src/index.ts",
+  "main": "dist/index.js",
+  "types": "src/index.ts",
   "type": "module",
   "files": [
     "dist",

@@ -24,5 +24,8 @@
   "dependencies": {
     "@ocean/common": "latest",
     "@ocean/reaction": "file:"
+  },
+  "devDependencies": {
+    "@ocean/promise": "^0.0.9"
   }
 }

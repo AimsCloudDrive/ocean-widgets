@@ -1,14 +1,34 @@
-import { defineProperty, performChunk } from "@ocean/common";
+import { Nullable, defineProperty, performChunk, isArray } from "@ocean/common";
 import { isComponent } from "@ocean/component";
 
 const TEXT_NODE = "TEXT_NODE";
 
+type ClassType =
+  | string
+  | (string | false | Nullable)[]
+  | { [K in string]: boolean };
+
 type DOMElement<T> = {
   type: T;
-  props: React.ClassAttributes<T> & {
+  props: {
+    $ref?: IRef<any>;
+    class?: ClassType;
+  } & {
     children: DOMElement<any>[];
   };
 };
+
+function parseClass(classType: ClassType): string {
+  if (typeof classType === "string") return classType;
+  if (isArray(classType)) {
+    return classType.reduce<string>((c, b) => {
+      if (typeof b === "string") {
+        return `${c} ${b}`;
+      }
+      return c;
+    }, "");
+  }
+}
 
 export function createElement(
   type: keyof HTMLElementTagNameMap | string,
@@ -67,6 +87,7 @@ export function createDom(element: DOMElement<any>) {
   if (classInst) {
     defineProperty(dom, "$owner", 7, classInst);
     defineProperty(dom, "$parent", 7, ((classInst || {}) as any)["$parent"]);
+    classInst.el = dom;
   }
   return dom;
 }

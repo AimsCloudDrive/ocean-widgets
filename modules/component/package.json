@@ -2,8 +2,8 @@
   "name": "@ocean/component",
   "version": "0.0.4",
   "description": "@ocean/component",
-  "main": "src/index.ts",
-  "typings": "src/index.ts",
+  "main": "dist/index.js",
+  "types": "src/index.ts",
   "type": "module",
   "files": [
     "dist",

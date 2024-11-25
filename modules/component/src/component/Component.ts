@@ -1,6 +1,6 @@
-import { COMPONENT_OPTION_KEY, Event, IEvent } from "@ocean/common";
+import { COMPONENT_OPTION_KEY, Event, IEvent, Nullable } from "@ocean/common";
 import { COMPONENTNAME_KEY, COMPONENT_Map, CONTEXT } from "../context";
-import { component } from "../decorator";
+import { component, option } from "../decorator";
 
 declare global {
   export namespace Component {
@@ -8,70 +8,43 @@ declare global {
   }
 }
 
-export abstract class IComponent<P = any, E extends {} = any>
-  implements Event<E>
-{
-  declare events: {
-    [K in keyof E]: ((event: E[K], type: K, self: Event<E>) => void)[];
-  };
-  constructor(props: P) {
-    this.events = Object.create(null);
-  }
-  on<T extends keyof E>(
-    type: T,
-    handler: (event: E[T], type: T, self: Event<E>) => void
-  ) {
-    let handlers = this.events[type];
-    if (!handlers) {
-      handlers = this.events[type] = [];
-    }
-    handlers.push(handler);
-    return this;
-  }
-  un<T extends keyof E>(
-    type: T,
-    handler: (event: E[T], type: T, self: Event<E>) => void
-  ) {
-    let handlers = this.events[type];
-    if (!handlers) {
-      return this;
-    }
-    const index = handlers.findIndex((_handler) => handler === _handler);
-    if (index === -1) return this;
-    handlers.splice(index, 1);
-    return this;
-  }
-  emit<T extends keyof E>(type: T, event: E[T]) {
-    let handlers = this.events[type];
-    if (!handlers) {
-      return;
-    }
-    handlers.forEach((handler) => handler(event, type, this));
-  }
+interface IComponent<P, E> {
+  props: P;
+  context: Partial<Component.Context>;
+  setProps(props: P): void;
+  forceUpdate(): void;
 }
 
 export type ComponentProps = {
   $context?: Partial<Component.Context>;
 };
 
-function premount() {}
-
 export type ComponentEvents = {};
 
 @component("component")
 export abstract class Component<
-  P extends ComponentProps = ComponentProps,
-  E extends ComponentEvents = ComponentEvents
-> extends IComponent<P, E> {
+    P extends ComponentProps = ComponentProps,
+    E extends ComponentEvents = ComponentEvents
+  >
+  extends Event<E>
+  implements IComponent<P, E>
+{
   declare el: HTMLElement;
   constructor(props: P) {
-    super(props);
+    super();
     this.$owner = CONTEXT.creating;
+    this.$props = this.props = props;
     this.init();
     this.set(props);
   }
+  @option()
+  declare $key: string | number | Nullable;
+  private declare $props: P;
+  declare props: P;
+  declare context: any;
+  forceUpdate(): void {}
   declare $owner: Component<any, any>;
-  declare $parrent: Component<any, any>;
+  declare $parent: Component<any, any>;
   declare $context: Partial<Component.Context>;
 
   getContext<T extends keyof Partial<Component.Context>>(
@@ -86,7 +59,7 @@ export abstract class Component<
   }
 
   private getUpComp() {
-    return this.$owner || this.$parrent;
+    return this.$owner || this.$parent;
   }
 
   init() {}
@@ -106,14 +79,7 @@ export abstract class Component<
     const OPTIONS = Reflect.get(this, COMPONENT_OPTION_KEY) || {};
     return OPTIONS as { [K in keyof P]: any };
   }
-  render(): any {
-    try {
-      CONTEXT.creating = this;
-      // render
-    } finally {
-      CONTEXT.creating = this.$owner;
-    }
-  }
+  render(): any {}
 }
 
 export function isComponent(ctor: any) {

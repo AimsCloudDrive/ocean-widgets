@@ -1,9 +1,10 @@
 {
   "name": "@ocean/dom",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "@ocean/dom",
-  "main": "src/index.ts",
-  "typings": "src/index.ts",
+  "main": "dist/index.js",
+  "typings": "dist/types/index.ts",
+  "types": "src/index.ts",
   "type": "module",
   "files": [
     "dist",

@@ -8,3 +8,4 @@ export * from "./number";
 export * from "./overload";
 export * from "./types";
 export * from "./decorator";
+export * from "./array";
