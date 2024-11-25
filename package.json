@@ -11,23 +11,23 @@
     "registry": "http://never.aims.nevermonarch.cn:64873"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-class-properties": "latest",
+    "@babel/plugin-proposal-decorators": "latest",
+    "@babel/plugin-transform-typescript": "latest",
+    "@babel/preset-env": "latest",
     "@eslint/js": "^9.13.0",
+    "@rollup/plugin-terser": "latest",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.3",
-    "@rollup/plugin-terser": "latest",
     "eslint": "^9.13.0",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.13",
     "globals": "^15.11.0",
+    "rimraf": "latest",
     "typescript": "latest",
     "typescript-eslint": "latest",
-    "vite": "^5.4.10",
-    "rimraf": "latest",
-    "@babel/plugin-proposal-decorators": "latest",
-    "@babel/plugin-proposal-class-properties": "latest",
-    "@babel/plugin-transform-typescript": "latest",
-    "@babel/preset-env": "latest"
+    "vite": "^5.4.10"
   },
   "babel": {
     "presets": [
@@ -44,8 +44,10 @@
   },
   "dependencies": {
     "@babel/core": "^7.16.0",
+    "@babel/plugin-transform-typescript": "^7.25.9",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
     "@svgr/webpack": "^5.5.0",
+    "@types/core-js": "^2.5.8",
     "babel-jest": "^27.4.2",
     "babel-loader": "^8.2.3",
     "babel-plugin-named-asset-import": "^0.3.8",

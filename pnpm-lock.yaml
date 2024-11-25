@@ -11,12 +11,18 @@ importers:
       '@babel/core':
         specifier: ^7.16.0
         version: 7.25.9
+      '@babel/plugin-transform-typescript':
+        specifier: ^7.25.9
+        version: 7.25.9(@babel/core@7.25.9)
       '@pmmmwh/react-refresh-webpack-plugin':
         specifier: ^0.5.3
         version: 0.5.15(react-refresh@0.11.0)(type-fest@0.21.3)(webpack-dev-server@4.15.2(webpack@5.95.0))(webpack@5.95.0)
       '@svgr/webpack':
         specifier: ^5.5.0
         version: 5.5.0
+      '@types/core-js':
+        specifier: ^2.5.8
+        version: 2.5.8
       babel-jest:
         specifier: ^27.4.2
         version: 27.5.1(@babel/core@7.25.9)
@@ -156,9 +162,6 @@ importers:
       '@babel/plugin-proposal-decorators':
         specifier: latest
         version: 7.25.9(@babel/core@7.25.9)
-      '@babel/plugin-transform-typescript':
-        specifier: latest
-        version: 7.25.9(@babel/core@7.25.9)
       '@babel/preset-env':
         specifier: latest
         version: 7.26.0(@babel/core@7.25.9)
@@ -167,7 +170,7 @@ importers:
         version: 9.13.0
       '@rollup/plugin-terser':
         specifier: latest
-        version: 0.4.4(rollup@2.79.2)
+        version: 0.4.4(rollup@4.24.0)
       '@types/react':
         specifier: ^18.3.12
         version: 18.3.12
@@ -1903,6 +1906,9 @@ packages:
 
   '@types/connect@3.4.38':
     resolution: {integrity: sha512-K6uROf1LD88uDQqJCktA4yzL1YYAK6NgfsI0v/mTgyPKWsX1CnJ0XPSDhViejru1GcRkLWb8RlzFYJRqGUbaug==}
+
+  '@types/core-js@2.5.8':
+    resolution: {integrity: sha512-VgnAj6tIAhJhZdJ8/IpxdatM8G4OD3VWGlp6xIxUGENZlpbob9Ty4VVdC1FIEp0aK6DBscDDjyzy5FB60TuNqg==}
 
   '@types/cors@2.8.17':
     resolution: {integrity: sha512-8CGDvrBj1zgo2qE+oS3pOCyYNqCPryMWY2bGfwA0dcfopWGgxs+78df0Rs3rc9THP4JkOhLsAa+15VdpAqkcUA==}
@@ -7911,13 +7917,13 @@ snapshots:
       magic-string: 0.25.9
       rollup: 2.79.2
 
-  '@rollup/plugin-terser@0.4.4(rollup@2.79.2)':
+  '@rollup/plugin-terser@0.4.4(rollup@4.24.0)':
     dependencies:
       serialize-javascript: 6.0.2
       smob: 1.5.0
       terser: 5.36.0
     optionalDependencies:
-      rollup: 2.79.2
+      rollup: 4.24.0
 
   '@rollup/pluginutils@3.1.0(rollup@2.79.2)':
     dependencies:
@@ -8104,6 +8110,8 @@ snapshots:
   '@types/connect@3.4.38':
     dependencies:
       '@types/node': 22.7.9
+
+  '@types/core-js@2.5.8': {}
 
   '@types/cors@2.8.17':
     dependencies:

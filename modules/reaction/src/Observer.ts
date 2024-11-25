@@ -1,32 +1,29 @@
 import { Reaction, IObserver } from "./Reaction";
 import { getGlobalData } from "@ocean/common";
 
-export class Observer implements IObserver {
-  private declare handles: Map<Reaction, Reaction>;
-  private declare value: any;
+export class Observer<T = any> implements IObserver {
+  private declare handles: Set<Reaction>;
+  private declare value: T;
   constructor() {
-    this.handles = new Map();
+    this.handles = new Set();
     this.get = this.get.bind(this);
     this.set = this.set.bind(this);
   }
-  get() {
+  get(): T {
     const running = getGlobalData("@ocean/reaction");
     if (running?.tracking) {
       running.tracking(this);
     }
     return this.value;
   }
-  set(v: any) {
+  set(v: T) {
     this.value = v;
-    const it: Iterator<Reaction, Reaction> = this.handles.values();
-    let { done, value } = it.next();
-    while (done) {
-      value.exec();
-      ({ done, value } = it.next());
+    for (const reaction of this.handles) {
+      reaction.exec();
     }
   }
   addReaction(reaction: Reaction): void {
-    this.handles.set(reaction, reaction);
+    this.handles.add(reaction);
   }
   removeReaction(reaction: Reaction): void {
     this.handles.delete(reaction);

@@ -9,13 +9,13 @@ export interface IObserver {
 export class Reaction {
   private declare tracker: () => void;
   private declare callback: () => void;
-  private declare tracked: WeakMap<IObserver, IObserver>;
+  private declare tracked: Set<IObserver>;
   constructor(props: {
     tracker: () => void;
     callback: () => void;
     delay?: "nextTick" | "nextFrame";
   }) {
-    this.tracked = new WeakMap();
+    this.tracked = new Set();
     this.tracker = props.tracker;
     this.callback =
       props.delay === "nextFrame"
@@ -26,6 +26,7 @@ export class Reaction {
               props.callback()
             )
         : () => props.callback();
+    this.track();
   }
   track() {
     const { tracker } = this;
@@ -36,7 +37,7 @@ export class Reaction {
       (o = {
         ...r,
         tracking: (ob: IObserver) => {
-          this.tracked.set(ob, ob);
+          this.tracked.add(ob);
           ob.addReaction(this);
           return this;
         },
@@ -62,7 +63,7 @@ export class Reaction {
 
   destroy() {
     this.tracked.forEach((ob) => ob.removeReaction(this));
-    this.tracked = new WeakMap();
+    this.tracked = new Set();
   }
 }
 
@@ -83,8 +84,7 @@ export function createReaction(
 ): Reaction {
   if (typeof callback === "function") {
     return new Reaction({ tracker, callback, delay: option?.delay });
-  }
-  if (typeof callback !== "function") {
+  } else {
     if (callback) {
       if (option) throw "error params.";
       return new Reaction({
