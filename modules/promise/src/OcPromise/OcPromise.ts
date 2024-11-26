@@ -26,9 +26,8 @@ export class OcPromise<
   C extends any = any
 > implements OcThenable<R, E, C>
 {
-  @observer(PENDDING)
+  @observer()
   private declare status: OcPromiseStatus;
-  @init([])
   private declare handlers: {
     resolve: Resolve<any>;
     reject: Reject<any>;

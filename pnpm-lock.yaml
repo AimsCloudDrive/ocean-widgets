@@ -217,8 +217,8 @@ importers:
         specifier: 'file:'
         version: 'link:'
       '@ocean/reaction':
-        specifier: ^0.0.12
-        version: 0.0.12
+        specifier: ^0.0.13
+        version: 0.0.13
 
   modules/dom:
     dependencies:
@@ -226,14 +226,14 @@ importers:
         specifier: ^0.0.57
         version: 0.0.57
       '@ocean/component':
-        specifier: ^0.0.11
-        version: 0.0.11
-      '@ocean/dom':
-        specifier: 'file:'
-        version: 'link:'
-      '@ocean/reaction':
         specifier: ^0.0.12
         version: 0.0.12
+      '@ocean/dom':
+        specifier: 'file:'
+        version: file:modules/dom
+      '@ocean/reaction':
+        specifier: ^0.0.13
+        version: 0.0.13
 
   modules/dom/example:
     dependencies:
@@ -440,8 +440,8 @@ importers:
         specifier: 'file:'
         version: 'link:'
       '@ocean/promise':
-        specifier: ^0.0.13
-        version: 0.0.13
+        specifier: ^0.0.14
+        version: 0.0.14
       '@types/cors':
         specifier: ^2.8.17
         version: 2.8.17
@@ -486,8 +486,8 @@ importers:
         specifier: 'file:'
         version: 'link:'
       '@ocean/reaction':
-        specifier: ^0.0.12
-        version: 0.0.12
+        specifier: ^0.0.13
+        version: 0.0.13
 
   modules/reaction:
     dependencies:
@@ -495,8 +495,8 @@ importers:
         specifier: ^0.0.57
         version: 0.0.57
       '@ocean/promise':
-        specifier: ^0.0.13
-        version: 0.0.13
+        specifier: ^0.0.14
+        version: 0.0.14
       '@ocean/reaction':
         specifier: 'file:'
         version: 'link:'
@@ -518,8 +518,8 @@ importers:
         specifier: ^9.13.0
         version: 9.15.0
       '@ocean/reaction':
-        specifier: ^0.0.12
-        version: 0.0.12
+        specifier: ^0.0.13
+        version: 0.0.13
       '@types/react':
         specifier: ^18.3.12
         version: 18.3.12
@@ -1791,8 +1791,8 @@ packages:
   '@ocean/component@0.0.11':
     resolution: {integrity: sha512-Q0EsSg5zKDVpecbiZa1F5NqhM7P4wjGruKCm2UxDhCSpezh7iL9vGAplmDYwaKQc7wtTRAe651NJ/MP4I0q1qQ==}
 
-  '@ocean/component@file:modules/component':
-    resolution: {directory: modules/component, type: directory}
+  '@ocean/component@0.0.12':
+    resolution: {integrity: sha512-uI3NZamKDFwe3mXSX7Q3AEfgsF6GE2vJRye0LyfmlGRMVOSyQ9LEFCJIRHWUx02QH/tIIU8gkj3CrfCUzcr0Bw==}
 
   '@ocean/dom@file:modules/dom':
     resolution: {directory: modules/dom, type: directory}
@@ -1809,8 +1809,8 @@ packages:
   '@ocean/promise@0.0.12':
     resolution: {integrity: sha512-UspC8uJ9FpVqAbK6SwwoNq1krTRtoeQ773lse4SSdb5mYw4PEM/V6SDgTopNH56WUPiQkUClYj+ARibETy37vQ==}
 
-  '@ocean/promise@0.0.13':
-    resolution: {integrity: sha512-/n1Wkk61QaIea3lnpwO1WVZ8OFfM/GyKy87I3zI+hDpyQ2nY6g4e/fvH04u9DfwVqaWOxi+HicrzsNkXJWmaAQ==}
+  '@ocean/promise@0.0.14':
+    resolution: {integrity: sha512-WdGHgXrTl3NoWflTisZXiupvSZUQLYJ6GyszmNBByOAl2Ymm+NBVGINOSFOhNPc5WFvh1YKOLRsg0kEFNo/F9A==}
 
   '@ocean/promise@0.0.6':
     resolution: {integrity: sha512-9wgZnkK45TmfmnZRExPiAqZmLQbS0RPashdBo41nDppMRlOw94bQg0QK+HJ+mEA4kDQ98Tvi1PM/E4ekdV3R2A==}
@@ -1820,6 +1820,9 @@ packages:
 
   '@ocean/reaction@0.0.12':
     resolution: {integrity: sha512-LAp/+TTIP3pvTYwMj0tpY9Zdj+p1hueSmm44LI9NL877hSjypqadUQBprZ4fC6maTZTLueJQKXyWXbdLTb2Njg==}
+
+  '@ocean/reaction@0.0.13':
+    resolution: {integrity: sha512-2khTGuzZCFR8uhfePPlUyFWoUgD61PnYpcR/WFJbovHrSe6jkjELe8YkAa3tz7e3rKmWQEbGWfA/eiFkCRZ1Jw==}
 
   '@ocean/reaction@0.0.7':
     resolution: {integrity: sha512-Hln961Fzb4143NpLkcVueQSne3ZV2Iroe21SyeBuyTdaVDJ7pukPCeVHI5sFducvXUSaRlA100ZCasNTfL4rSQ==}
@@ -8527,7 +8530,7 @@ snapshots:
 
   '@ocean/common@0.0.57':
     dependencies:
-      '@ocean/common': '@ocean/component@file:modules/component'
+      '@ocean/common': '@ocean/dom@file:modules/dom'
     transitivePeerDependencies:
       - '@aws-sdk/credential-providers'
       - '@mongodb-js/zstd'
@@ -8553,10 +8556,11 @@ snapshots:
       - socks
       - supports-color
 
-  '@ocean/component@file:modules/component':
+  '@ocean/component@0.0.12':
     dependencies:
       '@ocean/common': 0.0.57
-      '@ocean/reaction': 0.0.12
+      '@ocean/component': '@ocean/dom@file:modules/dom'
+      '@ocean/reaction': 0.0.13
     transitivePeerDependencies:
       - '@aws-sdk/credential-providers'
       - '@mongodb-js/zstd'
@@ -8571,7 +8575,7 @@ snapshots:
     dependencies:
       '@ocean/common': 0.0.57
       '@ocean/component': 0.0.11
-      '@ocean/reaction': 0.0.12
+      '@ocean/reaction': 0.0.13
     transitivePeerDependencies:
       - '@aws-sdk/credential-providers'
       - '@mongodb-js/zstd'
@@ -8604,19 +8608,12 @@ snapshots:
   '@ocean/http@file:modules/http':
     dependencies:
       '@ocean/common': 0.0.57
-      '@ocean/promise': 0.0.13
+      '@ocean/promise': 0.0.14
       '@types/cors': 2.8.17
       '@types/express': 5.0.0
       cors: 2.8.5
       express: 4.21.1
     transitivePeerDependencies:
-      - '@aws-sdk/credential-providers'
-      - '@mongodb-js/zstd'
-      - gcp-metadata
-      - kerberos
-      - mongodb-client-encryption
-      - snappy
-      - socks
       - supports-color
 
   '@ocean/mock-server@file:modules/mock-server':
@@ -8636,7 +8633,7 @@ snapshots:
   '@ocean/promise@0.0.12':
     dependencies:
       '@ocean/common': 0.0.57
-      '@ocean/promise': '@ocean/component@file:modules/component'
+      '@ocean/promise': '@ocean/http@file:modules/http'
       '@ocean/reaction': 0.0.7
     transitivePeerDependencies:
       - '@aws-sdk/credential-providers'
@@ -8648,7 +8645,7 @@ snapshots:
       - socks
       - supports-color
 
-  '@ocean/promise@0.0.13':
+  '@ocean/promise@0.0.14':
     dependencies:
       '@ocean/common': 0.0.57
       '@ocean/promise': '@ocean/http@file:modules/http'
@@ -8679,7 +8676,7 @@ snapshots:
   '@ocean/promise@0.0.9':
     dependencies:
       '@ocean/common': 0.0.52
-      '@ocean/promise': '@ocean/component@file:modules/component'
+      '@ocean/promise': '@ocean/http@file:modules/http'
     transitivePeerDependencies:
       - '@aws-sdk/credential-providers'
       - '@mongodb-js/zstd'
@@ -8694,7 +8691,22 @@ snapshots:
     dependencies:
       '@ocean/common': 0.0.57
       '@ocean/promise': 0.0.12
-      '@ocean/reaction': '@ocean/component@file:modules/component'
+      '@ocean/reaction': '@ocean/http@file:modules/http'
+    transitivePeerDependencies:
+      - '@aws-sdk/credential-providers'
+      - '@mongodb-js/zstd'
+      - gcp-metadata
+      - kerberos
+      - mongodb-client-encryption
+      - snappy
+      - socks
+      - supports-color
+
+  '@ocean/reaction@0.0.13':
+    dependencies:
+      '@ocean/common': 0.0.57
+      '@ocean/promise': 0.0.14
+      '@ocean/reaction': '@ocean/dom@file:modules/dom'
     transitivePeerDependencies:
       - '@aws-sdk/credential-providers'
       - '@mongodb-js/zstd'
@@ -8709,7 +8721,7 @@ snapshots:
     dependencies:
       '@ocean/common': 0.0.57
       '@ocean/promise': 0.0.9
-      '@ocean/reaction': '@ocean/component@file:modules/component'
+      '@ocean/reaction': '@ocean/http@file:modules/http'
     transitivePeerDependencies:
       - '@aws-sdk/credential-providers'
       - '@mongodb-js/zstd'

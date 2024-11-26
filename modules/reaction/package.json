@@ -1,6 +1,6 @@
 {
   "name": "@ocean/reaction",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "@ocean/reaction",
   "main": "dist/index.js",
   "typings": "dist/types/src/index.d.ts",
@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@ocean/common": "^0.0.57",
-    "@ocean/promise": "^0.0.13",
+    "@ocean/promise": "^0.0.14",
     "@ocean/reaction": "file:"
   },
   "devDependencies": {

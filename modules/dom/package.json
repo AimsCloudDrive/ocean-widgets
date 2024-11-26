@@ -1,6 +1,6 @@
 {
   "name": "@ocean/dom",
-  "version": "0.0.9",
+  "version": "0.0.11",
   "description": "@ocean/dom",
   "main": "dist/index.js",
   "typings": "dist/types/src/index.d.ts",
@@ -23,8 +23,8 @@
   },
   "dependencies": {
     "@ocean/common": "^0.0.57",
-    "@ocean/component": "^0.0.11",
+    "@ocean/component": "^0.0.12",
     "@ocean/dom": "file:",
-    "@ocean/reaction": "^0.0.12"
+    "@ocean/reaction": "^0.0.13"
   }
 }
