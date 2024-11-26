@@ -1,6 +1,6 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import terser from "@rollup/plugin-terser";
+import dts from "vite-plugin-dts";
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -8,14 +8,12 @@ export default defineConfig({
     react({
       jsxRuntime: "classic",
       babel: {
-        plugins: [
-          ["@babel/plugin-transform-typescript", { allowDeclareFields: true }],
-          ["@babel/plugin-proposal-decorators", { legacy: true }],
-          ["@babel/plugin-proposal-class-properties", { loose: true }],
-        ],
+        plugins: [["@babel/plugin-proposal-decorators", { version: "legacy" }]],
       },
     }),
-    terser({ sourceMap: true, module: true }) as any,
+    dts({
+      outDir: "dist/types",
+    }),
   ],
   build: {
     emptyOutDir: true,

@@ -23,7 +23,7 @@
     "release": "pnpm run build& pnpm version patch & pnpm publish --no-git-checks"
   },
   "devDependencies": {
-    "@ocean/common": "^0.0.52",
+    "@ocean/common": "^0.0.53",
     "cors": "^2.8.5",
     "express": "^4.21.1"
   },

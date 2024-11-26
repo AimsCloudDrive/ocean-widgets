@@ -37,7 +37,7 @@ export abstract class Component<
     this.init();
     this.set(props);
   }
-  @option()
+  @option("undefined")
   declare $key: string | number | Nullable;
   private declare $props: P;
   declare props: P;

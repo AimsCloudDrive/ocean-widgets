@@ -1,8 +1,18 @@
+const keys = new Map<string, symbol>();
 export function setGlobalData(key: string, data: any) {
-  Object.assign(globalThis, { [key]: data });
+  let _key = keys.get(key);
+  if (!_key) {
+    keys.set(key, (_key = Symbol(key)));
+  }
+  Object.assign(globalThis, { [_key]: data });
 }
 export function getGlobalData(key: string) {
-  return Reflect.get(globalThis, key);
+  let _key = keys.get(key);
+  if (!_key) {
+    setGlobalData(key, {});
+    return getGlobalData(key);
+  }
+  return Reflect.get(globalThis, _key);
 }
 
 export type Nullable = null | undefined;

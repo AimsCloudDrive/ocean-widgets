@@ -4,7 +4,7 @@
   "description": "@ocean/dom",
   "main": "dist/index.js",
   "typings": "dist/types/index.ts",
-  "types": "src/index.ts",
+  "typings": "dist/types/src/index.d.ts",
   "type": "module",
   "files": [
     "dist",

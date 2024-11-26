@@ -30,7 +30,10 @@ export class Reaction {
   }
   track() {
     const { tracker } = this;
-    const r = getGlobalData("@ocean/reaction");
+    let r = getGlobalData("@ocean/reaction");
+    if (!r) {
+      setGlobalData("@ocean/reaction", (r = {}));
+    }
     let o;
     setGlobalData(
       "@ocean/reaction",
@@ -63,7 +66,7 @@ export class Reaction {
 
   destroy() {
     this.tracked.forEach((ob) => ob.removeReaction(this));
-    this.tracked = new Set();
+    this.tracked.clear();
   }
 }
 

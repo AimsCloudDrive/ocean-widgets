@@ -1,4 +1,4 @@
-import { Reaction, IObserver } from "./Reaction";
+import { Reaction, IObserver } from "../Reaction";
 import { getGlobalData } from "@ocean/common";
 
 export class Observer<T = any> implements IObserver {
@@ -18,6 +18,9 @@ export class Observer<T = any> implements IObserver {
   }
   set(v: T) {
     this.value = v;
+    this.update();
+  }
+  update() {
     for (const reaction of this.handles) {
       reaction.exec();
     }

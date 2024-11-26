@@ -22,7 +22,7 @@
     "release": "pnpm run build& pnpm version patch & pnpm publish --no-git-checks"
   },
   "dependencies": {
-    "@ocean/common": "^0.0.52",
+    "@ocean/common": "^0.0.53",
     "@ocean/promise": "file:"
   }
 }

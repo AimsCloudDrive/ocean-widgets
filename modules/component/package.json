@@ -3,7 +3,7 @@
   "version": "0.0.4",
   "description": "@ocean/component",
   "main": "dist/index.js",
-  "types": "src/index.ts",
+  "typings": "dist/types/src/index.d.ts",
   "type": "module",
   "files": [
     "dist",
@@ -22,7 +22,8 @@
     "release": "pnpm run build& pnpm version patch & pnpm publish --no-git-checks"
   },
   "dependencies": {
-    "@ocean/common": "^0.0.52",
-    "@ocean/component": "file:"
+    "@ocean/common": "^0.0.53",
+    "@ocean/component": "file:",
+    "@ocean/reaction": "^0.0.6"
   }
 }

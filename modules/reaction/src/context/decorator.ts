@@ -1,4 +1,4 @@
-import { Observer } from "./Observer";
+import { Observer } from "../Observer";
 
 export function observer(): PropertyDecorator {
   const ob = new Observer();
