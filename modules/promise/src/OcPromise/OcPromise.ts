@@ -1,5 +1,6 @@
 import { OcPromiseRejectError } from "./OcPromiseError";
 import { Nullable, createFunction, init } from "@ocean/common";
+import { observer } from "@ocean/reaction";
 import {
   OcThenable,
   OcPromiseExecutor,
@@ -25,7 +26,7 @@ export class OcPromise<
   C extends any = any
 > implements OcThenable<R, E, C>
 {
-  @init(PENDDING)
+  @observer(PENDDING)
   private declare status: OcPromiseStatus;
   @init([])
   private declare handlers: {
@@ -36,6 +37,7 @@ export class OcPromise<
     onrejected: Nullable | createFunction<[E, any]>;
     oncanceled: Nullable | createFunction<[C, any]>;
   }[];
+  @observer()
   private declare data: R | E | C;
   private declare parrent: OcPromise<any, any, any> | undefined;
   constructor(executor: OcPromiseExecutor<R, E, C>) {
@@ -192,6 +194,19 @@ export class OcPromise<
         next = iterator.next();
       }
       if (finished === i) resolve(result);
+    });
+  }
+  static resolve<T = void>(value: T): OcThenable<T> {
+    if (isOcThenable<T>(value)) {
+      return value;
+    }
+    if (isPromiseLike<T>(value)) {
+      return new OcPromise<T>((resolve, reject) => {
+        value.then(resolve, reject);
+      });
+    }
+    return new OcPromise((resolve) => {
+      resolve(value);
     });
   }
   canceled(oncanceled: Cancel<C>) {

@@ -1,5 +1,11 @@
-import { COMPONENT_OPTION_KEY, Event, IEvent, Nullable } from "@ocean/common";
-import { COMPONENTNAME_KEY, COMPONENT_Map, CONTEXT } from "../context";
+import {
+  COMPONENT_OPTION_KEY,
+  Event,
+  Nullable,
+  getGlobalData,
+  parseClass,
+  setGlobalData,
+} from "@ocean/common";
 import { component, option } from "../decorator";
 
 declare global {
@@ -7,6 +13,21 @@ declare global {
     export interface Context {}
   }
 }
+declare global {
+  export namespace Ocean {
+    export interface Store {
+      "@ocean/component": {
+        componentKeyWord: symbol;
+        componentKeyMap: Map<string, any>;
+        rendering?: Component;
+      };
+    }
+  }
+}
+setGlobalData("@ocean/component", {
+  componentKeyWord: Symbol("component"),
+  componentKeyMap: new Map<string, any>(),
+});
 
 interface IComponent<P, E> {
   props: P;
@@ -17,35 +38,48 @@ interface IComponent<P, E> {
 
 export type ComponentProps = {
   $context?: Partial<Component.Context>;
+  $key?: string | number;
 };
 
 export type ComponentEvents = {};
 
 @component("component")
-export abstract class Component<
+export class Component<
     P extends ComponentProps = ComponentProps,
     E extends ComponentEvents = ComponentEvents
   >
   extends Event<E>
   implements IComponent<P, E>
 {
+  setState: any;
+  state: any;
+  refs: any;
+
+  @option()
+  private declare $key: string | number | Nullable;
+  @option()
+  private declare $context?: Partial<Component.Context>;
   declare el: HTMLElement;
   constructor(props: P) {
     super();
-    this.$owner = CONTEXT.creating;
     this.$props = this.props = props;
     this.init();
     this.set(props);
   }
-  @option("undefined")
-  declare $key: string | number | Nullable;
+  declare context: any;
   private declare $props: P;
   declare props: P;
-  declare context: any;
   forceUpdate(): void {}
   declare $owner: Component<any, any>;
   declare $parent: Component<any, any>;
-  declare $context: Partial<Component.Context>;
+
+  getClassName(): string {
+    const p = this.$props as any;
+    return p.class ? parseClass(p.class) : "";
+  }
+  getStyle(): string {
+    return "";
+  }
 
   getContext<T extends keyof Partial<Component.Context>>(
     key: T
@@ -83,11 +117,13 @@ export abstract class Component<
 }
 
 export function isComponent(ctor: any) {
-  const name = ctor[COMPONENTNAME_KEY];
+  const { componentKeyWord: componentKey, componentKeyMap: componentMap } =
+    getGlobalData("@ocean/component");
+  const name = ctor[componentKey];
   if (name == undefined) {
     return false;
   }
-  if (!!COMPONENT_Map.get(name)) {
+  if (!!componentMap.get(name)) {
     return true;
   }
   return false;

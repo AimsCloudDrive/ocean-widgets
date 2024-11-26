@@ -1,6 +1,6 @@
 {
   "name": "@ocean/reaction",
-  "version": "0.0.6",
+  "version": "0.0.12",
   "description": "@ocean/reaction",
   "main": "dist/index.js",
   "typings": "dist/types/src/index.d.ts",
@@ -22,8 +22,8 @@
     "release": "pnpm run build && pnpm version patch && pnpm publish --no-git-checks"
   },
   "dependencies": {
-    "@ocean/common": "^0.0.53",
-    "@ocean/promise": "^0.0.9",
+    "@ocean/common": "^0.0.57",
+    "@ocean/promise": "^0.0.13",
     "@ocean/reaction": "file:"
   },
   "devDependencies": {

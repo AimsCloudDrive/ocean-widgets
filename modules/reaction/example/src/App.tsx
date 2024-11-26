@@ -1,9 +1,12 @@
+/** @jsx createElement */
+
 import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
 import * as reaction from "@ocean/reaction";
 import { Observer, createReaction } from "@ocean/reaction";
+import { createElement } from "@ocean/dom";
 
 function AAA() {
   const a = new Observer();

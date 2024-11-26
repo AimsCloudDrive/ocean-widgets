@@ -1,9 +1,8 @@
 {
   "name": "@ocean/dom",
-  "version": "0.0.5",
+  "version": "0.0.9",
   "description": "@ocean/dom",
   "main": "dist/index.js",
-  "typings": "dist/types/index.ts",
   "typings": "dist/types/src/index.d.ts",
   "type": "module",
   "files": [
@@ -23,7 +22,9 @@
     "release": "pnpm run build& pnpm version patch & pnpm publish --no-git-checks"
   },
   "dependencies": {
-    "@ocean/common": "workspace:^",
-    "@ocean/component": "workspace:^"
+    "@ocean/common": "^0.0.57",
+    "@ocean/component": "^0.0.11",
+    "@ocean/dom": "file:",
+    "@ocean/reaction": "^0.0.12"
   }
 }

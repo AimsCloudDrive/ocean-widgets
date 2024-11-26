@@ -1,5 +1,5 @@
 import { observer } from "@ocean/reaction";
-interface IRef<T> {
+export interface IRef<T> {
   set(el: T): void;
 }
 

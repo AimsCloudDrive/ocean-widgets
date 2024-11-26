@@ -9,3 +9,4 @@ export * from "./overload";
 export * from "./types";
 export * from "./decorator";
 export * from "./array";
+export * from "./dom";

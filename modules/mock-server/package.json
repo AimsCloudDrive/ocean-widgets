@@ -23,12 +23,12 @@
     "release": "pnpm run build& pnpm version patch & pnpm publish --no-git-checks"
   },
   "devDependencies": {
-    "@ocean/common": "^0.0.53",
+    "@ocean/common": "^0.0.57",
     "cors": "^2.8.5",
     "express": "^4.21.1"
   },
   "dependencies": {
-    "@ocean/http": "^0.0.12",
+    "@ocean/http": "^0.0.15",
     "@ocean/mock-server": "file:",
     "mongodb": "^6.9.0"
   }

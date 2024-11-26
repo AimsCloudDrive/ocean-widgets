@@ -1,9 +1,9 @@
 {
   "name": "@ocean/promise",
-  "version": "0.0.9",
+  "version": "0.0.13",
   "description": "@ocean/promise",
   "main": "dist/index.js",
-  "typings": "dist/types/index.d.ts",
+  "typings": "dist/types/src/index.d.ts",
   "type": "module",
   "files": [
     "dist",
@@ -22,7 +22,8 @@
     "release": "pnpm run build& pnpm version patch & pnpm publish --no-git-checks"
   },
   "dependencies": {
-    "@ocean/common": "^0.0.53",
-    "@ocean/promise": "file:"
+    "@ocean/common": "^0.0.57",
+    "@ocean/promise": "file:",
+    "@ocean/reaction": "^0.0.12"
   }
 }

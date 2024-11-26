@@ -1,11 +1,9 @@
+import { defineAccesser } from "@ocean/common";
 import { Observer } from "../Observer";
 
-export function observer(): PropertyDecorator {
-  const ob = new Observer();
+export function observer<T = any>(init?: T): PropertyDecorator {
+  const ob = new Observer<T>(init);
   return (ctor: any, name: string | symbol) => {
-    Object.defineProperty(ctor, name, {
-      get: ob.get,
-      set: ob.set,
-    });
+    defineAccesser(ctor, name, 7, ob.get, ob.set);
   };
 }

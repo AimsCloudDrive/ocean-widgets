@@ -1,19 +1,10 @@
 /** @jsx createElement */
 
 import { createElement, render } from "@ocean/dom";
-import { component } from "@ocean/component";
-import React from "react";
-
-@component("OBH")
-class OBH {
-  constructor(props: any) {}
-  render() {
-    return <div>OBH</div>;
-  }
-}
+import { component, Component, ComponentProps } from "@ocean/component";
 
 @component("A")
-class A extends React.Component<{ AAA: number }, {}, { BBB: {} }> {
+class A extends Component<{ AAA: number; class: string } & ComponentProps> {
   constructor(props: any) {
     super(props);
   }
@@ -22,6 +13,6 @@ class A extends React.Component<{ AAA: number }, {}, { BBB: {} }> {
   }
 }
 
-const a = <A AAA={1}></A>;
+const a = <A AAA={1} class={"q"}></A>;
 
 render(a, document.getElementById("root")!);

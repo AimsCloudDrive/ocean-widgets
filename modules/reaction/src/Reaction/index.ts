@@ -6,6 +6,16 @@ export interface IObserver {
   removeReaction(reaction: Reaction): void;
 }
 
+declare global {
+  export namespace Ocean {
+    export interface Store {
+      "@ocean/reaction": {
+        tracking?: (ob: IObserver) => void;
+      };
+    }
+  }
+}
+
 export class Reaction {
   private declare tracker: () => void;
   private declare callback: () => void;
@@ -21,10 +31,7 @@ export class Reaction {
       props.delay === "nextFrame"
         ? () => requestAnimationFrame(() => props.callback())
         : props.delay === "nextTick"
-        ? () =>
-            new OcPromise<void>((resolve) => resolve()).then(() =>
-              props.callback()
-            )
+        ? () => OcPromise.resolve(void 0).then(() => props.callback())
         : () => props.callback();
     this.track();
   }
@@ -42,7 +49,6 @@ export class Reaction {
         tracking: (ob: IObserver) => {
           this.tracked.add(ob);
           ob.addReaction(this);
-          return this;
         },
       })
     );

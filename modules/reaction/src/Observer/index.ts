@@ -4,7 +4,8 @@ import { getGlobalData } from "@ocean/common";
 export class Observer<T = any> implements IObserver {
   private declare handles: Set<Reaction>;
   private declare value: T;
-  constructor() {
+  constructor(value?: T) {
+    arguments.length > 0 && (this.value = value!);
     this.handles = new Set();
     this.get = this.get.bind(this);
     this.set = this.set.bind(this);

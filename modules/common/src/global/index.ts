@@ -1,16 +1,28 @@
-const keys = new Map<string, symbol>();
-export function setGlobalData(key: string, data: any) {
+declare global {
+  export namespace Ocean {
+    export interface Store {}
+  }
+}
+
+const keys = new Map<keyof Ocean.Store, symbol>();
+export function setGlobalData<K extends keyof Ocean.Store>(
+  key: K,
+  data: Ocean.Store[K]
+) {
   let _key = keys.get(key);
   if (!_key) {
     keys.set(key, (_key = Symbol(key)));
   }
   Object.assign(globalThis, { [_key]: data });
 }
-export function getGlobalData(key: string) {
+export function getGlobalData<K extends keyof Ocean.Store>(
+  key: K
+): Ocean.Store[K] {
   let _key = keys.get(key);
   if (!_key) {
-    setGlobalData(key, {});
-    return getGlobalData(key);
+    const data = {} as Ocean.Store[K];
+    setGlobalData(key, data);
+    return data;
   }
   return Reflect.get(globalThis, _key);
 }
