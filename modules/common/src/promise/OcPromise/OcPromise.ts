@@ -1,5 +1,5 @@
 import { OcPromiseRejectError } from "./OcPromiseError";
-import { Nullable, createFunction } from "@ocean/common";
+import { Nullable, createFunction } from "../../global";
 import {
   OcPromiseExecutor,
   Resolve,

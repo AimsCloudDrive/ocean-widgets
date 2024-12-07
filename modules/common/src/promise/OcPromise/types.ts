@@ -1,4 +1,4 @@
-import { Nullable, createFunction } from "@ocean/common";
+import { Nullable, createFunction } from "../../global";
 import { OcPromiseRejectError } from "./OcPromiseError";
 
 export interface thenable<R extends any, E extends Error> {
