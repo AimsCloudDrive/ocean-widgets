@@ -1,6 +1,6 @@
 {
   "name": "@ocean/reaction",
-  "version": "0.0.2",
+  "version": "0.0.1",
   "description": "@ocean/reaction",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -20,9 +20,11 @@
     "check": "tsc --noEmit",
     "build2": "npm run clean && npm run check && vite build -c ../../vite.config.ts",
     "build": "npm run clean && npm run check && rollup -c ../../rollup.config.js",
-    "release": "pnpm run build && pnpm version patch && pnpm publish --no-git-checks"
+    "release": "pnpm run build && pnpm version patch && pnpm publish --no-git-checks",
+    "unrel": "pnpm unpublish --force",
+    "rel": "pnpm publish"
   },
-  "dependencies": {
+  "devDependencies": {
     "@ocean/common": "workspace:^"
   }
 }

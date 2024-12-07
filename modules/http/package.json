@@ -21,14 +21,18 @@
     "build2": "npm run clean && npm run check && vite build -c ../../vite.config.ts",
     "build": "npm run clean && npm run check && rollup -c ../../rollup.config.js",
     "test": "pnpm run build& node ./dist/index.js",
-    "release": "pnpm run build& pnpm version patch & pnpm publish --no-git-checks"
+    "release": "pnpm run build& pnpm version patch & pnpm publish --no-git-checks",
+    "unrel": "pnpm unpublish --force",
+    "rel": "pnpm publish"
   },
   "dependencies": {
-    "@ocean/common": "workspace:^",
     "@ocean/http": "file:",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "cors": "^2.8.5",
     "express": "^4.21.1"
+  },
+  "devDependencies": {
+    "@ocean/common": "workspace:^"
   }
 }
