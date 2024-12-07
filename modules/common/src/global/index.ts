@@ -66,3 +66,14 @@ export function defineAccesser<T extends any = any, R = any>(
     set: setter,
   });
 }
+
+export const tryCall = <T>(
+  call: (data: any) => T,
+  data: any,
+  error?: string
+): T => {
+  if (typeof call === "function") {
+    return call(data);
+  }
+  throw (error || "in OcPromise") + ` ${data}`;
+};

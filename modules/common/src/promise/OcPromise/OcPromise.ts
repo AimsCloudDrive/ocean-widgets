@@ -1,5 +1,5 @@
 import { OcPromiseRejectError } from "./OcPromiseError";
-import { Nullable, createFunction } from "../../global";
+import { Nullable, createFunction, tryCall } from "../../global";
 import {
   OcPromiseExecutor,
   Resolve,
@@ -220,10 +220,3 @@ export function isOcPromise<
 >(data: any): data is OcPromise<PR, PE, PC> {
   return data && isPromiseLike(data) && typeof data.cancel === "function";
 }
-
-const tryCall = <T>(call: (data: any) => T, data: any, error?: string): T => {
-  if (typeof call === "function") {
-    return call(data);
-  }
-  throw (error || "in OcPromise") + ` ${data}`;
-};
