@@ -217,5 +217,5 @@ export function isOcPromise<
   PE extends Error = OcPromiseRejectError,
   PC extends any = any
 >(data: any): data is OcPromise<PR, PE, PC> {
-  return data && typeof data.cancel === "function" && isPromiseLike(data);
+  return data && isPromiseLike(data) && typeof data.cancel === "function";
 }

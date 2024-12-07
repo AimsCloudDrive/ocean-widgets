@@ -10,6 +10,7 @@ export interface thenable<R extends any, E extends Error> {
     onfulfilled: TR,
     onrejected: TE
   ): thenable<FR, Error>;
+  cancel?(): void;
 }
 
 export type ReturnTypeNotUndeF<T = any> = T extends (...args: any[]) => infer R
