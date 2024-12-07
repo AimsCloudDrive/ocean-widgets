@@ -17,6 +17,7 @@ import {
   OcPromiseStatus,
 } from "./types";
 import { isPromiseLike } from "./utils";
+import { nextTick } from "../nextTick";
 
 export class OcPromise<
   R extends any = any,
@@ -71,19 +72,6 @@ export class OcPromise<
     this._runThens();
   }
 
-  private _runMicroTask(task: () => void) {
-    if (MutationObserver) {
-      const ob = new MutationObserver(() => {
-        task();
-      });
-      const text = document.createTextNode("div");
-      ob.observe(text, { characterData: true });
-      text.textContent = "span";
-    } else {
-      setTimeout(() => task(), 0);
-    }
-  }
-
   private _runThens() {
     if (this.status === PENDDING) {
       return;
@@ -121,7 +109,7 @@ export class OcPromise<
           reject(e);
         }
       };
-      this._runMicroTask(task);
+      nextTick(task);
     }
   }
   then<
