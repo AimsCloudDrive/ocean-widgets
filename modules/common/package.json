@@ -27,7 +27,7 @@
   "publishConfig": {
     "registry": "http://never.aims.nevermonarch.cn:64873"
   },
-  "devDependencies": {
+  "dependencies": {
     "@ocean/common": "file:"
   }
 }

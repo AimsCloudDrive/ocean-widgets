@@ -24,9 +24,6 @@
     "unrel": "pnpm unpublish --force",
     "rel": "pnpm publish"
   },
-  "dependencies": {
-    "@ocean/dom": "file:"
-  },
   "devDependencies": {
     "@ocean/common": "workspace:^",
     "@ocean/component": "workspace:^",
