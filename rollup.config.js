@@ -23,12 +23,14 @@ export default {
     }),
     commonjs(),
     babel({
+      targets: ["defaults"],
       exclude: "node_modules/**",
       extensions: [".ts", ".js", ".tsx", ".jsx"],
       babelHelpers: "bundled",
       presets: ["@babel/preset-env", "@babel/preset-typescript"],
       plugins: [["@babel/plugin-proposal-decorators", { version: "legacy" }]],
       babelrc: false,
+      sourceMaps: "both",
     }),
     typescript({
       tsconfig: "./tsconfig.json",

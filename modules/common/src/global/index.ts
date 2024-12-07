@@ -33,10 +33,19 @@ export type createFunction<T extends any[]> = T extends [...infer P, infer R]
   ? (...args: P) => R
   : never;
 
-export const WRITABLE = 0x01;
-export const ENUMERABLE = 0x02;
-export const CONFIGURABLE = 0x04;
+export const ENUMERABLE = 0x04;
+export const WRITABLE = 0x02;
+export const CONFIGURABLE = 0x01;
 
+/**
+ * @param ctor
+ * @param propKey
+ * @param flag 7
+ * * const enumerable = 0x04;
+ * * const writable = 0x02;
+ * * const configurable = 0x01;
+ * @param value
+ */
 export function defineProperty<T extends any>(
   ctor: T,
   propKey: string | symbol,
@@ -51,15 +60,25 @@ export function defineProperty<T extends any>(
   });
 }
 
+/**
+ * @param ctor
+ * @param propKey
+ * @param flag 7
+ * * const enumerable = 0x04;
+ * * const writable = 0x02;
+ * * const configurable = 0x01;
+ * * 访问器属性修饰符无法设置writable
+ * @param getter
+ * @param setter
+ */
 export function defineAccesser<T extends any = any, R = any>(
   ctor: T,
   propKey: symbol | string,
-  flag: number = 7,
+  flag: number = 5,
   getter?: () => R,
   setter?: (value: any) => void
 ) {
   Object.defineProperty<T>(ctor, propKey, {
-    writable: !!(WRITABLE & flag),
     enumerable: !!(ENUMERABLE & flag),
     configurable: !!(CONFIGURABLE & flag),
     get: getter,
