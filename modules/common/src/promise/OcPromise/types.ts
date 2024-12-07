@@ -16,25 +16,6 @@ export type ReturnTypeNotUndeF<T = any> = T extends (...args: any[]) => infer R
   ? R
   : never;
 
-export interface OcThenable<
-  R extends any = any,
-  E extends Error = OcPromiseRejectError,
-  C extends any = any
-> extends thenable<R, E> {
-  then<
-    TR extends Nullable | createFunction<[R, any]>,
-    TE extends Nullable | createFunction<[E, any]>,
-    TC extends Nullable | createFunction<[C, any]>,
-    FR = ReturnTypeNotUndeF<TR | TE | TC>
-  >(
-    onfulfilled?: TR,
-    onrejected?: TE,
-    oncanceled?: TC
-  ): OcThenable<FR, Error, any>;
-  cancel(reason: C): void;
-  canceled(oncanceled: Cancel<C>): void;
-}
-
 export const PENDDING = "pendding";
 export const FULFILLED = "fulfilled";
 export const REJECTED = "rejected";

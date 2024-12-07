@@ -23,7 +23,6 @@
   },
   "dependencies": {
     "@ocean/common": "^0.0.59",
-    "@ocean/promise": "^0.0.14",
     "@ocean/reaction": "file:"
   },
   "devDependencies": {

@@ -1,8 +1,6 @@
 import { OcPromiseRejectError } from "./OcPromiseError";
-import { Nullable, createFunction, init } from "@ocean/common";
-import { observer } from "@ocean/reaction";
+import { Nullable, createFunction } from "@ocean/common";
 import {
-  OcThenable,
   OcPromiseExecutor,
   Resolve,
   FULFILLED,
@@ -18,16 +16,14 @@ import {
   ReturnTypeNotUndeF,
   OcPromiseStatus,
 } from "./types";
-import { isOcThenable, isPromiseLike } from "./utils";
+import { isPromiseLike } from "./utils";
 
 export class OcPromise<
   R extends any = any,
   E extends OcPromiseRejectError = OcPromiseRejectError,
   C extends any = any
-> implements OcThenable<R, E, C>
-{
-  @observer()
-  private declare status: OcPromiseStatus;
+> {
+  declare status: OcPromiseStatus;
   private declare handlers: {
     resolve: Resolve<any>;
     reject: Reject<any>;
@@ -36,8 +32,7 @@ export class OcPromise<
     onrejected: Nullable | createFunction<[E, any]>;
     oncanceled: Nullable | createFunction<[C, any]>;
   }[];
-  @observer()
-  private declare data: R | E | C;
+  declare data: R | E | C;
   private declare parrent: OcPromise<any, any, any> | undefined;
   constructor(executor: OcPromiseExecutor<R, E, C>) {
     this.status = PENDDING;
@@ -94,8 +89,7 @@ export class OcPromise<
       return;
     }
     while (this.handlers.length) {
-      const handler = this.handlers.shift();
-      if (!handler) break;
+      const handler = this.handlers.shift()!;
       const { resolve, reject, cancel, onfulfilled, oncanceled, onrejected } =
         handler;
       const exe =
@@ -114,9 +108,7 @@ export class OcPromise<
       const task = () => {
         try {
           const data = exe();
-          if (!data) {
-            resolve(data);
-          } else if (isOcThenable(data)) {
+          if (isOcPromise(data)) {
             data.then(
               resolve,
               reject,
@@ -182,7 +174,7 @@ export class OcPromise<
         const j = i;
         i++;
         const { value } = next;
-        if (isOcThenable<Awaited<T>, any, any>(value)) {
+        if (isOcPromise<Awaited<T>, any, any>(value)) {
           value.then((data) => _resolve(data, j), reject, cancel);
         } else if (isPromiseLike<Awaited<T>, any>(value)) {
           value.then((data) => _resolve(data, j), reject);
@@ -195,8 +187,9 @@ export class OcPromise<
       if (finished === i) resolve(result);
     });
   }
-  static resolve<T = void>(value: T): OcThenable<T> {
-    if (isOcThenable<T>(value)) {
+
+  static resolve<T = void>(value: T): OcPromise<T> {
+    if (isOcPromise<T>(value)) {
       return value;
     }
     if (isPromiseLike<T>(value)) {
@@ -208,8 +201,20 @@ export class OcPromise<
       resolve(value);
     });
   }
+
+  static reject<E extends OcPromiseRejectError = any>(
+    reason: E
+  ): OcPromise<any, E> {
+    return new OcPromise((_, reject) => {
+      reject(reason);
+    });
+  }
+
   canceled(oncanceled: Cancel<C>) {
     return this.then(null, null, oncanceled);
+  }
+  catch(onRejected: Reject<E>) {
+    return this.then(null, onRejected, null);
   }
   getData() {
     return this.data;
@@ -217,4 +222,12 @@ export class OcPromise<
   getStatus() {
     return this.status;
   }
+}
+
+export function isOcPromise<
+  PR extends any = any,
+  PE extends Error = OcPromiseRejectError,
+  PC extends any = any
+>(data: any): data is OcPromise<PR, PE, PC> {
+  return data && typeof data.cancel === "function" && isPromiseLike(data);
 }

@@ -1,20 +1,12 @@
-import { OcPromiseRejectError } from "./OcPromiseError";
-import { OcThenable, thenable } from "./types";
+import { thenable } from "./types";
 
 export function isPromiseLike<R extends any = any, E extends Error = Error>(
   data: any
 ): data is thenable<R, E> {
   return (
-    data &&
+    !!data &&
     (typeof data === "function" || typeof data === "object") &&
-    typeof data.then === "function"
+    typeof data.then === "function" &&
+    data.then.length === 2
   );
-}
-
-export function isOcThenable<
-  PR extends any = any,
-  PE extends Error = OcPromiseRejectError,
-  PC extends any = any
->(data: any): data is OcThenable<PR, PE, PC> {
-  return data && typeof data.cancel === "function" && isPromiseLike(data);
 }

@@ -1,5 +1,4 @@
 import { getGlobalData, setGlobalData, Collection } from "@ocean/common";
-import { OcPromise } from "@ocean/promise";
 
 export interface IObserver {
   addReaction(reaction: Reaction): void;
@@ -20,20 +19,43 @@ export class Reaction {
   private declare tracker: () => void;
   private declare callback: () => void;
   private declare tracked: Set<IObserver>;
+  private declare delay: "nextTick" | "nextFrame" | undefined;
+  // 是否已经在等待执行
+  private declare cancel?: () => void;
   constructor(props: {
     tracker: () => void;
     callback: () => void;
     delay?: "nextTick" | "nextFrame";
   }) {
     this.tracked = new Set();
-    this.tracker = props.tracker;
-    this.callback =
-      props.delay === "nextFrame"
-        ? () => requestAnimationFrame(() => props.callback())
-        : props.delay === "nextTick"
-        ? () => OcPromise.resolve(void 0).then(() => props.callback())
-        : () => props.callback();
+    Object.assign(this, props);
     this.track();
+  }
+  nextTick(cb: () => void) {
+    // 将函数放进为队列中，等待执行
+    this.cancel && this.cancel();
+    if (this.delay === "nextTick") {
+      // 判断浏览器环境还是node环境
+      if (typeof process !== "undefined" && process.nextTick) {
+        process.nextTick(cb);
+        this.cancel = () => {
+          // 取消nextTick的对调函数执行
+        };
+      } else {
+        queueMicrotask(() => {
+          cb();
+          this.cancel = undefined;
+        });
+      }
+    } else if (this.delay === "nextFrame") {
+      const rafId = requestAnimationFrame(() => {
+        cb();
+        this.cancel = undefined;
+      });
+      this.cancel = () => cancelAnimationFrame(rafId);
+    } else {
+      cb();
+    }
   }
   track() {
     const { tracker } = this;
@@ -61,6 +83,7 @@ export class Reaction {
       });
     }
   }
+
   exec() {
     this.callback();
     return this;
