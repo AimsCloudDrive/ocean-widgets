@@ -1,9 +1,11 @@
+import { OcPromise, Reject, Resolve } from "../promise";
+
 export type SuperTaskControllerOption = {
   accompanyingCount?: number;
 };
 type _Task = {
-  resolve: (data: any) => void;
-  reject: (error: any) => void;
+  resolve: Resolve;
+  reject: Reject;
   task: () => any;
 };
 
@@ -18,8 +20,8 @@ export class SuperTaskController {
     this.tasks = [];
     this.runningCount = 0;
   }
-  addTask<T>(task: () => T): Promise<T> {
-    return new Promise<T>((resolve, reject) => {
+  addTask<T>(task: () => T): OcPromise<T> {
+    return new OcPromise<T>((resolve, reject) => {
       this.tasks.push({
         task,
         resolve,
