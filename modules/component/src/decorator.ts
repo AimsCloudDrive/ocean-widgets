@@ -30,13 +30,20 @@ export function option(type?: JSTypes): PropertyDecorator {
   };
 }
 
-export function component(name: string, option?: {}) {
+type ComponentOption = {
+  events: {
+    [K in string]: JSTypes;
+  };
+};
+
+export function component(name: string, option?: ComponentOption) {
   const { componentKeyMap, componentKeyWord } =
     getGlobalData("@ocean/component");
   const isExist = componentKeyMap.has(name);
   if (isExist) throw Error(`Component '${name}' is already exist.`);
   return function (ctor: any, ...args: any[]) {
-    defineProperty(ctor, componentKeyWord, 0, true);
+    defineProperty(ctor, componentKeyWord, 0, name);
+    option?.events && defineProperty(ctor, "__events", 0, option.events);
     componentKeyMap.set(name, ctor);
   };
 }

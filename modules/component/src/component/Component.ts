@@ -114,6 +114,7 @@ export class Component<
     return OPTIONS as { [K in keyof P]: any };
   }
   render(): any {}
+  rendered(): void {}
 }
 
 export function isComponent(ctor: any) {
