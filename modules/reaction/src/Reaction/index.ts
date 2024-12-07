@@ -1,4 +1,4 @@
-import { getGlobalData, setGlobalData, Collection } from "@ocean/common";
+import { getGlobalData, setGlobalData } from "@ocean/common";
 
 export interface IObserver {
   addReaction(reaction: Reaction): void;

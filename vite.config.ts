@@ -8,9 +8,6 @@ export default defineConfig(() => {
     plugins: [
       react({
         jsxRuntime: "classic",
-        babel: {
-          configFile: true,
-        },
       }),
       dts({
         outDir: "./dist/types",

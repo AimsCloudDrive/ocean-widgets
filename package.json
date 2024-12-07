@@ -7,11 +7,17 @@
   "publishConfig": {
     "registry": "http://never.aims.nevermonarch.cn:64873"
   },
+  "workspaces": [
+    "modules/*"
+  ],
   "devDependencies": {
     "@babel/plugin-proposal-decorators": "latest",
-    "@babel/plugin-proposal-class-properties": "latest",
+    "@babel/plugin-transform-runtime": "latest",
     "@babel/preset-env": "latest",
     "@babel/preset-react": "latest",
+    "@babel/preset-typescript": "latest",
+    "fs": "latest",
+    "path": "latest",
     "@eslint/js": "^10.0.0",
     "@rollup/plugin-babel": "^6.0.4",
     "@rollup/plugin-terser": "latest",
@@ -29,6 +35,10 @@
     "@types/node": "latest"
   },
   "dependencies": {
+    "rollup-plugin-terser": "latest",
+    "@rollup/plugin-typescript": "latest",
+    "@rollup/plugin-node-resolve": "latest",
+    "@rollup/plugin-commonjs": "latest",
     "@babel/core": "^7.16.0",
     "@babel/plugin-transform-typescript": "^7.25.9",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
@@ -79,5 +89,18 @@
     "webpack-dev-server": "^5.1.0",
     "webpack-manifest-plugin": "^5.0.0",
     "workbox-webpack-plugin": "^7.3.0"
+  },
+  "babel": {
+    "presets": [
+      "react-app"
+    ],
+    "plugins": [
+      [
+        "@babel/plugin-proposal-decorators",
+        {
+          "version": "legacy"
+        }
+      ]
+    ]
   }
 }

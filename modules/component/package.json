@@ -1,9 +1,9 @@
 {
   "name": "@ocean/component",
-  "version": "0.0.12",
+  "version": "0.0.1",
   "description": "@ocean/component",
   "main": "dist/index.js",
-  "typings": "dist/types/src/index.d.ts",
+  "typings": "dist/index.d.ts",
   "type": "module",
   "files": [
     "dist",
@@ -18,12 +18,13 @@
   "scripts": {
     "clean": "rimraf dist",
     "check": "tsc --noEmit",
-    "build": "npm run clean && npm run check && vite build -c ../../vite.config.ts",
+    "build2": "npm run clean && npm run check && vite build -c ../../vite.config.ts",
+    "build": "npm run clean && npm run check && rollup -c ../../rollup.config.js",
     "release": "pnpm run build& pnpm version patch & pnpm publish --no-git-checks"
   },
   "dependencies": {
-    "@ocean/common": "^0.0.59",
+    "@ocean/common": "workspace:^",
     "@ocean/component": "file:",
-    "@ocean/reaction": "^0.0.13"
+    "@ocean/reaction": "workspace:^"
   }
 }
