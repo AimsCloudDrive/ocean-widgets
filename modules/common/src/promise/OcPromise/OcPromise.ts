@@ -83,15 +83,16 @@ export class OcPromise<
       const exe =
         this.status === FULFILLED
           ? onfulfilled
-            ? () => onfulfilled(this.data as R)
-            : undefined
+            ? () => tryCall(onfulfilled, this.data)
+            : (resolve(this.data), undefined)
           : this.status === REJECTED
           ? onrejected
-            ? () => onrejected(this.data as E)
-            : undefined
+            ? () => tryCall(onrejected, this.data)
+            : (reject(this.data), undefined)
           : oncanceled
-          ? () => oncanceled(this.data as C)
-          : undefined;
+          ? () => tryCall(oncanceled, this.data)
+          : (cancel(this.data), undefined);
+
       if (!exe) continue;
       const task = () => {
         try {
@@ -219,3 +220,10 @@ export function isOcPromise<
 >(data: any): data is OcPromise<PR, PE, PC> {
   return data && isPromiseLike(data) && typeof data.cancel === "function";
 }
+
+const tryCall = <T>(call: (data: any) => T, data: any, error?: string): T => {
+  if (typeof call === "function") {
+    return call(data);
+  }
+  throw (error || "in OcPromise") + ` ${data}`;
+};
