@@ -16,12 +16,13 @@ export function initComponentOptions(ctor: any): any {
 
 export function option(type?: JSTypes): PropertyDecorator {
   return (ctor: any, name: string | symbol) => {
-    const { componentKeyWord } = getGlobalData("@ocean/component");
-    const isComp = ctor[componentKeyWord];
-    if (!isComp) {
-      console.error(`the decorator of 'option' should in a component`);
-      return;
-    }
+    // TODO 必须在component中才能使用@option
+    // const { componentKeyWord } = getGlobalData("@ocean/component");
+    // const isComp = ctor[componentKeyWord];
+    // if (!isComp) {
+    //   console.error(`the decorator of 'option' should in a component`);
+    //   return;
+    // }
     const OPTIONS = initComponentOptions(ctor);
     OPTIONS[name] = {
       name,
