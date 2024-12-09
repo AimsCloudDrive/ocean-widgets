@@ -18,7 +18,7 @@ export function option(type?: JSTypes): PropertyDecorator {
   return (ctor: any, name: string | symbol) => {
     const { componentKeyWord } = getGlobalData("@ocean/component");
     const isComp = ctor[componentKeyWord];
-    if (isComp) {
+    if (!isComp) {
       console.error(`the decorator of 'option' should in a component`);
       return;
     }
@@ -36,7 +36,10 @@ type ComponentOption = {
   };
 };
 
-export function component(name: string, option?: ComponentOption) {
+export function component(
+  name: string,
+  option?: ComponentOption
+): ClassDecorator {
   const { componentKeyMap, componentKeyWord, componentEventsKey } =
     getGlobalData("@ocean/component");
   const isExist = componentKeyMap.has(name);

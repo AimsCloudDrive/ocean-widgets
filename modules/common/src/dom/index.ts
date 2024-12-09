@@ -7,19 +7,20 @@ export type ClassType =
   | { [K in string]: boolean };
 
 export function parseClass(classType: ClassType): string {
-  if (typeof classType === "string") return classType;
+  if (typeof classType === "string") return classType.trim();
   if (isArray(classType)) {
-    return classType.reduce<string>((c, b) => {
-      if (typeof b === "string") {
-        return `${c} ${b}`;
-      }
-      return c;
-    }, "");
+    return classType
+      .reduce<string>((c, b) => {
+        if (typeof b === "string") {
+          return `${c} ${b}`;
+        }
+        return c;
+      }, "")
+      .trim();
   }
-  return Object.entries(classType).reduce<string>(
-    (c, [C, IS]) => (IS ? `${c} ${C}` : c),
-    ""
-  );
+  return Object.entries(classType)
+    .reduce<string>((c, [C, IS]) => (IS ? `${c} ${C}` : c), "")
+    .trim();
 }
 
 export type CSSStyle =
@@ -31,11 +32,15 @@ export type CSSStyle =
 export function parseStyle(style: CSSStyle): string {
   if (typeof style === "string") return style;
   return Object.entries(style)
-    .map<string>((s, [n, v]) => {
+    .map<string>(([n, v]) => {
+      if (v == undefined) {
+        return "";
+      }
       if (typeof v === "number") {
-        v = ("" + v) as any;
+        v = `${v}px` as any;
       }
       return `${n}: ${v}`;
     })
-    .join("; ");
+    .join("; ")
+    .trim();
 }

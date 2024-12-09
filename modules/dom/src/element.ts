@@ -12,6 +12,7 @@ import {
 } from "@ocean/common";
 import { IRef, isComponent, Component } from "@ocean/component";
 import { createReaction } from "@ocean/reaction";
+import { mountComponent } from "./mount";
 
 declare global {
   export namespace Component {
@@ -80,30 +81,13 @@ export function createDom(element: DOMElement<any>) {
   // 给元素赋属性值
   // 处理class
   if (_class) {
-    const className = parseClass(_class);
-    let _className = props.className;
-    if (_className) {
-      _className += `${className} ${_className}`;
-    }
-    Object.assign(props, {
-      className: _className,
-    });
+    props.className = `${parseClass(_class)} ${props.className || ""}`.trim();
   }
   // 处理style
   if (style) {
     Object.assign(props, { style: parseStyle(style) });
   }
-  Object.keys(props).forEach((k) => {
-    const d = dom as any;
-    let value = element.props[k as keyof DOMElement<any>["props"]];
-    if (k === "class") {
-      value = parseClass(value as ClassType);
-    }
-    if (k === "style") {
-      value = parseStyle(value as CSSStyle);
-    }
-    d[k] = value;
-  });
+  Object.assign(dom, props);
   return dom;
 }
 
@@ -119,7 +103,7 @@ export function render(element: any, container: HTMLElement) {
       defineProperty(dom, "$parent", 7, ((classInst || {}) as any)["$parent"]);
       // 根元素附着在类组件实例上
       classInst.el = dom;
-      classInst.mount();
+      mountComponent(classInst, container);
     } else {
       container.appendChild(dom);
     }
@@ -137,6 +121,15 @@ export function render(element: any, container: HTMLElement) {
       const _component = getGlobalData("@ocean/component");
       const _rendering = _component.rendering;
       const inst: Component<any, any> = (classInst = new element.type(props));
+      // 处理传递的子元素
+      if (children && children.length > 0) {
+        const c = children[0];
+        if (c.type === TEXT_NODE && typeof c.props.nodeValue === "function") {
+          inst.setJSX(c.props.nodeValue);
+        } else {
+          inst.setJSX(children.length > 1 ? children : children[0]);
+        }
+      }
       // 监听自定义的事件
       const _events: Record<
         string,
@@ -160,6 +153,7 @@ export function render(element: any, container: HTMLElement) {
           }
         });
       }
+
       inst.$owner = _rendering;
       inst.$parent = _rendering;
       createReaction(() => {
@@ -197,4 +191,5 @@ export function render(element: any, container: HTMLElement) {
       refs.forEach((ref) => ref.set(dom));
     }
   }
+  return dom;
 }

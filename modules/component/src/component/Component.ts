@@ -34,19 +34,20 @@ setGlobalData("@ocean/component", {
   componentKeyMap: new Map<string, any>(),
 });
 
-interface IComponent<P, E> {
+interface IComponent<P, E, C> {
   props: P;
   context: Partial<Component.Context>;
   setProps(props: P): void;
   forceUpdate(): void;
 }
 
-export type ComponentProps = {
+export type ComponentProps<C = never> = {
   $context?: Partial<Component.Context>;
   $key?: string | number;
   $ref?: IRef<any>;
   class?: ClassType;
   style?: CSSStyle;
+  children?: C;
 };
 
 export type ComponentEvents = {
@@ -65,32 +66,34 @@ export class Component<
     E extends ComponentEvents = ComponentEvents
   >
   extends Event<E>
-  implements IComponent<P, E>
+  implements IComponent<P, E, P["children"]>
 {
   setState: any;
   state: any;
   refs: any;
+  forceUpdate(): void {}
 
   @option()
   private declare $key: string | number | Nullable;
   @option()
   private declare $context?: Partial<Component.Context>;
+  declare context: any;
+  declare props: P;
   declare el: HTMLElement;
   constructor(props: P) {
     super();
-    this.$props = this.props = props;
     this.init();
+    this.props = props;
     this.set(props);
   }
-  declare context: any;
-  private declare $props: P;
-  declare props: P;
-  forceUpdate(): void {}
+
   declare $owner?: Component<any, any>;
   declare $parent?: Component<any, any>;
 
+  setJSX(jsx: P["children"]) {}
+
   getClassName(): string {
-    const p = this.$props as any;
+    const p = this.props as any;
     return p.class ? parseClass(p.class) : "";
   }
   getStyle(): string {
@@ -112,7 +115,6 @@ export class Component<
     return this.$owner || this.$parent;
   }
 
-  init() {}
   set(props: Partial<P>) {
     this.setProps(props);
   }
@@ -144,6 +146,11 @@ export class Component<
       }
     };
   }
+  init() {
+    this.mountedEvents = [];
+    this.unmountedEvents = [];
+    this.clean = [];
+  }
   private declare mountedEvents: (() => void)[];
   private declare unmountedEvents: (() => void)[];
   mounted() {
@@ -153,7 +160,7 @@ export class Component<
     }
   }
   onmounted(cb: () => void) {
-    (this.mountedEvents || (this.mountedEvents = [])).push(cb);
+    this.mountedEvents.push(cb);
   }
 
   unmount() {
@@ -178,12 +185,12 @@ export class Component<
     }
   }
   onunmounted(cb: () => void) {
-    (this.unmountedEvents || (this.unmountedEvents = [])).push(cb);
+    this.unmountedEvents.push(cb);
   }
 
   private declare clean: (() => void)[];
   onclean(cb: () => void) {
-    (this.clean || (this.clean = [])).push(cb);
+    this.clean.push(cb);
   }
 
   destroy() {
