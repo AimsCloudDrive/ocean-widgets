@@ -37,13 +37,21 @@ type ComponentOption = {
 };
 
 export function component(name: string, option?: ComponentOption) {
-  const { componentKeyMap, componentKeyWord } =
+  const { componentKeyMap, componentKeyWord, componentEventsKey } =
     getGlobalData("@ocean/component");
   const isExist = componentKeyMap.has(name);
   if (isExist) throw Error(`Component '${name}' is already exist.`);
   return function (ctor: any, ...args: any[]) {
     defineProperty(ctor, componentKeyWord, 0, name);
-    option?.events && defineProperty(ctor, "__events", 0, option.events);
+    if (option?.events) {
+      const bingdingEvents = Object.entries(option.events).reduce(
+        (_bingdingEvents, [ek, type]) =>
+          Object.assign(_bingdingEvents, { [ek]: { type, _on: undefined } }),
+        {}
+      );
+      defineProperty(ctor, componentEventsKey, 0, bingdingEvents);
+    }
+
     componentKeyMap.set(name, ctor);
   };
 }

@@ -7,8 +7,10 @@ import {
   parseStyle,
   getGlobalData,
   setGlobalData,
+  JSTypes,
+  Event,
 } from "@ocean/common";
-import { IRef, isComponent } from "@ocean/component";
+import { IRef, isComponent, Component } from "@ocean/component";
 import { createReaction } from "@ocean/reaction";
 
 declare global {
@@ -16,15 +18,19 @@ declare global {
     export interface Context {}
   }
 }
+HTMLDivElement;
 
 const TEXT_NODE = "TEXT_NODE";
 
 type DOMElement<T> = {
   type: T;
-  props: {
+  props: Omit<React.HTMLAttributes<T>, "style" | "children"> & {
     $ref?: IRef<any>;
+    $key?: string | number;
+    style?: CSSStyle;
     class?: ClassType;
     context?: Partial<Component.Context>;
+    $_id: string | number;
   } & {
     children: DOMElement<any>[];
   };
@@ -57,32 +63,53 @@ export function createTextElement(text: string) {
 }
 
 export function createDom(element: DOMElement<any>) {
+  const {
+    children,
+    class: _class,
+    style,
+    $key,
+    $ref,
+    context,
+    ...props
+  } = element.props;
   // 创建元素
   const dom =
     element.type === TEXT_NODE
       ? document.createTextNode("")
       : document.createElement(element.type as string);
-  const isProperty = (p: string) => p !== "children";
   // 给元素赋属性值
-  Object.keys(element.props)
-    .filter(isProperty)
-    .forEach((k) => {
-      const d = dom as any;
-      let value = element.props[k as keyof DOMElement<any>["props"]];
-      if (k === "class") {
-        value = parseClass(value as ClassType);
-      }
-      if (k === "style") {
-        value = parseStyle(value as CSSStyle);
-      }
-      d[k] = value;
+  // 处理class
+  if (_class) {
+    const className = parseClass(_class);
+    let _className = props.className;
+    if (_className) {
+      _className += `${className} ${_className}`;
+    }
+    Object.assign(props, {
+      className: _className,
     });
+  }
+  // 处理style
+  if (style) {
+    Object.assign(props, { style: parseStyle(style) });
+  }
+  Object.keys(props).forEach((k) => {
+    const d = dom as any;
+    let value = element.props[k as keyof DOMElement<any>["props"]];
+    if (k === "class") {
+      value = parseClass(value as ClassType);
+    }
+    if (k === "style") {
+      value = parseStyle(value as CSSStyle);
+    }
+    d[k] = value;
+  });
   return dom;
 }
 
 export function render(element: any, container: HTMLElement) {
   let dom: any = void 0;
-  let classInst: any = void 0;
+  let classInst: Component<any> | undefined = void 0;
   const cb = () => {
     // 通过配置生成元素
     dom = createDom(element);
@@ -92,6 +119,9 @@ export function render(element: any, container: HTMLElement) {
       defineProperty(dom, "$parent", 7, ((classInst || {}) as any)["$parent"]);
       // 根元素附着在类组件实例上
       classInst.el = dom;
+      classInst.mount();
+    } else {
+      container.appendChild(dom);
     }
     // 渲染子元素
     if (element.props.children && element.props.children.length > 0) {
@@ -99,17 +129,37 @@ export function render(element: any, container: HTMLElement) {
         render(c, dom);
       }
     }
-    // 将根元素添加进父容器
-    container.appendChild(dom);
   };
   if (typeof element.type === "function") {
-    const props = { ...element.props };
-    delete props.children;
+    const { children, ...props } = element.props;
     if (isComponent(element.type)) {
       // 类组件
       const _component = getGlobalData("@ocean/component");
       const _rendering = _component.rendering;
-      const inst = (classInst = new element.type(props));
+      const inst: Component<any, any> = (classInst = new element.type(props));
+      // 监听自定义的事件
+      const _events: Record<
+        string,
+        {
+          type: JSTypes;
+          _on?: (event: any, type: string, slef: Event<any>) => void;
+        }
+      > = inst[_component.componentEventsKey];
+      if (_events) {
+        Object.entries(_events).forEach(([k, event]) => {
+          // 原来已经绑定 则解绑
+          if (event._on) {
+            inst.un(k, event._on);
+            event._on = undefined;
+          }
+          // 绑定新事件
+          const on = props[k];
+          if (on) {
+            inst.on(k, on);
+            event._on = on;
+          }
+        });
+      }
       inst.$owner = _rendering;
       inst.$parent = _rendering;
       createReaction(() => {
@@ -117,13 +167,14 @@ export function render(element: any, container: HTMLElement) {
           _component.rendering = inst;
           element = inst.render();
           cb();
+          // cb执行完，真实生成的dom已经存在，将类组件实例附着在dom上
+          if (props.$ref) {
+            const refs: IRef<any>[] = [props.$ref].flat();
+            refs.forEach((ref) => ref.set(inst));
+          }
           inst.rendered();
         } finally {
           _component.rendering = _rendering;
-        }
-        if (element.props.$ref) {
-          const refs: IRef<any>[] = [element.props.$ref].flat();
-          refs.forEach((ref) => ref.set(inst));
         }
       });
     } else {
@@ -132,7 +183,7 @@ export function render(element: any, container: HTMLElement) {
         element = element.type(props);
         cb();
         // 函数组件ref绑定生成的元素
-        if (element.props.$ref) {
+        if (props.$ref) {
           const refs: IRef<any>[] = [element.props.$ref].flat();
           refs.forEach((ref) => ref.set(dom));
         }
