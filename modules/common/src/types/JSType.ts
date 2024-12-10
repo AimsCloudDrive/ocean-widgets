@@ -8,6 +8,7 @@ export type JSTypeMap = {
   symbol: symbol;
   object: object;
   null: null;
+  unknown: unknown;
 };
 
 export type JSTypes = keyof JSTypeMap;

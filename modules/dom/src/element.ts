@@ -95,8 +95,19 @@ export function render(element: any, container: HTMLElement) {
   let dom: any = void 0;
   let classInst: Component<any> | undefined = void 0;
   const cb = () => {
+    if (dom) {
+      // 全量更新dom
+      container.removeChild(dom);
+      dom = void 0;
+    }
     // 通过配置生成元素
     dom = createDom(element);
+    // 渲染子元素
+    if (element.props.children && element.props.children.length > 0) {
+      for (const c of element.props.children) {
+        render(c, dom);
+      }
+    }
     if (classInst) {
       // 类组件实例附着在元素上
       defineProperty(dom, "$owner", 7, classInst);
@@ -106,12 +117,6 @@ export function render(element: any, container: HTMLElement) {
       mountComponent(classInst, container);
     } else {
       container.appendChild(dom);
-    }
-    // 渲染子元素
-    if (element.props.children && element.props.children.length > 0) {
-      for (const c of element.props.children) {
-        render(c, dom);
-      }
     }
   };
   if (typeof element.type === "function") {

@@ -27,7 +27,7 @@ export default {
       exclude: "node_modules/**",
       extensions: [".ts", ".js", ".tsx", ".jsx"],
       presets: ["@babel/preset-env", "@babel/preset-typescript"],
-      plugins: [["@babel/plugin-proposal-decorators", { version: "2022-03" }]],
+      plugins: [["@babel/plugin-proposal-decorators", { version: "legacy" }]],
       babelrc: false,
       sourceMaps: "both",
     }),

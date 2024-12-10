@@ -8,7 +8,7 @@ import {
   setGlobalData,
   CSSStyle,
 } from "@ocean/common";
-import { component, option } from "../decorator";
+import { component, option } from "../Decorator";
 import { IRef } from "./Ref";
 import { Observer } from "@ocean/reaction";
 
@@ -216,10 +216,10 @@ export class Component<
   }
 }
 
-export function isComponent(ctor: any) {
+export function isComponent(ctor: Function) {
   const { componentKeyWord: componentKey, componentKeyMap: componentMap } =
     getGlobalData("@ocean/component");
-  const name = ctor[componentKey];
+  const name = ctor.prototype[componentKey];
   if (name == undefined) {
     return false;
   }

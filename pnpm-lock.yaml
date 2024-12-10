@@ -253,6 +253,18 @@ importers:
         specifier: workspace:^
         version: link:../reaction
 
+  modules/decorator:
+    devDependencies:
+      '@ocean/common':
+        specifier: workspace:^
+        version: link:../common
+      '@ocean/component':
+        specifier: ^0.0.14
+        version: 0.0.14
+      '@ocean/reaction':
+        specifier: ^0.0.7
+        version: 0.0.7
+
   modules/dom:
     devDependencies:
       '@ocean/common':
@@ -1873,6 +1885,12 @@ packages:
   '@nodelib/fs.walk@1.2.8':
     resolution: {integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==}
     engines: {node: '>= 8'}
+
+  '@ocean/component@0.0.14':
+    resolution: {integrity: sha512-is/Jkk7e7v2S2jbmt8uTJGbXkNIczGoZW0a/jaUD4xWROy03HAuyVNRn2yBm0iFq5caTN06ONOFY4zZwcwgW3A==}
+
+  '@ocean/reaction@0.0.7':
+    resolution: {integrity: sha512-mkNTZEjRVztdNFq3BEEw2A1K51XbEP5v1iCFS8COm6gqw5jblWMvcyZ0kyHqW87ZGms9fN9u0+dL7y79ORcIGQ==}
 
   '@pkgjs/parseargs@0.11.0':
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
@@ -8160,6 +8178,10 @@ snapshots:
     dependencies:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.17.1
+
+  '@ocean/component@0.0.14': {}
+
+  '@ocean/reaction@0.0.7': {}
 
   '@pkgjs/parseargs@0.11.0':
     optional: true
