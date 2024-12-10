@@ -32,7 +32,7 @@ export function option(type?: JSTypes): PropertyDecorator {
 }
 
 type ComponentOption = {
-  events: {
+  events?: {
     [K in string]: JSTypes;
   };
 };
