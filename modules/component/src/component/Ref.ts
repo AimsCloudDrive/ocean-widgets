@@ -25,7 +25,7 @@ export function createRef<T>(): Ref<T> {
 
 export class MapRef<T> implements IRef<T> {
   @observer()
-  declare data: Map<string, T>;
+  declare data: Map<string | number, T>;
   set(el: T) {
     if (this.data) {
       this.data.set((el as any).$key, el);
@@ -34,7 +34,9 @@ export class MapRef<T> implements IRef<T> {
       this.set(el);
     }
   }
-  get(key: string) {}
+  get(key: string | number) {
+    return this.data?.get(key);
+  }
 }
 export function createMapRef<T>(): MapRef<T> {
   return new MapRef();

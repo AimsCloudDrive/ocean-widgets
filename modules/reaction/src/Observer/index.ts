@@ -1,14 +1,20 @@
 import { Reaction, IObserver } from "../Reaction";
 import { getGlobalData } from "@ocean/common";
 
+export type ObserverOption<T> = {
+  value?: T;
+  equal?: (oldValue: T, newValue: T) => boolean;
+  // TODO: add more options
+};
+
 export class Observer<T = any> implements IObserver {
   private declare handles: Set<Reaction>;
   private declare value: T;
-  constructor(value?: T) {
-    arguments.length > 0 && (this.value = value!);
+  private declare equal: (oldValue: T, newValue: T) => boolean;
+  constructor(option: ObserverOption<T> = {}) {
+    this.equal = (oldValue, newValue) => oldValue === newValue;
+    Object.assign(this, option);
     this.handles = new Set();
-    this.get = this.get.bind(this);
-    this.set = this.set.bind(this);
   }
   get(): T {
     const running = getGlobalData("@ocean/reaction");
@@ -17,13 +23,16 @@ export class Observer<T = any> implements IObserver {
     }
     return this.value;
   }
-  set(v: T) {
-    this.value = v;
-    this.update();
+  set(newValue: T) {
+    const { value: oldValue } = this;
+    if (!this.equal(oldValue, newValue)) {
+      this.update();
+    }
+    this.value = newValue;
   }
   update() {
     for (const reaction of this.handles) {
-      reaction.exec();
+      reaction.patch();
     }
   }
   addReaction(reaction: Reaction): void {

@@ -15,7 +15,7 @@ export function initComponentOptions(ctor: any): any {
 }
 
 export function option(type?: JSTypes): PropertyDecorator {
-  return (ctor: any, name: string | symbol) => {
+  return (ctor, propKey) => {
     // TODO 必须在component中才能使用@option
     // const { componentKeyWord } = getGlobalData("@ocean/component");
     // const isComp = ctor[componentKeyWord];
@@ -24,8 +24,8 @@ export function option(type?: JSTypes): PropertyDecorator {
     //   return;
     // }
     const OPTIONS = initComponentOptions(ctor);
-    OPTIONS[name] = {
-      name,
+    OPTIONS[propKey] = {
+      name: propKey,
       type,
     };
   };
@@ -45,9 +45,10 @@ export function component(
     getGlobalData("@ocean/component");
   const isExist = componentKeyMap.has(name);
   if (isExist) throw Error(`Component '${name}' is already exist.`);
-  return function (ctor: any, ...args: any[]) {
+  return function (ctor) {
     defineProperty(ctor, componentKeyWord, 0, name);
     if (option?.events) {
+      // 绑定声明事件
       const bingdingEvents = Object.entries(option.events).reduce(
         (_bingdingEvents, [ek, type]) =>
           Object.assign(_bingdingEvents, { [ek]: { type, _on: undefined } }),

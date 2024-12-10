@@ -1,17 +1,12 @@
-import { defineProperty, WRITABLE, CONFIGURABLE, ENUMERABLE } from "../global";
+import { MethodDecorator } from "./types";
 
-export function autoBind(
-  ctor: any,
-  propKey: string | symbol,
-  descriptor: PropertyDescriptor
-) {
-  const { get, set, value, writable, enumerable, configurable } = descriptor;
-  if (get || set || !writable || typeof value !== "function") {
-    return;
-  }
-  const flag =
-    (enumerable ? ENUMERABLE : 0) |
-    WRITABLE |
-    (configurable ? CONFIGURABLE : 0);
-  defineProperty(ctor, propKey, flag, value.bind(ctor));
+export function autobind(): MethodDecorator {
+  return (value, context) => {
+    if (context.private) {
+      throw new TypeError("Not supported on private methods.");
+    }
+    context.addInitializer(function () {
+      value[context.name] = value[context.name].bind(this);
+    });
+  };
 }

@@ -10,6 +10,7 @@ import {
 } from "@ocean/common";
 import { component, option } from "../decorator";
 import { IRef } from "./Ref";
+import { Observer } from "@ocean/reaction";
 
 declare global {
   export namespace Component {
@@ -74,9 +75,9 @@ export class Component<
   forceUpdate(): void {}
 
   @option()
-  private declare $key: string | number | Nullable;
+  private $key: string | number | Nullable;
   @option()
-  private declare $context?: Partial<Component.Context>;
+  private $context?: Partial<Component.Context>;
   declare context: any;
   declare props: P;
   declare el: HTMLElement;
@@ -130,6 +131,20 @@ export class Component<
   private getOptions() {
     const OPTIONS = Reflect.get(this, COMPONENT_OPTION_KEY) || {};
     return OPTIONS as { [K in keyof P]: any };
+  }
+  private getObservers(): Record<string, Observer> {
+    const { observerListKey } = getGlobalData("@ocean/reaction");
+    return Reflect.get(this, observerListKey) || {};
+  }
+  updateProperty(name: string): void {
+    const observers = this.getObservers();
+    if (observers.hasOwnProperty(name)) {
+      const ob = observers[name];
+      // TODO: 普通属性、计算属性、方法属性
+      ob.update();
+    } else {
+      console.warn(`[Component] ${name} is not a observer`);
+    }
   }
   render(): any {}
   rendered(): void {}

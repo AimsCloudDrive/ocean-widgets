@@ -9,12 +9,31 @@ import { Observer, createReaction } from "@ocean/reaction";
 import { createElement } from "@ocean/dom";
 
 function AAA() {
-  const a = new Observer();
-  const b = () => {
-    console.info(a.get());
+  const c = new Observer();
+  const m = new Observer();
+  const n = new Observer();
+  const d = () => {
+    console.info(c.get(), m.get(), n.get());
   };
-  const r = createReaction(b);
-  return [a, r];
+  createReaction(
+    () => {
+      c.get();
+      m.get();
+      n.get();
+    },
+    d,
+    { delay: "nextTick" }
+  ).exec();
+  return [
+    () => {
+      c.set(Symbol(void 0));
+      m.set(Symbol(void 0));
+      n.set(Symbol(void 0));
+    },
+    c,
+    m,
+    n,
+  ];
 }
 Object.assign(window, { reaction, AAA });
 
@@ -22,7 +41,7 @@ function App() {
   const [count, setCount] = useState(0);
 
   return (
-    <>
+    <div>
       <div>
         <a href="https://vite.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
@@ -43,7 +62,7 @@ function App() {
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
-    </>
+    </div>
   );
 }
 

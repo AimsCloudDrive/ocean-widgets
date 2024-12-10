@@ -1,3 +1,3 @@
-export * from "./context";
+export * from "./Decorator";
 export * from "./Reaction";
 export * from "./Observer";

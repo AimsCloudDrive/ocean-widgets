@@ -16,6 +16,9 @@
   "devDependencies": {
     "@eslint/js": "^10.0.0",
     "@ocean/reaction": "workspace:^",
+    "@ocean/dom": "workspace:^",
+    "@ocean/common": "workspace:^",
+    "@ocean/component": "workspace:^",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.4",

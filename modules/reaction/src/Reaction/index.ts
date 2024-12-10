@@ -10,17 +10,22 @@ declare global {
     export interface Store {
       "@ocean/reaction": {
         tracking?: (ob: IObserver) => void;
+        observerListKey: symbol;
       };
     }
   }
 }
+
+setGlobalData("@ocean/reaction", {
+  observerListKey: Symbol("observerList"),
+});
 
 export class Reaction {
   private declare tracker: () => void;
   private declare callback: () => void;
   private declare tracked: Set<IObserver>;
   private declare delay: "nextTick" | "nextFrame" | undefined;
-  // 是否已经在等待执行
+  // 上一次更新还未执行则取消上一次更新
   private declare cancel?: () => void;
   constructor(props: {
     tracker: () => void;
@@ -30,58 +35,96 @@ export class Reaction {
     this.tracked = new Set();
     Object.assign(this, props);
     this.track();
+    this.updateNextTick();
   }
-  nextTick(cb: () => void) {
-    // 将函数放进为队列中，等待执行
+  private _cancel() {
     this.cancel && this.cancel();
+    this.cancel = undefined;
+  }
+  updateNextTick() {
+    if (!this.delay) return;
     if (this.delay === "nextTick") {
       // 判断浏览器环境还是node环境
       if (typeof process !== "undefined" && process.nextTick) {
-        process.nextTick(cb);
-        this.cancel = () => {
-          // 取消nextTick的对调函数执行
+        // node环境
+        this.nextTick = function (cb: () => void) {
+          // 取消上一次的nextTick
+          this._cancel();
+          let canceled = false;
+          process.nextTick(() => {
+            if (!canceled) {
+              cb();
+            }
+            this.cancel = undefined;
+          });
+          this.cancel = () => {
+            // 取消nextTick的对调函数执行
+            canceled = true;
+          };
         };
       } else {
-        queueMicrotask(() => {
+        // 浏览器环境
+        this.nextTick = function (cb: () => void) {
+          // 取消上一次的nextTick
+          this._cancel();
+          let canceled = false;
+          queueMicrotask(() => {
+            if (!canceled) {
+              cb();
+            }
+            this.cancel = undefined;
+          });
+          this.cancel = () => {
+            // 取消nextTick的对调函数执行
+            canceled = true;
+          };
+        };
+      }
+    }
+    if (this.delay === "nextFrame") {
+      this.nextTick = function (cb: () => void) {
+        this._cancel();
+        const rafId = requestAnimationFrame(() => {
           cb();
           this.cancel = undefined;
         });
-      }
-    } else if (this.delay === "nextFrame") {
-      const rafId = requestAnimationFrame(() => {
-        cb();
-        this.cancel = undefined;
-      });
-      this.cancel = () => cancelAnimationFrame(rafId);
-    } else {
-      cb();
+        this.cancel = () => {
+          // 取消requestAnimationFrame的对调函数执行
+          cancelAnimationFrame(rafId);
+        };
+      };
     }
+  }
+  nextTick(cb: () => void) {
+    // 将函数放进微队列中，等待执行
+    this._cancel();
+    cb();
   }
   track() {
     const { tracker } = this;
-    let r = getGlobalData("@ocean/reaction");
-    if (!r) {
-      setGlobalData("@ocean/reaction", (r = {}));
-    }
-    let o;
-    setGlobalData(
-      "@ocean/reaction",
-      (o = {
-        ...r,
-        tracking: (ob: IObserver) => {
-          this.tracked.add(ob);
-          ob.addReaction(this);
-        },
-      })
-    );
+    // 先清空tracked
+    this.tracked.clear();
+    const data = getGlobalData("@ocean/reaction");
+    // 保存原始的tracking函数
+    const tracking = data.tracking;
+    // 更新tracking函数
+    Object.assign(data, {
+      tracking: (ob: IObserver) => {
+        this.tracked.add(ob);
+        ob.addReaction(this);
+      },
+    });
     try {
+      // 执行tracker函数
       tracker();
     } finally {
-      setGlobalData("@ocean/reaction", {
-        ...o,
-        tracking: r.tracking,
-      });
+      // 恢复原始的tracking函数
+      Object.assign(data, { tracking });
     }
+  }
+
+  patch() {
+    this.nextTick(() => this.callback());
   }
 
   exec() {
