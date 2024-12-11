@@ -117,6 +117,10 @@ export class Reaction {
     try {
       // 执行tracker函数
       tracker();
+    } catch (e) {
+      // 清空已经追踪的observer
+      this.destroy();
+      throw e;
     } finally {
       // 恢复原始的tracking函数
       Object.assign(data, { tracking });

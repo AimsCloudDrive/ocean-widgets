@@ -23,6 +23,7 @@ declare global {
       "@ocean/component": {
         componentKeyWord: symbol;
         componentEventsKey: symbol;
+        instanceEventBindingKey: symbol;
         componentKeyMap: Map<string, any>;
         rendering?: Component;
       };
@@ -31,8 +32,9 @@ declare global {
 }
 setGlobalData("@ocean/component", {
   componentKeyWord: Symbol("component"),
+  componentKeyMap: new Map(),
   componentEventsKey: Symbol("component_events"),
-  componentKeyMap: new Map<string, any>(),
+  instanceEventBindingKey: Symbol("instance_event_binding"),
 });
 
 interface IComponent<P, E, C> {
@@ -212,7 +214,11 @@ export class Component<
     while (this.clean.length) {
       this.clean.shift()?.();
     }
+    Object.assign(this, { el: undefined });
     this.unmount();
+  }
+  isMounted() {
+    return !!this.el && this.el.parentElement != null;
   }
 }
 

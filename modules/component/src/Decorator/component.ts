@@ -34,7 +34,7 @@ export function component(
       // 绑定声明事件
       const bingdingEvents = Object.entries(option.events).reduce(
         (_bingdingEvents, [ek, type]) =>
-          Object.assign(_bingdingEvents, { [ek]: { type, _on: undefined } }),
+          Object.assign(_bingdingEvents, { [ek]: { type } }),
         {}
       );
       defineProperty(ctor.prototype, componentEventsKey, 0, bingdingEvents);
