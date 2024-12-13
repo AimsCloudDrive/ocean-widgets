@@ -86,13 +86,17 @@ export function defineAccesser<T extends any = any, R = any>(
   });
 }
 
-export const tryCall = <T>(
-  call: (data: any) => T,
-  data: any,
-  error?: string
-): T => {
+export const tryCall = <F extends (...args: any[]) => any>(
+  call: F | undefined,
+  data?: Parameters<F>,
+  error?: (error: Error | unknown) => Error | unknown
+): ReturnType<F> => {
   if (typeof call === "function") {
-    return call(data);
+    try {
+      return call(...(data || []));
+    } catch (e: Error | unknown) {
+      throw error ? error(e) : e;
+    }
   }
   throw (error || "in OcPromise") + ` ${data}`;
 };

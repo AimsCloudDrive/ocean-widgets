@@ -1,6 +1,6 @@
 {
   "name": "@ocean/common",
-  "version": "0.0.13",
+  "version": "0.0.15",
   "description": "@ocean/common",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",

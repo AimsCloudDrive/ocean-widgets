@@ -9,5 +9,6 @@ export * from "./overload";
 export * from "./types";
 export * from "./decorator";
 export * from "./array";
+export * from "./object";
 export * from "./dom";
 export * from "./promise";

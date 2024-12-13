@@ -83,14 +83,14 @@ export class OcPromise<
       const exe =
         this.status === FULFILLED
           ? onfulfilled
-            ? () => tryCall(onfulfilled, this.data)
+            ? () => tryCall(onfulfilled, [this.data as R])
             : (resolve(this.data), undefined)
           : this.status === REJECTED
           ? onrejected
-            ? () => tryCall(onrejected, this.data)
+            ? () => tryCall(onrejected, [this.data as E])
             : (reject(this.data), undefined)
           : oncanceled
-          ? () => tryCall(oncanceled, this.data)
+          ? () => tryCall(oncanceled, [this.data as C])
           : (cancel(this.data), undefined);
 
       if (!exe) continue;
