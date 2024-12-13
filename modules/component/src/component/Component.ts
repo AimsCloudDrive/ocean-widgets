@@ -75,12 +75,12 @@ export class Component<
   state: any;
   refs: any;
   forceUpdate(): void {}
+  declare context: any;
 
   @option()
   private $key: string | number | Nullable;
   @option()
   private $context?: Partial<Component.Context>;
-  declare context: any;
   declare props: P;
   declare el: HTMLElement;
   constructor(props: P) {
@@ -150,19 +150,6 @@ export class Component<
   }
   render(): any {}
   rendered(): void {}
-
-  /**
-   *
-   * @returns
-   */
-  mount() {
-    return (container: HTMLElement) => {
-      if (this.el) {
-        container.appendChild(this.el);
-        this.mounted();
-      }
-    };
-  }
   init() {
     this.mountedEvents = [];
     this.unmountedEvents = [];
@@ -181,18 +168,12 @@ export class Component<
   }
 
   unmount() {
-    const _unmount = (container: HTMLElement) => {
-      if (this.el) {
-        container.removeChild(this.el);
+    if (this.el) {
+      const p = this.el.parentElement;
+      if (p) {
+        p.removeChild(this.el);
         this.unmounted();
       }
-    };
-    const container = this.el.parentElement;
-    if (container) {
-      _unmount(container);
-      return (container: HTMLElement) => {};
-    } else {
-      return _unmount;
     }
   }
   unmounted() {
