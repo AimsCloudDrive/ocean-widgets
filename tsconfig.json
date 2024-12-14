@@ -14,16 +14,6 @@
     "experimentalDecorators": true, // 启用装饰器
     "emitDecoratorMetadata": true, // 为装饰器提供元数据支持
 
-<<<<<<< HEAD
-    /* Linting */
-    "strict": true,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "noFallthroughCasesInSwitch": true,
-    "allowUnusedLabels": true
-  },
-  "references": [{ "path": "./tsconfig.node.json" }]
-=======
     "declaration": true, // 生成声明文件
     "declarationDir": "dist", // 声明文件的路径
     // "emitDeclarationOnly": true, // 只生成声明文件
@@ -60,5 +50,4 @@
     // "listEmittedFiles": true, // 打印输出的文件
     // "listFiles": true // 打印编译的文件（包括引用的声明文件）
   }
->>>>>>> 58c4ebd5c386dac79c6020c240e4f094ead480f4
 }

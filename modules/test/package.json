@@ -1,13 +1,7 @@
 {
-<<<<<<< HEAD:modules/test/package.json
   "name": "@ocean/test",
   "version": "0.0.1",
   "description": "@ocean/test",
-=======
-  "name": "@ocean/common",
-  "version": "0.0.15",
-  "description": "@ocean/common",
->>>>>>> 58c4ebd5c386dac79c6020c240e4f094ead480f4:modules/common/package.json
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "type": "module",
@@ -17,13 +11,9 @@
   ],
   "keywords": [
     "ocean",
-<<<<<<< HEAD:modules/test/package.json
     "test"
-=======
-    "common"
->>>>>>> 58c4ebd5c386dac79c6020c240e4f094ead480f4:modules/common/package.json
   ],
-  "author": "OceanCommon",
+  "author": "OceanTest",
   "license": "MIT",
   "scripts": {
     "clean": "rimraf dist",
@@ -34,14 +24,10 @@
     "unrel": "pnpm unpublish --force",
     "rel": "pnpm publish"
   },
-<<<<<<< HEAD:modules/test/package.json
-  "devDependencies": {}
-=======
   "publishConfig": {
     "registry": "http://never.aims.nevermonarch.cn:64873"
   },
   "dependencies": {
-    "@ocean/common": "file:"
+    "@ocean/test": "file:"
   }
->>>>>>> 58c4ebd5c386dac79c6020c240e4f094ead480f4:modules/common/package.json
 }
