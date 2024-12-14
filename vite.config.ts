@@ -1,34 +1,33 @@
-import { defineConfig } from "vite";
-import resolve from "@rollup/plugin-node-resolve";
-import commonjs from "@rollup/plugin-commonjs";
-import typescript from "@rollup/plugin-typescript";
-import terser from "@rollup/plugin-terser";
+import { defineConfig, UserConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import dts from "vite-plugin-dts";
 
-// https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [
-    resolve(),
-    commonjs(),
-    typescript({ noEmit: true, emitDeclarationOnly: true }),
-    terser({ sourceMap: true, module: true }),
-  ],
-  build: {
-    emptyOutDir: true,
-    rollupOptions: {
-      input: "src/index.ts",
-      output: {
-        name: "ocean-common",
-        dir: "dist",
-        entryFileNames: "index.js",
-        format: "umd",
+// https://vite.dev/config/
+export default defineConfig(() => {
+  return {
+    plugins: [
+      react({
+        jsxRuntime: "classic",
+      }),
+      dts({
+        outDir: "./dist/types",
+      }),
+    ],
+    build: {
+      emptyOutDir: true,
+      sourcemap: true,
+      minify: false,
+      outDir: "dist",
+      lib: {
+        entry: "src/index.ts",
+        name: "index.js",
+        fileName: (format) => {
+          if (/^esm?$/.test(format)) {
+            return "index.js";
+          }
+          return `index.${format}.js`;
+        },
       },
     },
-    sourcemap: true,
-    minify: false,
-    lib: {
-      entry: "src/index.ts",
-      name: "ocean-common",
-      formats: ["es"],
-    },
-  },
+  };
 });

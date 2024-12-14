@@ -1,9 +1,15 @@
 {
+<<<<<<< HEAD:modules/test/package.json
   "name": "@ocean/test",
   "version": "0.0.1",
   "description": "@ocean/test",
+=======
+  "name": "@ocean/common",
+  "version": "0.0.15",
+  "description": "@ocean/common",
+>>>>>>> 58c4ebd5c386dac79c6020c240e4f094ead480f4:modules/common/package.json
   "main": "dist/index.js",
-  "typings": "dist/types/index.d.ts",
+  "typings": "dist/index.d.ts",
   "type": "module",
   "files": [
     "dist",
@@ -11,15 +17,31 @@
   ],
   "keywords": [
     "ocean",
+<<<<<<< HEAD:modules/test/package.json
     "test"
+=======
+    "common"
+>>>>>>> 58c4ebd5c386dac79c6020c240e4f094ead480f4:modules/common/package.json
   ],
   "author": "OceanCommon",
   "license": "MIT",
   "scripts": {
     "clean": "rimraf dist",
     "check": "tsc --noEmit",
-    "build": "npm run clean & npm run check && vite build",
-    "release": "npm run build & npm publish --registry http://never.aims.nevermonarch.cn:64873"
+    "build2": "npm run clean && npm run check && vite build -c ../../vite.config.ts",
+    "build": "npm run clean && npm run check && rollup -c ../../rollup.config.js",
+    "release": "pnpm run build & pnpm version patch & pnpm publish --no-git-checks",
+    "unrel": "pnpm unpublish --force",
+    "rel": "pnpm publish"
   },
+<<<<<<< HEAD:modules/test/package.json
   "devDependencies": {}
+=======
+  "publishConfig": {
+    "registry": "http://never.aims.nevermonarch.cn:64873"
+  },
+  "dependencies": {
+    "@ocean/common": "file:"
+  }
+>>>>>>> 58c4ebd5c386dac79c6020c240e4f094ead480f4:modules/common/package.json
 }
