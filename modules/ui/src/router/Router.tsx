@@ -62,6 +62,7 @@ export class Router extends Component<RouterProps> {
   declare history: Array<RouteMatch>;
 
   init(): void {
+    super.init();
     this.history = new Array();
   }
   private declare parent: Router | null;
@@ -72,9 +73,10 @@ export class Router extends Component<RouterProps> {
 
   constructor(props: RouterProps) {
     super(props);
-    createReaction(() => {
+    const init = () => {
       const { location } = this;
       if (!location) {
+        requestAnimationFrame(() => init());
         return;
       }
       location.routers.push([this]);
@@ -94,9 +96,14 @@ export class Router extends Component<RouterProps> {
           this.current = { matched, route };
           this.path = route.path;
           this.routePath = route.routePath;
+        } else {
+          this.current = null;
+          this.path = "";
+          this.routePath = path;
         }
       });
-    });
+    };
+    createReaction(() => init());
   }
 
   match(path: string): RouteMatch[] {
@@ -112,9 +119,9 @@ export class Router extends Component<RouterProps> {
         : () => <div />,
     } = this.current?.route || {};
     return (
-      <Context $context={this.context}>
-        {() => <div class={[this.getClassName(), "router"]}>{view(this)}</div>}
-      </Context>
+      <div class={[this.getClassName(), "router"]}>
+        <Context $context={this.context}>{view(this)}</Context>
+      </div>
     );
   }
   jump(link: string, params?: {}, postParams?: {}, overrideHash?: string) {
@@ -129,6 +136,7 @@ function matchRoute(
   link: string,
   matched: RouteMatch[] = []
 ): RouteMatch[] {
+  debugger;
   for (const route of routes) {
     const { path, children } = route;
     if (link.startsWith(path)) {

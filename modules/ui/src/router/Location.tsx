@@ -22,6 +22,7 @@ export class Location extends Component<LocationProps> {
   init() {
     super.init();
     this.postParams = {};
+    this.routers = [];
   }
   declare routers: [Router][];
 
