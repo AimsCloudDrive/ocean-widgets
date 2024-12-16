@@ -11,29 +11,16 @@
     "modules/*"
   ],
   "devDependencies": {
-<<<<<<< HEAD
-    "@ocean/common": "latest",
-    "@ocean/component": "latest",
-    "@ocean/promise": "latest",
-    "@ocean/reaction": "latest",
-    "@rollup/plugin-commonjs": "^26.0.1",
-    "@rollup/plugin-node-resolve": "^15.2.3",
-    "@rollup/plugin-terser": "^0.4.4",
-    "@rollup/plugin-typescript": "^11.1.6",
-    "eslint-plugin-react-hooks": "^4.6.2",
-    "mobx-react-devtools": "latest",
-    "rimraf": "^6.0.1",
-    "tslib": "^2.6.3",
-    "tsup": "^8.2.3",
-    "typescript": "^5.0.2",
-    "vite": "^5.3.5"
-=======
     "@babel/plugin-proposal-decorators": "latest",
     "@babel/plugin-transform-runtime": "latest",
     "@babel/preset-env": "latest",
     "@babel/preset-react": "latest",
     "@babel/preset-typescript": "latest",
     "@eslint/js": "^10.0.0",
+    "@ocean/common": "^0.0.15",
+    "@ocean/component": "^0.0.27",
+    "@ocean/dom": "^0.0.18",
+    "@ocean/reaction": "^0.0.13",
     "@rollup/plugin-babel": "^6.0.4",
     "@rollup/plugin-terser": "latest",
     "@types/node": "latest",
@@ -120,6 +107,5 @@
         }
       ]
     ]
->>>>>>> 58c4ebd5c386dac79c6020c240e4f094ead480f4
   }
 }

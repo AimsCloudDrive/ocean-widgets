@@ -1,7 +1,7 @@
 {
-  "name": "@ocean/test",
-  "version": "0.0.1",
-  "description": "@ocean/test",
+  "name": "@ocean/ui",
+  "version": "0.0.3",
+  "description": "@ocean/ui",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "type": "module",
@@ -11,9 +11,9 @@
   ],
   "keywords": [
     "ocean",
-    "test"
+    "ui"
   ],
-  "author": "OceanTest",
+  "author": "OceanUi",
   "license": "MIT",
   "scripts": {
     "clean": "rimraf dist",
@@ -28,6 +28,6 @@
     "registry": "http://never.aims.nevermonarch.cn:64873"
   },
   "dependencies": {
-    "@ocean/test": "file:"
+    "@ocean/ui": "file:"
   }
 }

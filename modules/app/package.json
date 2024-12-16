@@ -1,0 +1,36 @@
+{
+  "name": "@ocean/app",
+  "version": "0.0.5",
+  "description": "@ocean/app",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "type": "module",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "keywords": [
+    "ocean",
+    "app"
+  ],
+  "author": "OceanApp",
+  "license": "MIT",
+  "scripts": {
+    "clean": "rimraf dist",
+    "check": "tsc --noEmit",
+    "build2": "npm run clean && npm run check && vite build -c ../../vite.config.ts",
+    "build": "npm run clean && npm run check && rollup -c ../../rollup.config.js",
+    "release": "pnpm run build & pnpm version patch & pnpm publish --no-git-checks",
+    "unrel": "pnpm unpublish --force",
+    "rel": "pnpm publish"
+  },
+  "publishConfig": {
+    "registry": "http://never.aims.nevermonarch.cn:64873"
+  },
+  "dependencies": {
+    "@ocean/app": "file:"
+  },
+  "devDependencies": {
+    "@ocean/ui": "workspace:^"
+  }
+}
