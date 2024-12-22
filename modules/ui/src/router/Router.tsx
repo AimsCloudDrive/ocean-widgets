@@ -1,5 +1,5 @@
 /** @jsx createElement */
-import { Component, ComponentProps, option } from "@ocean/component";
+import { Component, ComponentProps, component, option } from "@ocean/component";
 import { createReaction, observer, withoutTrack } from "@ocean/reaction";
 import { Nullable, OcPromise } from "@ocean/common";
 import { Context, createElement } from "@ocean/dom";
@@ -31,6 +31,7 @@ type RouterProps = ComponentProps & {
   notMatchPage?: Funcable<JSX.Element>;
 };
 
+@component("router")
 export class Router extends Component<RouterProps> {
   @observer()
   declare routePath: string;

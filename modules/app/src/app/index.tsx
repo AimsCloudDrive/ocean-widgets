@@ -1,6 +1,6 @@
 /**@jsx createElement */
 import { createElement, Context } from "@ocean/dom";
-import { Component, ComponentProps, option } from "@ocean/component";
+import { Component, ComponentProps, component, option } from "@ocean/component";
 import { observer } from "@ocean/reaction";
 import { Location, Router, Route } from "@ocean/ui";
 
@@ -8,7 +8,7 @@ type AppProps = ComponentProps & {
   routes: Route[];
   globalParamNames?: string[];
 };
-
+@component("app")
 export class App extends Component<AppProps> {
   private declare userInfo: {
     user: string;
@@ -17,7 +17,8 @@ export class App extends Component<AppProps> {
   private declare location: Location;
   @option()
   @observer()
-  declare routes: Route[];
+  routes: Route[];
+
   constructor(props: AppProps) {
     super(props);
     this.location = new Location({
@@ -35,7 +36,7 @@ export class App extends Component<AppProps> {
   loadingPage() {}
 
   renderMenu() {
-    return <div>renderMenu</div>;
+    return <div>{"renderMenu"}</div>;
   }
 
   mainPage() {

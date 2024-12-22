@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "paths": { "@ocean/*": ["modules/*/src"] },
     "incremental": false, // 增量编译
     // "tsBuildInfoFile": "./.tsbuildinfo", // 增量编译文件的存储位置
