@@ -40,10 +40,10 @@ export class App extends Component<AppProps> {
 
   mainPage() {
     return (
-      <div className={"app-main-page"}>
-        <div className={"app-menu"}>{this.renderMenu()}</div>
+      <div class={"app-main-page"}>
+        <div class={"app-menu"}>{this.renderMenu()}</div>
         {/* // TODO: 分隔线 纵向 */}
-        <div className={"app-main-container"}>
+        <div class={"app-main-container"}>
           <Router routes={this.routes}></Router>
         </div>
       </div>

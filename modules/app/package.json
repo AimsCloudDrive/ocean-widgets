@@ -1,9 +1,9 @@
 {
   "name": "@ocean/app",
-  "version": "0.0.7",
+  "version": "0.0.9",
   "description": "@ocean/app",
   "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
+  "typings": "dist/types/index.d.ts",
   "type": "module",
   "files": [
     "dist",

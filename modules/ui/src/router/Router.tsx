@@ -75,8 +75,8 @@ export class Router extends Component<RouterProps> {
     super(props);
     const init = () => {
       const { location } = this;
+      console.log(location);
       if (!location) {
-        requestAnimationFrame(() => init());
         return;
       }
       location.routers.push([this]);
@@ -111,13 +111,15 @@ export class Router extends Component<RouterProps> {
   }
 
   render() {
+    const { current } = this;
+    const { route = {} as RouteMatch } = current || {};
     const {
       view = typeof this.notMatchPage === "function"
         ? this.notMatchPage
         : this.notMatchPage
         ? () => this.notMatchPage
         : () => <div />,
-    } = this.current?.route || {};
+    } = route;
     return (
       <div class={[this.getClassName(), "router"]}>
         <Context $context={this.context}>{view(this)}</Context>
@@ -131,16 +133,16 @@ export class Router extends Component<RouterProps> {
     return this.location?.replace(link, params, postParams, overrideHash);
   }
 }
-function matchRoute(
+
+export function matchRoute(
   routes: RouterProps["routes"],
   link: string,
   matched: RouteMatch[] = []
 ): RouteMatch[] {
-  debugger;
   for (const route of routes) {
     const { path, children } = route;
     if (link.startsWith(path)) {
-      const routePath = link.replace(path, "");
+      const routePath = link.slice(path.length);
       matched.push({ ...route, routePath });
       if (children) {
         matchRoute(children, routePath, matched);
