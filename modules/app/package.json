@@ -1,6 +1,6 @@
 {
   "name": "@ocean/app",
-  "version": "0.0.9",
+  "version": "0.0.12",
   "description": "@ocean/app",
   "main": "dist/index.js",
   "typings": "dist/types/index.d.ts",

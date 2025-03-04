@@ -1,6 +1,6 @@
 {
   "name": "@ocean/ui",
-  "version": "0.0.12",
+  "version": "0.0.14",
   "description": "@ocean/ui",
   "main": "dist/index.js",
   "typings": "dist/types/index.d.ts",

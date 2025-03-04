@@ -1,7 +1,12 @@
 /**@jsx createElement */
 import { createElement, Context } from "@ocean/dom";
-import { Component, ComponentProps, component, option } from "@ocean/component";
-import { observer } from "@ocean/reaction";
+import {
+  Component,
+  ComponentProps,
+  component,
+  option,
+  observer,
+} from "@ocean/component";
 import { Location, Router, Route } from "@ocean/ui";
 
 type AppProps = ComponentProps & {

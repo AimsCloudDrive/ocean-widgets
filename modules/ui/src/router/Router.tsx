@@ -1,8 +1,14 @@
 /** @jsx createElement */
-import { Component, ComponentProps, component, option } from "@ocean/component";
-import { createReaction, observer, withoutTrack } from "@ocean/reaction";
+import {
+  Component,
+  ComponentProps,
+  component,
+  option,
+  observer,
+} from "@ocean/component";
+import { createReaction, withoutTrack } from "@ocean/reaction";
 import { Nullable, OcPromise } from "@ocean/common";
-import { Context, createElement } from "@ocean/dom";
+import { Context, VNode, createElement } from "@ocean/dom";
 declare global {
   namespace Component {
     interface Context {
@@ -28,7 +34,7 @@ type RouteMatch = Route & {
 
 type RouterProps = ComponentProps & {
   routes: Array<Route>;
-  notMatchPage?: Funcable<JSX.Element>;
+  notMatchPage?: Funcable<VNode>;
 };
 
 @component("router")
@@ -43,7 +49,7 @@ export class Router extends Component<RouterProps> {
   declare routes: Array<Route>;
   @option()
   @observer()
-  declare notMatchPage: Funcable<JSX.Element>;
+  declare notMatchPage: Funcable<VNode>;
 
   @observer()
   declare params: Record<string, any>;
