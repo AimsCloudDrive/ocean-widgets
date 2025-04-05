@@ -6,6 +6,8 @@ import {
   component,
   option,
   observer,
+  SingleRef,
+  createSingleRef,
 } from "@ocean/component";
 import { Location, Router, Route } from "@ocean/ui";
 
@@ -44,13 +46,19 @@ export class App extends Component<AppProps> {
     return <div>{"renderMenu"}</div>;
   }
 
+  private declare routerRef: SingleRef<Router>;
+  init() {
+    super.init();
+    this.routerRef = createSingleRef();
+  }
+
   mainPage() {
     return (
       <div class={"app-main-page"}>
         <div class={"app-menu"}>{this.renderMenu()}</div>
         {/* // TODO: 分隔线 纵向 */}
         <div class={"app-main-container"}>
-          <Router routes={this.routes}></Router>
+          <Router $ref={this.routerRef} routes={this.routes}></Router>
         </div>
       </div>
     );

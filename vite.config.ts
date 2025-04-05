@@ -1,33 +1,32 @@
-import { defineConfig, UserConfig } from "vite";
-import react from "@vitejs/plugin-react";
-import dts from "vite-plugin-dts";
+import { defineConfig } from "vite";
+import dts from "@rollup/plugin-typescript";
 
 // https://vite.dev/config/
-export default defineConfig(() => {
-  return {
-    plugins: [
-      react({
-        jsxRuntime: "classic",
-      }),
-      dts({
-        outDir: "./dist/types",
-      }),
-    ],
-    build: {
-      emptyOutDir: true,
-      sourcemap: true,
-      minify: false,
-      outDir: "dist",
-      lib: {
-        entry: "src/index.ts",
-        name: "index.js",
-        fileName: (format) => {
-          if (/^esm?$/.test(format)) {
-            return "index.js";
-          }
-          return `index.${format}.js`;
-        },
+export default defineConfig({
+  build: {
+    rollupOptions: {
+      plugins: [
+        dts({
+          tsconfig: "./tsconfig.json",
+        }) as any,
+      ],
+      external: /^@ocean\//,
+    },
+    target: ["es2015"],
+    emptyOutDir: true,
+    sourcemap: "inline",
+    minify: false,
+    outDir: "./dist",
+    lib: {
+      entry: "src/index.ts",
+      name: "index.js",
+      formats: ["es", "cjs"],
+      fileName: (format) => {
+        if (/^esm?$/.test(format)) {
+          return "index.js";
+        }
+        return `index.${format}.js`;
       },
     },
-  };
+  },
 });

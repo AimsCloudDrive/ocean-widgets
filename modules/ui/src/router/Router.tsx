@@ -1,14 +1,14 @@
 /** @jsx createElement */
+import { Nullable, OcPromise } from "@ocean/common";
 import {
   Component,
   ComponentProps,
   component,
-  option,
   observer,
+  option,
 } from "@ocean/component";
-import { createReaction, withoutTrack } from "@ocean/reaction";
-import { Nullable, OcPromise } from "@ocean/common";
 import { Context, VNode, createElement } from "@ocean/dom";
+import { createReaction, withoutTrack } from "@ocean/reaction";
 declare global {
   namespace Component {
     interface Context {
@@ -36,6 +36,15 @@ type RouterProps = ComponentProps & {
   routes: Array<Route>;
   notMatchPage?: Funcable<VNode>;
 };
+
+function requestAnimationLoop(cb: () => void, stop?: () => boolean) {
+  requestAnimationFrame(cb);
+
+  if (stop && stop()) {
+    return;
+  }
+  requestAnimationLoop(cb, stop);
+}
 
 @component("router")
 export class Router extends Component<RouterProps> {
@@ -82,8 +91,8 @@ export class Router extends Component<RouterProps> {
     super(props);
     const init = () => {
       const { location } = this;
-      console.log(location);
       if (!location) {
+        requestAnimationLoop(init, () => !!location);
         return;
       }
       location.routers.push([this]);
