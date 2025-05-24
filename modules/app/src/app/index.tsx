@@ -5,10 +5,10 @@ import {
   ComponentProps,
   component,
   option,
-  observer,
   SingleRef,
   createSingleRef,
 } from "@ocean/component";
+import { observer } from "@ocean/reaction";
 import { Location, Router, Route } from "@ocean/ui";
 
 type AppProps = ComponentProps & {

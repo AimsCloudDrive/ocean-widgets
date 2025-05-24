@@ -1,10 +1,5 @@
-import {
-  Component,
-  ComponentProps,
-  component,
-  option,
-  observer,
-} from "@ocean/component";
+import { Component, ComponentProps, component, option } from "@ocean/component";
+import { observer } from "@ocean/reaction";
 import { Router } from "./Router";
 declare global {
   namespace Component {

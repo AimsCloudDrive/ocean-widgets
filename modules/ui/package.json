@@ -18,16 +18,18 @@
   "scripts": {
     "clean": "rimraf dist",
     "check": "tsc --noEmit",
-    "build2": "npm run clean && npm run check && vite build -c ../../vite.config.ts",
-    "build": "npm run clean && npm run check && rollup -c ../../rollup.config.js",
-    "release": "pnpm run build & pnpm version patch & pnpm publish --no-git-checks",
-    "unrel": "pnpm unpublish --force",
-    "rel": "pnpm publish"
+    "version": "node ../../scripts/version.js",
+    "build": "pnpm run clean && pnpm run check && vite build -c ../../vite.config.ts",
+    "release": "pnpm run build && pnpm run version --patch && pnpm publish --no-git-checks"
   },
   "publishConfig": {
     "registry": "http://never.aims.nevermonarch.cn:64873"
   },
   "dependencies": {
+    "@ocean/common": "^2.0.3",
+    "@ocean/component": "^0.0.4",
+    "@ocean/dom": "^0.0.4",
+    "@ocean/reaction": "^0.0.4",
     "@ocean/ui": "file:"
   }
 }

@@ -1,14 +1,8 @@
 /** @jsx createElement */
 import { Nullable, OcPromise } from "@ocean/common";
-import {
-  Component,
-  ComponentProps,
-  component,
-  observer,
-  option,
-} from "@ocean/component";
+import { Component, ComponentProps, component, option } from "@ocean/component";
 import { Context, VNode, createElement } from "@ocean/dom";
-import { createReaction, withoutTrack } from "@ocean/reaction";
+import { createReaction, observer, withoutTrack } from "@ocean/reaction";
 declare global {
   namespace Component {
     interface Context {

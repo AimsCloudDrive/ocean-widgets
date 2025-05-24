@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
-    // "baseUrl": ".",
-    // "paths": { "@ocean/*": ["modules/*/src"] },
-    // "incremental": false, // 增量编译
+    // "types": ["modules/**/src"],
+    "baseUrl": "./",
+    "paths": { "@ocean/*": ["modules/*/src"] },
+    // "incremental": true, // 增量编译
     // "tsBuildInfoFile": "./.tsbuildinfo", // 增量编译文件的存储位置
     // "diagnostics": true, // 打印编译信息
 
@@ -16,15 +17,15 @@
     "experimentalDecorators": true, // 启用装饰器
     "emitDecoratorMetadata": true, // 为装饰器提供元数据支持
 
-    "jsx": "react",
+    "jsx": "preserve",
 
     "declaration": true, // 生成声明文件
-    "declarationDir": "dist", // 声明文件的路径
+    "declarationDir": "dist/types", // 声明文件的路径
     // "emitDeclarationOnly": true, // 只生成声明文件
-    "sourceMap": true, // 生成目标文件的 sourceMap
-    // "inlineSourceMap": true, // 生成目标文件的 inline sourceMap
-    // "declarationMap": true, // 生成声明文件的 sourceMap
-    // "removeComments": true, // 删除注释
+    // "sourceMap": true, // 生成目标文件的 sourceMap
+    "inlineSourceMap": true, // 生成目标文件的 inline sourceMap
+    "declarationMap": true, // 生成声明文件的 sourceMap
+    "removeComments": false, // 删除注释
     "noEmit": true, // 不输出文件
     "noEmitOnError": true, // 发生错误时不输出文件
     "noEmitHelpers": true, // 不生成 helper 函数，需额外安装 ts-helpers，目前也可以用 importHelpers 解决。
