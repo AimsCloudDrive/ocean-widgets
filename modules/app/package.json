@@ -27,10 +27,10 @@
   },
   "dependencies": {
     "@ocean/app": "file:",
-    "@ocean/common": "^2.0.3",
-    "@ocean/component": "^0.0.4",
-    "@ocean/dom": "^0.0.4",
-    "@ocean/reaction": "^0.0.4"
+    "@ocean/common": "^2.0.4",
+    "@ocean/component": "^0.0.6",
+    "@ocean/dom": "^0.0.5",
+    "@ocean/reaction": "^0.0.5"
   },
   "devDependencies": {
     "@ocean/ui": "workspace:^"
