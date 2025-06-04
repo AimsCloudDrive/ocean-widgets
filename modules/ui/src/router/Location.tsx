@@ -19,12 +19,13 @@ export class Location extends Component<LocationProps> {
   @option()
   declare location: LocationProps["location"];
 
+  declare routers: [Router][];
+
   init() {
     super.init();
     this.postParams = {};
     this.routers = [];
   }
-  declare routers: [Router][];
 
   @observer()
   declare path: string;

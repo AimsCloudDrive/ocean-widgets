@@ -20,9 +20,6 @@ importers:
       '@rollup/plugin-node-resolve':
         specifier: latest
         version: 16.0.1(rollup@2.79.2)
-      '@rollup/plugin-typescript':
-        specifier: latest
-        version: 12.1.2(rollup@2.79.2)(tslib@2.8.1)(typescript@5.8.3)
       '@svgr/webpack':
         specifier: ^8.1.0
         version: 8.1.0(typescript@5.8.3)
@@ -207,12 +204,27 @@ importers:
       '@eslint/js':
         specifier: ^10.0.0
         version: 10.0.0
+      '@ocean/common':
+        specifier: ^2.0.11
+        version: 2.0.11
+      '@ocean/component':
+        specifier: ^0.0.14
+        version: 0.0.14
+      '@ocean/dom':
+        specifier: ^0.0.14
+        version: 0.0.14
+      '@ocean/reaction':
+        specifier: ^0.0.11
+        version: 0.0.11
       '@rollup/plugin-babel':
         specifier: ^6.0.4
         version: 6.0.4(@babel/core@7.27.4)(@types/babel__core@7.20.5)(rollup@2.79.2)
       '@rollup/plugin-terser':
-        specifier: latest
+        specifier: ^0.4.4
         version: 0.4.4(rollup@2.79.2)
+      '@rollup/plugin-typescript':
+        specifier: ^12.1.2
+        version: 12.1.2(rollup@2.79.2)(tslib@2.8.1)(typescript@5.8.3)
       '@types/babel__core':
         specifier: ^7.20.5
         version: 7.20.5
@@ -282,18 +294,6 @@ importers:
       '@ocean/app':
         specifier: 'file:'
         version: 'link:'
-      '@ocean/common':
-        specifier: ^2.0.4
-        version: 2.0.4
-      '@ocean/component':
-        specifier: ^0.0.6
-        version: 0.0.6
-      '@ocean/dom':
-        specifier: ^0.0.5
-        version: 0.0.5
-      '@ocean/reaction':
-        specifier: ^0.0.5
-        version: 0.0.5
     devDependencies:
       '@ocean/ui':
         specifier: workspace:^
@@ -304,6 +304,18 @@ importers:
       '@ocean/app':
         specifier: workspace:^
         version: link:..
+      '@ocean/common':
+        specifier: ^2.0.11
+        version: 2.0.11
+      '@ocean/component':
+        specifier: ^0.0.14
+        version: 0.0.14
+      '@ocean/dom':
+        specifier: ^0.0.14
+        version: 0.0.14
+      '@ocean/reaction':
+        specifier: ^0.0.11
+        version: 0.0.11
       '@ocean/ui':
         specifier: workspace:^
         version: link:../../ui
@@ -347,18 +359,6 @@ importers:
 
   modules/ui:
     dependencies:
-      '@ocean/common':
-        specifier: ^2.0.4
-        version: 2.0.4
-      '@ocean/component':
-        specifier: ^0.0.6
-        version: 0.0.6
-      '@ocean/dom':
-        specifier: ^0.0.5
-        version: 0.0.5
-      '@ocean/reaction':
-        specifier: ^0.0.5
-        version: 0.0.5
       '@ocean/ui':
         specifier: 'file:'
         version: 'link:'
@@ -1794,20 +1794,20 @@ packages:
     resolution: {integrity: sha512-oGB+UxlgWcgQkgwo8GcEGwemoTFt3FIO9ababBmaGwXIoBKZ+GTy0pP185beGg7Llih/NSHSV2XAs1lnznocSg==}
     engines: {node: '>= 8'}
 
-  '@ocean/app@file:modules/app':
-    resolution: {directory: modules/app, type: directory}
+  '@ocean/common@2.0.11':
+    resolution: {integrity: sha512-lULzmfRKUqBCdbPnhWbwr3t50wU8xOJZNC252kK7W/Kh0qYxBt2EmPmq2VeN5tE351CP/SdN782XKvh+STqtgg==}
 
-  '@ocean/common@2.0.4':
-    resolution: {integrity: sha512-zrb36x8SwaHFLh/AR5vXVDVCjv4pKrndkdym08hlQhPmqSj68jD8BORpYtHKsKJlpCts3zydzVD/eFKpj1Wc1Q==}
+  '@ocean/component@0.0.14':
+    resolution: {integrity: sha512-y+fBfbcB830leh/MYYW1yB0SyfQnXK0S8XyTUAsvgoSJj2dYhOvszUQsvD/MOEY/LHc59q8rj1eNpgs5RfiSbQ==}
 
-  '@ocean/component@0.0.6':
-    resolution: {integrity: sha512-Fc/VAzzLZxi9ATYjKB6fZiEo7sQMT3L3zsz/aFOu018FqcvM30dgzsFrdnjbmx+YzHbAGm3NqHhfaQxxwv6MyA==}
+  '@ocean/dom@0.0.13':
+    resolution: {integrity: sha512-Sm/Af2b0IkGQ/ewPfffxF/dixHKZoKTBL5Yyisa84whtFRsdieplnh93PUPM4Ei472Kcm05orIe1PtfgVLYYnw==}
 
-  '@ocean/dom@0.0.5':
-    resolution: {integrity: sha512-pDaHGJPgyB4dLotazIo/F6J7VxjFgY7U4zMbtEx+qne6977qaZ3tqF5W9Ujbp9zLnK8PoBXkQJ7FBZ7fvnIwbA==}
+  '@ocean/dom@0.0.14':
+    resolution: {integrity: sha512-TqQ1litayjhM8fwbYma35ax/KvbkXoRMNCzfEXaXyb9Ro3sDy3YbVxEeqx2nFdP1uEtDV74Gs0Ka7cJSmkUsOA==}
 
-  '@ocean/reaction@0.0.5':
-    resolution: {integrity: sha512-NOI2gc/wQkX4Yyw2lOL27NDm4AtU2mdaIt2BZjydLpAFCg2/OCEnzNHzRoCTBhQDetmCZveL0ZgU10zfAI83DA==}
+  '@ocean/reaction@0.0.11':
+    resolution: {integrity: sha512-z7ZOyF85RV3JMNDBmEbAg8fjhnP6gidJE6E6TnpHqTCRv4i5XjRoiYL/w/DLXm7DVre9HGiXllGDg1u3t7yohQ==}
 
   '@pkgjs/parseargs@0.11.0':
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
@@ -8888,22 +8888,17 @@ snapshots:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.19.1
 
-  '@ocean/app@file:modules/app':
+  '@ocean/common@2.0.11':
     dependencies:
-      '@ocean/common': 2.0.4
-      '@ocean/component': 0.0.6
-      '@ocean/dom': 0.0.5
-      '@ocean/reaction': 0.0.5
+      '@ocean/common': app-example@file:modules/app/example
 
-  '@ocean/common@2.0.4':
-    dependencies:
-      '@ocean/common': '@ocean/app@file:modules/app'
+  '@ocean/component@0.0.14': {}
 
-  '@ocean/component@0.0.6': {}
+  '@ocean/dom@0.0.13': {}
 
-  '@ocean/dom@0.0.5': {}
+  '@ocean/dom@0.0.14': {}
 
-  '@ocean/reaction@0.0.5': {}
+  '@ocean/reaction@0.0.11': {}
 
   '@pkgjs/parseargs@0.11.0':
     optional: true
@@ -9853,6 +9848,10 @@ snapshots:
   app-example@file:modules/app/example:
     dependencies:
       '@ocean/app': link:modules/app
+      '@ocean/common': 2.0.11
+      '@ocean/component': 0.0.14
+      '@ocean/dom': 0.0.13
+      '@ocean/reaction': 0.0.11
       '@ocean/ui': link:modules/ui
 
   archy@0.0.2: {}

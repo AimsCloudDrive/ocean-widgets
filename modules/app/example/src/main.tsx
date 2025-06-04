@@ -1,6 +1,7 @@
 /**@jsx createElement */
 
 import { createElement, mountWith } from "@ocean/dom";
+import {} from "@ocean/common";
 import { App } from "@ocean/app";
 import "./index.css";
 import { Route } from "@ocean/ui";

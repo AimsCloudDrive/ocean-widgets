@@ -46,4 +46,7 @@ export default defineConfig({
     target: ["esnext"],
     sourcemap: true,
   },
+  esbuild: {
+    sourcemap: true,
+  },
 });

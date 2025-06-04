@@ -1,7 +1,3 @@
-/**@jsx createElement */
-/** @jsxFrag */
-
-import { createElement } from "@ocean/dom";
 import {
   Component,
   ComponentEvents,
@@ -29,13 +25,13 @@ export class Expample extends Component<
   @observer()
   @option()
   declare count: number;
-  init(): void {
+  init() {
     super.init();
     this.count = 0;
   }
   render() {
     return (
-      <>
+      <div>
         <div>
           <a href="https://vite.dev" target="_blank">
             <img src={viteLogo} className="logo" alt="Vite logo" />
@@ -61,7 +57,7 @@ export class Expample extends Component<
         <p className="read-the-docs">
           Click on the Vite and React logos to learn more
         </p>
-      </>
+      </div>
     );
   }
 }

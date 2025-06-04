@@ -71,6 +71,10 @@ export class Router extends Component<RouterProps> {
   @observer()
   declare history: Array<RouteMatch>;
 
+  declare context: {
+    router: Router;
+  };
+
   init(): void {
     super.init();
     this.history = new Array();

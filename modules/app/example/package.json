@@ -11,6 +11,10 @@
   },
   "dependencies": {
     "@ocean/app": "workspace:^",
+    "@ocean/common": "^2.0.11",
+    "@ocean/component": "^0.0.14",
+    "@ocean/dom": "^0.0.14",
+    "@ocean/reaction": "^0.0.11",
     "@ocean/ui": "workspace:^",
     "app-example": "file:"
   },

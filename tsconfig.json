@@ -17,7 +17,8 @@
     "experimentalDecorators": true, // 启用装饰器
     "emitDecoratorMetadata": true, // 为装饰器提供元数据支持
 
-    "jsx": "react",
+    "jsx": "preserve",
+    "jsxImportSource": "@ocean/dom",
 
     "declaration": true, // 生成声明文件
     "declarationDir": "dist/types", // 声明文件的路径
@@ -46,6 +47,7 @@
     "noUnusedParameters": false, // 检查未使用的函数参数
     "noFallthroughCasesInSwitch": true, // 防止 switch 语句贯穿，分支没有 break
     "noImplicitReturns": false, // 每个分支都要有返回值
+    "allowSyntheticDefaultImports": true,
 
     "esModuleInterop": false, // 允许 export = 导出，由import from 导入
     "allowUmdGlobalAccess": true, // 允许在模块中访问 UMD 全局变量

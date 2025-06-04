@@ -17,34 +17,20 @@ export default defineConfig({
         dts({
           tsconfig: "./tsconfig.json",
           paths: {},
+          noCheck: true,
+          jsxImportSource: undefined,
         }),
         babel({
           babelHelpers: "bundled",
-          presets: [
-            ["@babel/preset-env", { targets: "> 0.25%, not dead" }],
-            ["@babel/preset-typescript", { allowDeclareFields: true }],
-          ],
+          presets: [["@babel/preset-env", { targets: "> 0.25%, not dead" }]],
           plugins: viteRollupBabelPlugins,
           sourceMaps: "inline",
           exclude: "node_modules/**",
           extensions: [".ts", ".js", ".tsx", ".jsx"],
           babelrc: false,
         }),
-        terser({
-          ecma: 2020,
-          compress: {
-            keep_fargs: false,
-          },
-          mangle: { properties: { keep_quoted: "strict" } },
-          keep_classnames: true,
-          keep_fnames: true,
-          format: {
-            braces: true,
-            comments: SourceCommentRegExp,
-          },
-        }),
       ] as any[],
-      external: /^@ocean\//,
+      external: [/^@ocean\//, "fs", "path"],
     },
     target: ["esnext"],
     emptyOutDir: true,
@@ -54,7 +40,7 @@ export default defineConfig({
     lib: {
       entry: ["src/index.ts"],
       name: "index.js",
-      formats: ["es", "cjs"],
+      formats: ["es"],
       fileName: (format) => {
         if (/^esm?$/.test(format)) {
           return "index.js";
