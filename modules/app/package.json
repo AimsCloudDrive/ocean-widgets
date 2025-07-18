@@ -1,7 +1,8 @@
 {
-  "name": "@ocean/app",
+  "$schema": "https://json.schemastore.org/package",
+  "name": "@msom/app",
   "version": "0.0.4",
-  "description": "@ocean/app",
+  "description": "@msom/app",
   "main": "dist/index.js",
   "typings": "dist/types/index.d.ts",
   "type": "module",
@@ -13,22 +14,24 @@
     "ocean",
     "app"
   ],
-  "author": "OceanApp",
+  "author": "OceanCommon",
   "license": "MIT",
   "scripts": {
     "clean": "rimraf dist",
     "check": "tsc --noEmit",
+    "dev": "pnpm run --filter=./example dev",
     "version": "node ../../scripts/version.js",
-    "build": "pnpm run clean && pnpm run check && vite build -c ../../vite.config.ts",
+    "build": "pnpm run clean && pnpm run check && xbuild build -c ../../vite.config.ts",
+    "compile": "xbuild build -C -c ../../vite.config.ts",
     "release": "pnpm run build && pnpm run version --patch && pnpm publish --no-git-checks"
   },
   "publishConfig": {
-    "registry": "http://never.aims.nevermonarch.cn:64873"
+    "access": "public"
   },
   "dependencies": {
-    "@ocean/app": "file:"
+    "@msom/app": "file:"
   },
   "devDependencies": {
-    "@ocean/ui": "workspace:^"
+    "@msom/ui": "workspace:^"
   }
 }

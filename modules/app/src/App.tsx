@@ -1,15 +1,14 @@
 /**@jsx createElement */
-import { createElement, Context } from "@ocean/dom";
+import { SingleRef, createSingleRef } from "@msom/dom";
 import {
   Component,
+  Context,
   ComponentProps,
   component,
   option,
-  SingleRef,
-  createSingleRef,
-} from "@ocean/component";
-import { observer } from "@ocean/reaction";
-import { Location, Router, Route } from "@ocean/ui";
+} from "@msom/component";
+import { observer } from "@msom/reaction";
+import { Location, Router, Route } from "@msom/ui";
 
 type AppProps = ComponentProps & {
   routes: Route[];
@@ -25,6 +24,10 @@ export class App extends Component<AppProps> {
   @option()
   @observer()
   routes: Route[];
+
+  declare context: {
+    location: Location;
+  };
 
   constructor(props: AppProps) {
     super(props);

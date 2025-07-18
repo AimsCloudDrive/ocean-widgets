@@ -1,16 +1,30 @@
-import babel from "@rollup/plugin-babel";
 import dts from "@rollup/plugin-typescript";
-import terser from "@rollup/plugin-terser";
+import babel from "vite-plugin-babel";
 import { defineConfig } from "vite";
 import addSourceCommentPlugin from "./vite-plugins/addSourceCommentPlugin";
 import addTsIgnorePlugin from "./vite-plugins/addTsIgnorePlugin";
+import createDecoratorPlugin from "./vite-plugins/decorator";
 import viteRollupBabelPlugins from "./vite.rollup.babel.plugins";
-
-const SourceCommentRegExp = /^\*[\s\S]*?Source:[\s\S]*?$/;
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [addSourceCommentPlugin(), addTsIgnorePlugin()],
+  plugins: [
+    babel({
+      babelConfig: {
+        presets: [
+          ["@babel/preset-env", { targets: "> 0.25%, not dead" }],
+          ["@babel/preset-typescript", { allowDeclareFields: true }],
+        ],
+        plugins: [["@babel/plugin-proposal-decorators", { version: "legacy" }]],
+        sourceMaps: true,
+        exclude: "node_modules/**",
+        babelrc: false,
+      },
+    }),
+    addSourceCommentPlugin(),
+    addTsIgnorePlugin(),
+    createDecoratorPlugin(),
+  ],
   build: {
     rollupOptions: {
       plugins: [
@@ -18,23 +32,13 @@ export default defineConfig({
           tsconfig: "./tsconfig.json",
           paths: {},
           noCheck: true,
-          jsxImportSource: undefined,
-        }),
-        babel({
-          babelHelpers: "bundled",
-          presets: [["@babel/preset-env", { targets: "> 0.25%, not dead" }]],
-          plugins: viteRollupBabelPlugins,
-          sourceMaps: "inline",
-          exclude: "node_modules/**",
-          extensions: [".ts", ".js", ".tsx", ".jsx"],
-          babelrc: false,
         }),
       ] as any[],
       external: [/^@ocean\//, "fs", "path"],
     },
     target: ["esnext"],
     emptyOutDir: true,
-    sourcemap: "inline",
+    sourcemap: true,
     minify: false,
     outDir: "./dist",
     lib: {

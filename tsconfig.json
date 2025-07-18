@@ -2,7 +2,7 @@
   "compilerOptions": {
     // "types": ["modules/**/src"],
     "baseUrl": "./",
-    "paths": { "@ocean/*": ["modules/*/src"] },
+    "paths": { "@msom/*": ["modules/*/src"] },
     // "incremental": true, // 增量编译
     // "tsBuildInfoFile": "./.tsbuildinfo", // 增量编译文件的存储位置
     // "diagnostics": true, // 打印编译信息
@@ -18,7 +18,7 @@
     "emitDecoratorMetadata": true, // 为装饰器提供元数据支持
 
     "jsx": "preserve",
-    "jsxImportSource": "@ocean/dom",
+    "jsxImportSource": "@msom/dom",
 
     "declaration": true, // 生成声明文件
     "declarationDir": "dist/types", // 声明文件的路径

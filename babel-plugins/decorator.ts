@@ -1,22 +1,24 @@
-import { types as babelTypes } from "@babel/core";
+import { types as babelTypes, type PluginObj } from "@babel/core";
+import { createWriteStream, writeFileSync } from "fs";
 
 /**
  * 更新装饰器的顺序，将类的装饰器先于其他装饰器运行
  * @returns
  */
-export default function createDecoratorPlugin() {
+export function createDecoratorPlugin(): PluginObj {
   return {
     name: "custom-decorators-plugin",
     visitor: {
-      Program(path: any) {
+      Program(path) {
         const programBody = path.node.body;
         // 判断是否有装饰器语法，__decorate函数的使用
         if (!Array.isArray(programBody)) {
           return;
         }
-        const decorators: any[] = [];
+
+        const decorators: typeof programBody = [];
         let changed = false;
-        const newBody: any[] = [];
+        const newBody: typeof programBody = [];
         const cleanDecorators = () => {
           if (decorators.length) {
             newBody.push(...decorators);

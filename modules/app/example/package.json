@@ -1,34 +1,14 @@
 {
-  "name": "app-example",
-  "private": true,
-  "version": "0.0.0",
+  "name": "@msom/app-example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
+    "dev": "xbuild dev"
   },
-  "dependencies": {
-    "@ocean/app": "workspace:^",
-    "@ocean/common": "^2.0.11",
-    "@ocean/component": "^0.0.14",
-    "@ocean/dom": "^0.0.14",
-    "@ocean/reaction": "^0.0.11",
-    "@ocean/ui": "workspace:^",
-    "app-example": "file:"
-  },
-  "devDependencies": {
-    "@eslint/js": "^10.0.0",
-    "@types/react": "^19.1.6",
-    "@types/react-dom": "^19.1.5",
-    "@vitejs/plugin-react": "^4.5.1",
-    "eslint": "^9.28.0",
-    "eslint-plugin-react-hooks": "^6.0.0",
-    "eslint-plugin-react-refresh": "^0.4.20",
-    "globals": "^16.2.0",
-    "typescript": "~5.8.3",
-    "typescript-eslint": "^8.33.1",
-    "vite": "^6.3.5"
-  }
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.12.4"
 }

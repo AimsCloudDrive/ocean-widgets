@@ -1,8 +1,14 @@
 /** @jsx createElement */
-import { Nullable, OcPromise } from "@ocean/common";
-import { Component, ComponentProps, component, option } from "@ocean/component";
-import { Context, VNode, createElement } from "@ocean/dom";
-import { createReaction, observer, withoutTrack } from "@ocean/reaction";
+import { Nullable, OcPromise } from "@msom/common";
+import {
+  Component,
+  ComponentProps,
+  component,
+  option,
+  Context,
+} from "@msom/component";
+import { createElement } from "@msom/dom";
+import { createReaction, observer, withoutTrack } from "@msom/reaction";
 declare global {
   namespace Component {
     interface Context {
@@ -18,7 +24,7 @@ type Nav = string | Array<string>;
 export type Route = {
   nav?: Funcable<Nav | [Nav, OcPromise<Nav>], [Router]>;
   path: string;
-  view?: (router: Router) => any;
+  view?: (router: Router) => Msom.MsomNode;
   children?: Array<Route>;
 };
 
@@ -28,7 +34,7 @@ type RouteMatch = Route & {
 
 type RouterProps = ComponentProps & {
   routes: Array<Route>;
-  notMatchPage?: Funcable<VNode>;
+  notMatchPage?: Funcable<Msom.MsomNode>;
 };
 
 function requestAnimationLoop(cb: () => void, stop?: () => boolean) {
@@ -52,7 +58,7 @@ export class Router extends Component<RouterProps> {
   declare routes: Array<Route>;
   @option()
   @observer()
-  declare notMatchPage: Funcable<VNode>;
+  declare notMatchPage: Funcable<Msom.MsomNode>;
 
   @observer()
   declare params: Record<string, any>;
@@ -90,7 +96,7 @@ export class Router extends Component<RouterProps> {
     const init = () => {
       const { location } = this;
       if (!location) {
-        requestAnimationLoop(init, () => !!location);
+        requestAnimationLoop(init, () => !!this.location);
         return;
       }
       location.routers.push([this]);
@@ -130,9 +136,13 @@ export class Router extends Component<RouterProps> {
     const {
       view = typeof this.notMatchPage === "function"
         ? this.notMatchPage
-        : this.notMatchPage
+        : this.notMatchPage !== undefined
         ? () => this.notMatchPage
-        : () => <div />,
+        : () => (
+            <div>
+              <span></span>
+            </div>
+          ),
     } = route;
     return (
       <div class={[this.getClassName(), "router"]}>

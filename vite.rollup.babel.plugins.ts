@@ -1,16 +1,5 @@
-import path from "path";
-import { fileURLToPath } from "url";
+import { createDecoratorPlugin } from "./babel-plugins/decorator";
 
-const viteRollupBabelPlugins = [
-  // ["@babel/plugin-proposal-decorators", { version: "legacy" }],
-  [
-    path.resolve(
-      fileURLToPath(import.meta.url),
-      "..",
-      "babel-plugins/decorator.js"
-    ),
-    { version: "legacy" },
-  ],
-];
+const viteRollupBabelPlugins = [[], [createDecoratorPlugin()]];
 
 export default viteRollupBabelPlugins;
