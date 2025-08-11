@@ -16,6 +16,11 @@
     width: var(--scroll-bar-size);
     height: var(--scroll-bar-size);
     border-radius: calc(var(--scroll-bar-size) / 2);
+    position: relative;
+    .scroll-bar-thumb {
+      width: var(--scroll-bar-size);
+      height: var(--scroll-bar-size);
+    }
     &:has(.vertical) {
       height: 100%;
       &:has(.absolute) {
@@ -28,7 +33,6 @@
         bottom: 0;
       }
     }
-
     &:has(.absolute) {
       position: absolute;
     }
