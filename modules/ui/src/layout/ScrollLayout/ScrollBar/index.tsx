@@ -71,13 +71,13 @@ export class ScrollBar extends Component<ScrollBarProps, ScrollBarEvents> {
           <div
             $ref={this.thumb}
             class={["scroll-bar-thumb"]}
-            style={{ [this.keys.length]: this.thumbSize }}
+            style={{ [this.styleKeys.length]: this.thumbSize }}
           ></div>
         </div>
       </div>
     );
   }
-  private get keys() {
+  private get styleKeys() {
     if (this.aspect === "Vertical") {
       return { position: "top", length: "height" };
     } else {
@@ -98,7 +98,7 @@ export class ScrollBar extends Component<ScrollBarProps, ScrollBarEvents> {
       return;
     }
     const containerRect = this.track.data.getBoundingClientRect();
-    this.containerSize = containerRect[this.keys.length];
+    this.containerSize = containerRect[this.styleKeys.length];
     this.thumbSize =
       (this.containerSize / this.contentSize) * this.containerSize;
   }
