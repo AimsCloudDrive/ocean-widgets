@@ -1,16 +1,12 @@
 import { defineConfig } from "@msom/xbuild";
 import dts from "@rollup/plugin-typescript";
 import postcss from "rollup-plugin-postcss";
-import tailwind from "@tailwindcss/postcss";
 
 export default defineConfig({
   plugins: [],
   build: {
     external: [/^@msom\//],
     plugins: [
-      postcss({
-        plugins: [tailwind({ optimize: { minify: false } })],
-      }),
       dts({
         tsconfig: "./tsconfig.json",
         paths: {},
@@ -30,5 +26,8 @@ export default defineConfig({
         format: "esm",
       },
     ],
+  },
+  dev: {
+    port: 9999,
   },
 });

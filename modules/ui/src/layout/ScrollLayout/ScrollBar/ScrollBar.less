@@ -1,0 +1,36 @@
+:root {
+  --scroll-bar-size: 0.2rem;
+}
+
+.scroll-bar {
+  position: relative;
+  width: fit-content;
+  height: fit-content;
+  &:has(div.scroll-bar-track.vertical) {
+    height: 100%;
+  }
+  &:has(div.scroll-bar-track.horizontal) {
+    width: 100%;
+  }
+  .scroll-bar-track {
+    width: var(--scroll-bar-size);
+    height: var(--scroll-bar-size);
+    border-radius: calc(var(--scroll-bar-size) / 2);
+    &:has(.vertical) {
+      height: 100%;
+      &:has(.absolute) {
+        right: 0;
+      }
+    }
+    &:has(.horizontal) {
+      width: 100%;
+      &:has(.absolute) {
+        bottom: 0;
+      }
+    }
+
+    &:has(.absolute) {
+      position: absolute;
+    }
+  }
+}

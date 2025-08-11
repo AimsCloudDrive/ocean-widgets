@@ -17,13 +17,7 @@
   "author": "OceanCommon",
   "license": "MIT",
   "scripts": {
-    "clean": "rimraf dist",
-    "check": "tsc --noEmit",
-    "version": "node ../../scripts/version.js",
-    "dev": "pnpm run --filter=./example dev",
-    "build": "pnpm run clean && pnpm run check && xbuild build -c ../../vite.config.ts",
-    "compile": "xbuild build -C -c ../../vite.config.ts",
-    "release": "pnpm run build && pnpm run version --patch && pnpm publish --no-git-checks"
+    "dev": "xbuild dev -c ../../../xbuild.config.ts"
   },
   "publishConfig": {
     "access": "public"

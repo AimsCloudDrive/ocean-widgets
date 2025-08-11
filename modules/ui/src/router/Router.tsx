@@ -1,5 +1,5 @@
 /** @jsx createElement */
-import { Nullable, OcPromise } from "@msom/common";
+import { Nullable, OcPromise, defineProperty } from "@msom/common";
 import {
   Component,
   ComponentProps,
@@ -30,21 +30,13 @@ export type Route = {
 
 type RouteMatch = Route & {
   routePath: string;
+  query: Record<string, string>;
 };
 
 type RouterProps = ComponentProps & {
   routes: Array<Route>;
   notMatchPage?: Funcable<Msom.MsomNode>;
 };
-
-function requestAnimationLoop(cb: () => void, stop?: () => boolean) {
-  requestAnimationFrame(cb);
-
-  if (stop && stop()) {
-    return;
-  }
-  requestAnimationLoop(cb, stop);
-}
 
 @component("router")
 export class Router extends Component<RouterProps> {
@@ -65,6 +57,9 @@ export class Router extends Component<RouterProps> {
 
   @observer()
   declare postParams: Record<string, any>;
+
+  @observer()
+  declare query: RouteMatch["query"];
 
   @observer()
   declare current:
@@ -93,37 +88,39 @@ export class Router extends Component<RouterProps> {
 
   constructor(props: RouterProps) {
     super(props);
-    const init = () => {
-      const { location } = this;
-      if (!location) {
-        requestAnimationLoop(init, () => !!this.location);
-        return;
-      }
-      location.routers.push([this]);
-      this.parent = this.getContext("router") || null;
-      this.context = { router: this };
-      const path = this.parent ? this.parent.routePath : location.path;
-      const params = this.parent ? this.parent.params : location.params;
-      const postParams = this.parent
-        ? this.parent.postParams
-        : location.postParams;
-      withoutTrack(() => {
-        this.params = params;
-        this.postParams = postParams;
-        const matched = this.match(path);
-        if (matched && matched.length > 0) {
-          const route = matched[matched.length - 1];
-          this.current = { matched, route };
-          this.path = route.path;
-          this.routePath = route.routePath;
-        } else {
-          this.current = null;
-          this.path = "";
-          this.routePath = path;
+    this.onclean(
+      createReaction(() => {
+        const { location } = this;
+        if (!location) {
+          return;
         }
-      });
-    };
-    createReaction(() => init());
+        location.routers.push(this);
+        this.parent = this.getContext("router") || null;
+        this.context = { router: this };
+        const path = this.parent ? this.parent.routePath : location.path;
+        const params = this.parent ? this.parent.params : location.params;
+        const postParams = this.parent
+          ? this.parent.postParams
+          : location.postParams;
+        withoutTrack(() => {
+          this.params = params;
+          this.postParams = postParams;
+          const matched = this.match(path);
+          if (matched && matched.length > 0) {
+            const route = matched[matched.length - 1];
+            this.current = { matched, route };
+            this.path = route.path;
+            this.routePath = route.routePath;
+            this.query = route.query;
+          } else {
+            this.current = null;
+            this.path = "";
+            this.routePath = path;
+            this.query = {};
+          }
+        });
+      }).disposer()
+    );
   }
 
   match(path: string): RouteMatch[] {
@@ -140,12 +137,12 @@ export class Router extends Component<RouterProps> {
         ? () => this.notMatchPage
         : () => (
             <div>
-              <span></span>
+              <span>Not Page Found!</span>
             </div>
           ),
     } = route;
     return (
-      <div class={[this.getClassName(), "router"]}>
+      <div class={[this.getClassName(), "router"]} style={this.getStyle()}>
         <Context $context={this.context}>{view(this)}</Context>
       </div>
     );
@@ -158,19 +155,36 @@ export class Router extends Component<RouterProps> {
   }
 }
 
+const queryRExp = /^\/:/i;
+
 export function matchRoute(
   routes: RouterProps["routes"],
   link: string,
-  matched: RouteMatch[] = []
+  matched: RouteMatch[] = [],
+  query: RouteMatch["query"] = {}
 ): RouteMatch[] {
   for (const route of routes) {
     const { path, children } = route;
     if (link.startsWith(path)) {
       const routePath = link.slice(path.length);
-      matched.push({ ...route, routePath });
+      matched.push({ ...route, routePath, query });
       if (children) {
-        matchRoute(children, routePath, matched);
+        matchRoute(children, routePath, matched, query);
       }
+      break;
+    }
+    if (queryRExp.test(path)) {
+      const key = path.replace(queryRExp, "");
+      const links = link.split("/");
+      const queryValue = links[1];
+      const routePath = links.toSpliced(1, 1).join("/");
+      const _query = Object.create(query);
+      defineProperty(_query, key, 7, queryValue);
+      matched.push({ ...route, routePath, query: _query });
+      if (children) {
+        matchRoute(children, routePath, matched, _query);
+      }
+      break;
     }
   }
   return matched;

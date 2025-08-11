@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "xbuild dev"
+    "dev": "xbuild dev -c ../../../xbuild.config.ts"
   },
   "keywords": [],
   "author": "",

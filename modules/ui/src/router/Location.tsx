@@ -1,6 +1,7 @@
 import { Component, ComponentProps, component, option } from "@msom/component";
-import { observer } from "@msom/reaction";
+import { computed, observer } from "@msom/reaction";
 import { Router } from "./Router";
+import { nil } from "@msom/common";
 declare global {
   namespace Component {
     interface Context {
@@ -10,7 +11,7 @@ declare global {
 }
 
 type LocationProps = ComponentProps & {
-  location: Window["location"];
+  location: globalThis.Location;
   globalParamNames?: Array<string>;
 };
 
@@ -19,7 +20,7 @@ export class Location extends Component<LocationProps> {
   @option()
   declare location: LocationProps["location"];
 
-  declare routers: [Router][];
+  declare routers: Router[];
 
   init() {
     super.init();
@@ -58,6 +59,7 @@ export class Location extends Component<LocationProps> {
 
   declare origin: string;
 
+  @computed()
   private get globalParams() {
     return Object.fromEntries(
       Object.entries(this.params).filter(([key]) =>
@@ -65,6 +67,11 @@ export class Location extends Component<LocationProps> {
       )
     );
   }
+  @computed()
+  get history() {
+    return globalThis.history;
+  }
+
   // 构造完整url
   private fullLink(link: string, params?: {}, overrideHash?: string) {
     const globalParams = this.globalParams;
@@ -77,18 +84,27 @@ export class Location extends Component<LocationProps> {
     this.params = params;
     this.hash = overrideHash || "";
     this.path = link;
-    const search = new URLSearchParams().toString();
-    const fullLink = `${link}${search ? `?${search}` : ""}${
-      overrideHash ? `#${overrideHash}` : ""
-    }`;
-    return `${this.origin}/${fullLink}`;
+    const search = new URLSearchParams(this.params);
+    let fullLink = link;
+
+    if (search.size > 0) {
+      fullLink += "?" + search.toString();
+    }
+    if (overrideHash) {
+      fullLink += "#" + overrideHash.replace(/^#+/i, "");
+    }
+    fullLink = fullLink.replace(/^\/+/i, "");
+    const prefix = this.origin.replace(/\/+$/i, "");
+    return `${prefix}/${fullLink}`;
   }
   jump(link: string, params?: {}, postParams?: {}, overrideHash?: string) {
+    this.postParams = postParams || this.postParams;
     const fullLink = this.fullLink(link, params, overrideHash);
-    this.location.assign(fullLink);
+    return this.history.pushState({ name: fullLink }, "", fullLink);
   }
   replace(link: string, params?: {}, postParams?: {}, overrideHash?: string) {
+    this.postParams = postParams || this.postParams;
     const fullLink = this.fullLink(link, params, overrideHash);
-    this.location.replace(fullLink);
+    return this.history.replaceState({ name: fullLink }, "", fullLink);
   }
 }
